@@ -86,6 +86,6 @@ Decode all provided tokens for a given day without any errors, and you win the g
 * Only the first submission each day is accepted.
 * By participating, you agree to have your username and submissions displayed publicly to maintain transparency and excitement.
 * We have made a short white paper outlining attack techniques that might be useful:
-   https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/attack-paper/Attack_Paper.pdf
+   https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/Attack_Paper.pdf
   
 The tokens are waiting. Let the Decrypt-a-thon begin!
