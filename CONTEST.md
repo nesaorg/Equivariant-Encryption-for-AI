@@ -38,7 +38,7 @@ Your objective is to “hack” the system by mapping these private token ids ba
 4. **Submission Rules:**
    * Only your first submission of the day is considered.
    * No additional submissions for that day will be evaluated, so choose carefully.
-   * For help with tokenizers as well as example submission format see this notebook [here](https://huggingface.co/docs/transformers/en/main_classes/tokenizer](https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/tokenizer_example.ipynb).
+   * For help with tokenizers as well as example submission format see this notebook [here](https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/tokenizer_example.ipynb).
      
 ### Grand Prize:
 Decode all provided tokens for a given day without any errors, and you win the grand prize. The contest ends once someone achieves this and provides reproducible code. Only one participant can claim the grand prize.
