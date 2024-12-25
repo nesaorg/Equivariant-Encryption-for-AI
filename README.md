@@ -13,7 +13,7 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 | User Key Control | Direct & Custom | Schema-Defined  |
 | Cryptographic Hardness | Massive Combinatorial Complexity | Standard Hardness Assumptions |
 
-**Zero overhead:** EE provides the same latency as plaintext inference, no slowdowns.
+**Zero overhead:** EE provides the same latency as plaintext inference, with no slowdowns.
 
 **128k factorial:** EE indicates a massive combinatorial complexity, contributing to the strongest security guarantees.
 
@@ -21,7 +21,7 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 
 We investigated multiple methodologies to ensure end-to-end data privacy within the Nesa network. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
 
-However, standard HE schemes are tailored around arithmetic operations. Neural networks, especially those with layers like attention mechanisms, activation functions, or normalization steps, do not map cleanly onto ring or field operations alone. Adapting HE to these complex transformations typically incurs prohibitive computational cost, slowing inference to impractical speeds.
+However, standard HE schemes are tailored around arithmetic operations. Neural networks, especially those with layers like attention mechanisms, activation functions, or normalization steps, do not map cleanly onto ring or field operations alone. Adapting HE to these complex transformations typically incurs prohibitive computational costs, slowing inference to impractical speeds.
 
 Despite this, the conceptual promise of HE—running inference on encrypted data without decryption—prompted us to seek an alternative. We aimed to preserve the protective qualities of encrypted computation while working around the bottlenecks introduced by non-linear neural functions.
 
@@ -37,9 +37,9 @@ Rather than relying exclusively on arithmetic operations compatible with HE, EE 
 
 Formally, given some plaintext $p_i$, and some ciphertext $c_i$, with $p_i$ = decrypt($c_i$), our EE framework ensures that decrypt(nonlinear($c_1,c_2$)) = nonlinear($p_1,p_2$), where "nonlinear" represents a specific set of non-linear neural functions.
 
-Crucially, the complexity of inference under EE does not surpass that of the unencrypted version. Each forward pass through the network involves approximately the same computational cost as before. Thus, **inference latency remains unchanged**, a significant advantage compared to conventional HE-based techniques.
+Crucially, the complexity of inference under EE does not surpass that of the unencrypted version. Each forward pass through the network involves approximately the same computational cost. Thus, **inference latency remains unchanged**, a significant advantage compared to conventional HE-based techniques.
 
-To illustrate this with a tangible example, consider transformer-based models like ChatGPT, Claude, or Llama. These models employ tokenizers to convert text into discrete tokens, each mapped to an integer token id. Under EE, we implement a specialized tokenizer that produces a different, encrypted set of token ids. The network, now adapted to EE, treats these encrypted token ids as standard inputs. It processes them identically to how it would process normal tokens, ultimately returning encrypted output tokens that can be decrypted locally by the user. The following diagram outlines this workflow:
+To illustrate this with a tangible example, consider transformer-based models like ChatGPT, Claude, or Llama. These models employ tokenizers to convert text into discrete tokens, each mapped to an integer token ID. Under EE, we implement a specialized tokenizer that produces a different, encrypted set of token IDs. The network, now adapted to EE, treats these encrypted token IDs as standard inputs. It processes them identically to how it would process normal tokens, ultimately returning encrypted output tokens that can be decrypted locally by the user. The following diagram outlines this workflow:
 
 <div align="center">
   <img src="tokenizer.png" alt="tokenizer diagram">
@@ -54,7 +54,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | Property | Homomorphic Encryption (HE) | Equivariant Encryption (EE) |
 | --- | --- | --- |
 | **Data Confidentiality (Server Blindness)** | The server never sees plaintext data. | The server never sees plaintext data. |
-| **End-to-End Encrypted Computation** | Operations should be fully on encrypted data, no intermediate decryptions. | EE models run directly on encrypted tokens. No intermediate decryptions are required. |
+| **End-to-End Encrypted Computation** | Operations should be fully on encrypted data, with no intermediate decryptions. | EE models run directly on encrypted tokens. No intermediate decryptions are required. |
 | **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens using the EE tokenizer as a private key. |
 | **Preservation of Accuracy** | The decrypted output should match the result of plaintext inference. | EE ensures final results are identical to plaintext inference outputs, with no accuracy loss. |
 | **Support for Arbitrary Model Structures** | HE struggles with non-linearities and complex NN layers. | EE is designed for modern neural architectures and preserves non-linearities. |
