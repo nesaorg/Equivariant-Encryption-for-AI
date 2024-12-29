@@ -54,11 +54,11 @@ vs On-prem AI: Nesa is ~99% cheaper*
 ## RAG Support ##
 Nesa supports integrating blind RAG datastores in-cloud.
 
-## Quick Set-up ##
-Nesa is one click install and go. See documentation.
-
 ## ChatGPT Compatible API ##
 Nesa provides a ChatGPT-compatible API for running blind inference with a one-line change.
+
+## Quick Set-up ##
+Nesa is one click install and go. See documentation.
 
 # How Nesa Achieves Blind AI
 
