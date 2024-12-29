@@ -18,14 +18,11 @@
     <img alt="X" src="https://img.shields.io/twitter/follow/nesaorg?style=social">
   </a>
 </h3>
+
 <!-- GitHub Repo Stats -->
-<div>
-  <a href="https://github.com/nesaorg/Equivariant-Encryption-for-AI/stargazers" target="_blank">
-    <img alt="GitHub Stars" src="https://img.shields.io/static/v1?label=Stars&message=201&color=brightgreen&logo=github&style=social"></a>
-  <a href="https://github.com/nesaorg" style="text-decoration: none;">
-    <img alt="GitHub Follow" src="https://img.shields.io/github/followers/nesaorg?label=follow&style=social">
-  </a>
-</div>
+[![GitHub Repo stars](https://img.shields.io/github/stars/nesaorg/Equivariant-Encryption-for-AI)](https://github.com/nesaorg/Equivariant-Encryption-for-AI/stargazers)
+[![GitHub Repo forks](https://img.shields.io/github/forks/nesaorg/Equivariant-Encryption-for-AI)](https://github.com/nesaorg/Equivariant-Encryption-for-AI/network/members)
+[![GitHub followers](https://img.shields.io/github/followers/nesaorg?label=Follow)](https://github.com/nesaorg)
 </div>
 
 <!---
