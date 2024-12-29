@@ -35,31 +35,32 @@ Nesa now supports major models, inference types, and RAG datastores with complet
 
 # Features
 
-## Blindness ##
+## Blind Privacy ##
 Nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
-## Same Speed ##
-Nesa delivers zero latency on blind inference.
+## No Effect on Speed ##
+Nesa delivers zero latency on protected inference.
 
 ## Wide Model Coverage ## 
-Nesa has a wide range of model support, with coverage on 50,000+ models and multiple modalities.
+Nesa supports coverage on 50,000+ models and multiple modalities.
 
 ## Cost Savings ##
 vs Cloud AI: Nesa is ~80% cheaper*
 
 vs On-prem AI: Nesa is ~99% cheaper*
-*Considerations on cost savings rely on standard assumptions of GPU, infrastruture and basic staffing costs. Detailed cost comparison info can be found in our docs.
+
+*Considerations on cost savings rely on standard assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
 
 ## RAG Support ##
 Nesa supports integrating blind RAG datastores in-cloud.
 
-## Easy Set-up ##
+## Quick Set-up ##
 Nesa is one click install and go. See documentation.
 
 ## ChatGPT Compatible API ##
 Nesa provides a ChatGPT-compatible API for running blind inference with a one-line change.
 
-# How Nesa Achieves This
+# How Nesa Achieves Blind AI
 
 Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures that provide complete inference encryption with no additional latency. 
 
@@ -131,9 +132,9 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, after which pipelines operate as normal. |
 | **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex, secure combinatorial search space, making brute-force attacks impossible. |
 
-## Nesa "Hack EE" Contest
+## Nesa "Hack EE" Competition
 
-We invite the community to examine and test the security claims of our Equivariant Encryption approach. As part of our commitment to transparency and continual refinement, we have organized a contest encouraging participants to probe for weaknesses and demonstrate potential exploits.
+We invite the community to examine and test the security claims of our Equivariant Encryption approach. As part of our commitment to transparency and continual refinement, we have organized a competition encouraging participants to probe for weaknesses and demonstrate potential exploits.
 
 For details, please visit:
 [https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/CONTEST.md](https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/CONTEST.md)
