@@ -33,34 +33,34 @@ Forget multi-million dollar on-prem AI infrastructure, get the same privacy guar
 
 Latest: Nesa now supports major models and RAG with complete server-blindness.
 
-# Features
+## Features ##
 
 ### Blind Privacy ###
 Nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
-## No Effect on Speed ##
+### No Effect on Speed ###
 Nesa delivers zero latency on protected inference.
 
-## Wide Model Coverage ## 
+### Wide Model Coverage ###
 Nesa supports coverage on 50,000+ models and multiple modalities.
 
-## Cost Savings ##
+### Cost Savings ###
 vs Cloud AI: Nesa is ~80% cheaper*
 
 vs On-prem AI: Nesa is ~99% cheaper*
 
 *Considerations on cost savings rely on standard assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
 
-## RAG Support ##
+### RAG Support ###
 Nesa supports integrating blind RAG datastores in-cloud.
 
-## ChatGPT Compatible API ##
+### ChatGPT Compatible API ###
 Nesa provides a ChatGPT-compatible API for running blind inference with a one-line change.
 
-## Quick Set-up ##
+### Quick Set-up ###
 Nesa is one click install and go. See documentation.
 
-# How Nesa Achieves Blind AI
+## How Nesa Achieves Blind AI ##
 
 Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures that provide complete inference encryption with no additional latency. 
 
