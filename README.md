@@ -2,8 +2,8 @@
 
 <!-- Logo with light mode support -->
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="docs/nesa-transparent-logo.png">
-  <img alt="Nesa Logo" src="docs/nesa-logo.png" width="50%">
+  <source media="(prefers-color-scheme: light)" srcset="Nesa Logo_main.png">
+  <img alt="Nesa Logo" src="Nesa Logo_main.png" width="50%">
 </picture>
 <br>
 <br>
