@@ -29,9 +29,8 @@ Nesa: Run on-prem AI for a fraction of the cost in a blind API.
 ---
 -->
 
-Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API.
+Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises.
 
-Run AI like the biggest enterprises.
 Latest: Nesa now supports major models and RAG with complete server-blindness.
 
 # Features
@@ -69,7 +68,7 @@ The result is a portable on-prem AI infrastructure solution inside an API. Your 
 
 # About Equivariant Encryption (EE)
 
-At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
+At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
 ## Equivariant Encryption (EE) vs. Homomorphic Encryption (HE)
 
