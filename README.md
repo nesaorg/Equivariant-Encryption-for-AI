@@ -8,7 +8,7 @@
 <br>
 <br>
 <p>
-nesa: Run on-prem AI for a fraction of the cost in a blind API.
+Nesa: Run on-prem AI for a fraction of the cost in a blind API.
 </p>
 
 <h3 style="margin-top: 15px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px;">
@@ -29,10 +29,44 @@ nesa: Run on-prem AI for a fraction of the cost in a blind API.
 ---
 -->
 
+Forget multi-million dollar on-prem infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises.
 
-# Equivariant Encryption for AI
+Nesa now supports major models, inference types, and RAG datastores with complete server-blindness.
 
-At Nesa, privacy is a critical objective. On our path toward decentralized AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties?** Traditional approaches, such as differential privacy or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods can struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them challenging to integrate into real-time or large-scale systems.
+# Features
+
+## Blindness ##
+Nesa serves requests with zero visibility on underlying data and full blindness on query. 
+
+## Same Speed ##
+Nesa delivers zero latency on blind inference.
+
+## Wide Model Coverage ## 
+Nesa has a wide range of model support, with coverage on 50,000+ models and multiple modalities.
+
+## Cost Savings ##
+vs Cloud AI: Nesa is ~80% cheaper*
+vs On-prem AI: Nesa is ~99% cheaper*
+*Considerations on cost savings rely on standard assumptions of GPU, infrastruture and basic staffing costs. Detailed cost comparison info can be found in our docs.
+
+## RAG Support ##
+Nesa supports integrating blind RAG datastores in-cloud.
+
+## Easy Set-up ##
+Nesa is one click install and go. See documentation.
+
+## ChatGPT Compatible API ##
+Nesa provides a ChatGPT-compatible API for running blind inference with a one-line change.
+
+# How Nesa Achieves This
+
+Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures that provide complete inference encryption with no additional latency. 
+
+The result is a portable on-prem AI infrastructure solution inside an API. Your cloud provider cannot see your data and queries with Nesa.
+
+# About Equivariant Encryption (EE)
+
+At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
 ## Equivariant Encryption (EE) vs. Homomorphic Encryption (HE)
 
@@ -40,18 +74,18 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 
 | **Feature** | **Equivariant Encryption (EE)** | **Homomorphic Encryption (HE)** |
 | --- | --- | --- |
-| Latency Overhead | None (0) | Very High |
-| Non-Linear Operations | Handles Exact | Approximation Needed  |
+| Latency Overhead | Zero | Very High |
+| Non-Linear Operations | Exact | Approximation Needed  |
 | User Key Control | Direct & Custom | Schema-Defined  |
 | Cryptographic Hardness | Massive Combinatorial Complexity | Standard Hardness Assumptions |
 
-**Zero overhead:** EE provides the same latency as plaintext inference, with no slowdowns.
+**Zero overhead:** Nesa EE provides the same latency as plaintext inference, with no slowdowns.
 
-**128k factorial:** EE indicates a massive combinatorial complexity, contributing to the strongest security guarantees.
+**128k factorial:** Nesa EE has a massive combinatorial complexity, contributing to the strongest security guarantees.
 
-## Our Journey to Encryption
+## Our Journey to Equivariant Encryption
 
-We investigated multiple methodologies to ensure end-to-end data privacy within the Nesa network. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
+We have implemented and investigated numerous methodologies that promise end-to-end data privacy. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
 
 However, standard HE schemes are tailored around arithmetic operations. Neural networks, especially those with layers like attention mechanisms, activation functions, or normalization steps, do not map cleanly onto ring or field operations alone. Adapting HE to these complex transformations typically incurs prohibitive computational costs, slowing inference to impractical speeds.
 
