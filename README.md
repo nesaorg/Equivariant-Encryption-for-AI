@@ -38,23 +38,23 @@ Latest: Nesa now supports major models and RAG with complete server-blindness.
 ### Blind Privacy ###
 Nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
-### No Effect on Speed ###
+### Speedy ###
 Nesa delivers zero latency on protected inference.
 
 ### Wide Model Coverage ###
 Nesa supports coverage on 50,000+ models and multiple modalities.
 
 ### Cost Savings ###
-vs Cloud AI: Nesa is ~80% cheaper*
+vs Cloud AI: Nesa can be ~80% cheaper*
 
-vs On-prem AI: Nesa is ~99% cheaper*
+vs On-prem AI: Nesa can be ~99% cheaper*
 
-*Considerations on cost savings rely on standard assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
+*Considerations on cost savings rely on assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
 
 ### RAG Support ###
 Nesa supports integrating blind RAG datastores in-cloud.
 
-### ChatGPT Compatible API ###
+### ChatGPT Compatible ###
 Nesa provides a ChatGPT-compatible API for running blind inference with a one-line change.
 
 ### Quick Set-up ###
@@ -66,7 +66,7 @@ Equivariant Encryption (EE) is a new security technology by Nesa, similar to Hom
 
 The result is a portable on-prem AI infrastructure solution inside an API. Your cloud provider cannot see your data and queries with Nesa.
 
-# About Equivariant Encryption (EE)
+## About Equivariant Encryption (EE)
 
 At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
@@ -87,7 +87,7 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 
 ## Our Journey to Equivariant Encryption
 
-We have implemented and investigated numerous methodologies that promise end-to-end data privacy. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
+We have implemented and investigated numerous methodologies that promise end-to-end data privacy. **Diff **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
 
 However, standard HE schemes are tailored around arithmetic operations. Neural networks, especially those with layers like attention mechanisms, activation functions, or normalization steps, do not map cleanly onto ring or field operations alone. Adapting HE to these complex transformations typically incurs prohibitive computational costs, slowing inference to impractical speeds.
 
