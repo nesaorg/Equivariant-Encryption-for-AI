@@ -31,11 +31,11 @@ Nesa: Run on-prem AI for a fraction of the cost in a blind API.
 
 Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises.
 
-| **Latest: Nesa now supports major models and RAG with complete server-blindness.** |
+Latest: Nesa now supports major models and RAG with complete server-blindness.
 
 # Features
 
-## Blind Privacy ##
+### Blind Privacy ###
 Nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
 ## No Effect on Speed ##
