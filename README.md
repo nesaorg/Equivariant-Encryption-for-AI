@@ -3,7 +3,7 @@
 <!-- Logo with light mode support -->
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="nesa_logo light.png">
-  <img alt="Nesa Logo" src="Nesa_logo.png" width="50%">
+  <img alt="Nesa Logo" src="nesa_logo light.png" width="50%">
 </picture>
 <br>
 <br>
