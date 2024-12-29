@@ -1,3 +1,38 @@
+<div align="center">
+
+<!-- Logo with light mode support -->
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="docs/nesa-transparent-logo.png">
+  <img alt="Nesa Logo" src="docs/nesa-logo.png" width="50%">
+</picture>
+<br>
+<br>
+<p>
+  <em><code>Witness the power of trusted AI on chain.</code></em>
+</p>
+
+<h3 style="margin-top: 15px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px;">
+  <a href="https://discord.gg/TK89MgJDkz" style="text-decoration: none;">
+    <img alt="Discord" src="https://img.shields.io/badge/-Discord-7289DA?style=flat&logo=discord&logoColor=white"></a>
+  <a href="https://x.com/nesaorg/" style="text-decoration: none;">
+    <img alt="X" src="https://img.shields.io/twitter/follow/nesaorg?style=social">
+  </a>
+</h3>
+<!-- GitHub Repo Stats -->
+<div>
+  <a href="https://github.com/nesaorg/Equivariant-Encryption-for-AI/stargazers" target="_blank">
+    <img alt="GitHub Stars" src="https://img.shields.io/static/v1?label=Stars&message=201&color=brightgreen&logo=github&style=social"></a>
+  <a href="https://github.com/nesaorg" style="text-decoration: none;">
+    <img alt="GitHub Follow" src="https://img.shields.io/github/followers/nesaorg?label=follow&style=social">
+  </a>
+</div>
+</div>
+
+<!---
+---
+-->
+
+
 # Equivariant Encryption for AI
 
 At Nesa, privacy is a critical objective. On our path toward decentralized AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties?** Traditional approaches, such as differential privacy or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods can struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them challenging to integrate into real-time or large-scale systems.
@@ -30,7 +65,7 @@ Despite this, the conceptual promise of HE—running inference on encrypted data
 Our solution is **Equivariant Encryption (EE)**. The term **equivariance** signifies a change in representation that preserves the operational structure from the model’s perspective. In other words, we transform the input data into an encrypted domain where the neural network’s computations can be carried out as though it were processing plaintext, all while maintaining the secrecy of the underlying information.
 
 <div align="center">
-  <img src="ee.png" alt="equivariant encryption diagram">
+  <img src="docs/ee.png" alt="equivariant encryption diagram">
 </div>
 
 Rather than relying exclusively on arithmetic operations compatible with HE, EE integrates specialized transformations designed around the internal properties of neural networks. We exploit the known architecture, layer composition, and input-output mappings of the model to construct a system in which each step of inference operates correctly on encrypted inputs. This approach avoids expensive retraining on encrypted datasets. Instead, by following a set of mathematical guidelines, we can generate a new variant of the model that works with our encryption schema in a matter of seconds.
@@ -42,7 +77,7 @@ Crucially, the complexity of inference under EE does not surpass that of the une
 To illustrate this with a tangible example, consider transformer-based models like ChatGPT, Claude, or Llama. These models employ tokenizers to convert text into discrete tokens, each mapped to an integer token ID. Under EE, we implement a specialized tokenizer that produces a different, encrypted set of token IDs. The network, now adapted to EE, treats these encrypted token IDs as standard inputs. It processes them identically to how it would process normal tokens, ultimately returning encrypted output tokens that can be decrypted locally by the user. The following diagram outlines this workflow:
 
 <div align="center">
-  <img src="tokenizer.png" alt="tokenizer diagram">
+  <img src="docs/tokenizer.png" alt="tokenizer diagram">
 </div>
 
 In this setup, all data traveling over the network remains encrypted, and the transformations that produce and consume these tokens are carefully chosen to deny any straightforward method for recovering the plaintext. The attacker sees only encrypted tokens and a model variant designed to operate on that encrypted space, providing no direct, low-cost avenue to extract the original information.
