@@ -35,14 +35,14 @@ Latest: Nesa now supports major models and RAG with complete server-blindness.
 
 ## Features ##
 
-### Blind ###
-Nesa serves requests with zero visibility on underlying data and full blindness on query. 
+### Blind Privacy ###
+nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
 ### Speedy ###
-Nesa delivers zero latency on protected inference.
+nesa delivers zero latency on protected inference.
 
 ### Wide Model Coverage ###
-Nesa supports coverage on 50,000+ models and multiple modalities.
+nesa supports coverage on 50,000+ models and multiple modalities.
 
 ### Cost Savings ###
 vs Cloud AI: Nesa can be ~80% cheaper*
@@ -52,19 +52,19 @@ vs On-prem AI: Nesa can be ~99% cheaper*
 *Considerations on cost savings rely on assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
 
 ### RAG Support ###
-Nesa supports integrating blind RAG datastores in-cloud.
+nesa supports integrating blind RAG datastores in-cloud.
 
 ### ChatGPT Compatible ###
-Nesa provides a ChatGPT-compatible API for running blind inference with a one-line change.
+nesa provides a ChatGPT-compatible API for running blind inference with a one line change.
 
 ### Quick Set-up ###
-Nesa is one click install and go. See documentation.
+nesa is one click install and go. See documentation.
 
 ## How Nesa Achieves Blind AI ##
 
 Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures that provide complete inference encryption with no additional latency. 
 
-The result is a portable on-prem AI infrastructure solution inside an API. Your cloud provider cannot see your data and queries with Nesa.
+The result is the first portable on-prem AI infrastructure solution inside an API. Your cloud provider cannot see your data and queries with Nesa.
 
 ## About Equivariant Encryption (EE)
 
@@ -87,7 +87,7 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 
 ## Our Journey to Equivariant Encryption
 
-We have implemented and investigated numerous methodologies that promise end-to-end data privacy. We began with deep orchestration work in **Trusted Execution Environments (TEE)** which is a type of hardware solution that decrypts, transforms, and re-encrypts data in secure memory. However TEEs still provide full back-door administrator access to your data, which for many enterprises and use cases, is insufficient. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
+We have implemented and investigated numerous methodologies that promise end-to-end data privacy. We began with deep orchestration work in **Trusted Execution Environments (TEE)** which is a type of hardware solution that decrypts, transforms, and re-encrypts data in secure memory. The issue with TEEs, besides cost and access, is that they still provide full back-door administrator access to your data, which for many enterprises and use cases is insufficient. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
 
 However, standard HE schemes are tailored around arithmetic operations. Neural networks, especially those with layers like attention mechanisms, activation functions, or normalization steps, do not map cleanly onto ring or field operations alone. Adapting HE to these complex transformations typically incurs prohibitive computational costs, slowing inference to impractical speeds.
 
