@@ -4,7 +4,7 @@ Successfully hack Nesa's EE technology and win **$100,000 USDT** and a **job off
 
 Grand Prize: **$100,000 USDT** to the person who hacks EE and provides the full prompt of the day, along with code.
 
-Runner-up Prize: **$1,000 in either $NES token or USDT** every day to the person who decrypts the largest amount of prompt (highest score). 
+Runner-up Prize: **$1,000 in either $NES token or USDT** every day to the person who decrypts the most prompt (highest score). 
 
 Community Prize: **$1,000 in $NES token** every day to the person who guesses the right word in the prompt. Must invite to be eligible!
 
