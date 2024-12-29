@@ -46,6 +46,7 @@ Nesa has a wide range of model support, with coverage on 50,000+ models and mult
 
 ## Cost Savings ##
 vs Cloud AI: Nesa is ~80% cheaper*
+
 vs On-prem AI: Nesa is ~99% cheaper*
 *Considerations on cost savings rely on standard assumptions of GPU, infrastruture and basic staffing costs. Detailed cost comparison info can be found in our docs.
 
