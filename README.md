@@ -45,7 +45,7 @@ nesa delivers zero latency on protected inference.
 nesa supports coverage on 50,000+ models and multiple modalities.
 
 ### Cost Savings ###
-vs Cloud AI: Nesa can be ~80% cheaper*
+vs Cloud AI: Nesa can be ~80% cheaper
 
 vs On-prem AI: Nesa can be ~99% cheaper*
 
@@ -60,15 +60,13 @@ nesa provides a ChatGPT-compatible API for running blind inference with a one li
 ### Quick Set-up ###
 nesa is one click install and go. See documentation.
 
-## How Nesa Achieves Blind AI ##
+## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
+
+At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
 Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures that provide complete inference encryption with no additional latency. 
 
 The result is the first portable on-prem AI infrastructure solution inside an API. Your cloud provider cannot see your data and queries with Nesa.
-
-## About Equivariant Encryption (EE)
-
-At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
 ## Equivariant Encryption (EE) vs. Homomorphic Encryption (HE)
 
