@@ -29,13 +29,13 @@ Nesa: Run on-prem AI for a fraction of the cost in a blind API.
 ---
 -->
 
-Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises.
+Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises do.
 
 Latest: Nesa now supports major models and RAG with complete server-blindness.
 
 ## Features ##
 
-### Blind Privacy ###
+### Blind ###
 Nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
 ### Speedy ###
@@ -87,7 +87,7 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 
 ## Our Journey to Equivariant Encryption
 
-We have implemented and investigated numerous methodologies that promise end-to-end data privacy. **Diff **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
+We have implemented and investigated numerous methodologies that promise end-to-end data privacy. We began with deep orchestration work in **Trusted Execution Environments (TEE)** which is a type of hardware solution that decrypts, transforms, and re-encrypts data in secure memory. However TEEs still provide full back-door administrator access to your data, which for many enterprises and use cases, is insufficient. **Differential privacy** seeks to obscure sensitive details by adding statistical noise, but it cannot fully prevent inference on raw data once it is processed by a model. **Homomorphic encryption**, on the other hand, is mathematically elegant: it permits computations directly on encrypted data. This is achieved through operations that are homomorphic to addition and multiplication, enabling algebraic manipulation of ciphertexts that, once decrypted, yield the correct plaintext results. Such a property is exceptionally appealing in scenarios like outsourced cloud computations, where one can perform inference off-site without revealing the sensitive inputs.
 
 However, standard HE schemes are tailored around arithmetic operations. Neural networks, especially those with layers like attention mechanisms, activation functions, or normalization steps, do not map cleanly onto ring or field operations alone. Adapting HE to these complex transformations typically incurs prohibitive computational costs, slowing inference to impractical speeds.
 
@@ -134,7 +134,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 
 ## Nesa "Hack EE" Competition
 
-We invite the community to examine and test the security claims of our Equivariant Encryption approach. As part of our commitment to transparency and continual refinement, we have organized a competition encouraging participants to probe for weaknesses and demonstrate potential exploits.
+We invite the community to examine and test the security claims of Equivariant Encryption. As part of our commitment to transparency and continual refinement, we have organized a competition encouraging participants to probe for weaknesses and demonstrate potential exploits.
 
 For details, please visit:
 [https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/CONTEST.md](https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/CONTEST.md)
