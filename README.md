@@ -79,9 +79,9 @@ A snapshot of Equivariant Encryption's properties versus homomorphic encryption:
 | User Key Control | Direct & Custom | Schema-Defined  |
 | Cryptographic Hardness | Massive Combinatorial Complexity | Standard Hardness Assumptions |
 
-**Zero overhead:** Nesa EE provides the same latency as plaintext inference, with no slowdowns.
+**Zero overhead:** Nesa's EE provides the same latency as plaintext inference, with no slowdowns.
 
-**128k factorial:** Nesa EE has a massive combinatorial complexity, contributing to the strongest security guarantees.
+**100k+ factorial:** Nesa's EE has a massive combinatorial complexity, contributing to the strongest security guarantees.
 
 ## Our Journey to Equivariant Encryption
 
