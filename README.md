@@ -8,7 +8,7 @@
 <br>
 <br>
 <p>
-Witness the power of trusted AI on chain.
+nesa: Run on-prem AI for a fraction of the cost in a blind API.
 </p>
 
 <h3 style="margin-top: 15px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px;">
