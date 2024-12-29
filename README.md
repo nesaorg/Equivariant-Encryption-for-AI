@@ -31,7 +31,7 @@ Nesa: Run on-prem AI for a fraction of the cost in a blind API.
 
 Forget multi-million dollar on-prem infrastructure, get the same privacy guarantees in a blind API - run AI like the biggest enterprises.
 
-Nesa now supports major models, inference types, and RAG datastores with complete server-blindness.
+Latest: Nesa now supports major models and RAG with complete server-blindness.
 
 # Features
 
