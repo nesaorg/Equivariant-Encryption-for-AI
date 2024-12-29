@@ -8,7 +8,7 @@
 <br>
 <br>
 <p>
-  <em><code>Witness the power of trusted AI on chain.</code></em>
+Witness the power of trusted AI on chain.
 </p>
 
 <h3 style="margin-top: 15px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px;">
