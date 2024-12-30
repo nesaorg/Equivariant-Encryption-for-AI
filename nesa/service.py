@@ -13,12 +13,8 @@ async def get_response(inf_request,model_name):
     nc = await nats.connect(
         servers=settings.publish_configs["servers"],
         user_credentials=settings.publish_configs["creds_file"])
-    print(nc)
     js = nc.jetstream()
     publish_subject = f"inference.*.private.base.request.{sanitize_subject_token(model_name)}-he.cuda"
-
-    
-    print('publish subject',publish_subject)
     resp = await js.publish(
         publish_subject,
         stream=request_topic,

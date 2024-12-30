@@ -53,8 +53,7 @@ class HuggingFaceModelMixin:
 
         self.tokenizer = AutoTokenizer.from_pretrained(self.local_model_dir,
                                                        config=self.config,
-                                                       local_files_only=True
-)
+                                                       local_files_only=True)
         add_metadata_to_safetensors(os.path.join(self.local_model_dir,"model.safetensors"))
         
         self.model = AutoModelForSequenceClassification.from_pretrained(
@@ -79,7 +78,6 @@ class HuggingFaceModelMixin:
         )
         with torch.no_grad():
             outputs = self.model(**inputs)
-            print(outputs)
             logits = outputs.logits
 
         probs = torch.nn.functional.softmax(logits, dim=-1)
@@ -102,6 +100,6 @@ if __name__ == "__main__":
 
     model_mixin = HuggingFaceModelMixin(model_name=model_name, local_model_dir=local_model_dir)
     model_mixin.load_model_and_tokenizer()
-    input_text = "you suck bro."
+    input_text = "I am not feeling good today."
     outputs = model_mixin.perform_inference(input_text)
     pprint(outputs, indent=4)
