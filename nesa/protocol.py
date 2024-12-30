@@ -174,10 +174,11 @@ class SessionID(msgspec.Struct,
     user_id: Optional[str] = None
 
 
-class LLM(
+class LLMInference(
     msgspec.Struct,
     omit_defaults=True,
-    dict=True
+    dict=True,
+    forbid_unknown_fields=False
     ):
     
     stream: bool
@@ -186,28 +187,37 @@ class LLM(
     model_params: Optional[LLMParams] = None
     session_id: Optional[SessionID] = None
 
+class DeltaMessage(
+    msgspec.Struct,
+    omit_defaults=True,
+    dict=True,
+    forbid_unknown_fields=False
+    ):
+    
+    role: Optional[str] = None
+    content: Optional[str] = None
 
+class Choice(
+    msgspec.Struct,
+    omit_defaults=True,
+    dict=True,
+    forbid_unknown_fields=False):
+    
+    index: int
+    delta: DeltaMessage
+    finish_reason: Optional[str]
+    
+class InferenceResponse(
+    msgspec.Struct,
+    omit_defaults=True,
+    dict=True,
+    forbid_unknown_fields=False):
+    
 
-data = """{
-    "stream": true,
-    "messages": [{"content": "[128000,86363]", "role": "user"}],
-    "model": "meta-llama/llama-3.2-1b-instruct",
-    "model_params": {
-        "max_new_tokens": 1,
-        "num_beams": 1,
-        "system_prompt": null,
-        "temperature": 1,
-        "top_k": 1,
-        "top_p": 1,
-        "custom_param": "value"
-    },
-    "session_id": {
-        "ee": true,
-        "session_id": null,
-        "user_id": "662d57657f4de830388db819"
-    }
-}"""
-
-
-out = msgspec.json.decode(data, type=LLM)
-print(out)
+    correlation_id: str
+    model: str
+    choices: list[Choice]
+    object: Annotated[
+        str, msgspec.Meta(pattern="^chat\\.completion\\.chunk$")
+    ] = "chat.completion.chunk"
+    session: Optional[SessionID] = None

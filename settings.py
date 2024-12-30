@@ -53,3 +53,5 @@ def get_settings() -> Settings:
             "consume_configs": consume_configs,
         }
     )
+
+settings = get_settings()
