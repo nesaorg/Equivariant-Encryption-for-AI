@@ -17,6 +17,8 @@ def add_metadata_to_safetensors(file_path: str):
         tensors = {key: f.get_tensor(key) for key in f.keys()}
         existing_metadata = f.metadata()
 
+    if existing_metadata:
+        return
     updated_metadata = existing_metadata if existing_metadata else {}
     updated_metadata.update(metadata)
     save_file(tensors, file_path, metadata=updated_metadata)
@@ -30,7 +32,6 @@ class HuggingFaceModelMixin:
     def __init__(self, model_name: str, local_model_dir: str = None):
         """
         initialize with the huggingface model name or local directory.
-        
         """
         self.model_name = model_name
         self.local_model_dir = local_model_dir

@@ -2,7 +2,7 @@ from typing import Optional, Dict, List, Any, Union, Set
 import msgspec 
 from typing_extensions import Annotated
 from nesa.logger import logger
-from enum import Enum, IntEnum
+from enum import Enum, IntEnum, StrEnum, auto
 from functools import cached_property
 import copy
 
@@ -20,6 +20,11 @@ class SamplingType(IntEnum):
     GREEDY = 0
     RANDOM = 1
     RANDOM_SEED = 2
+
+class Role(StrEnum):
+    ASSISTANT = auto()
+    USER = auto()
+    AI = auto()
 
 class LLMParams(msgspec.Struct):
 
@@ -182,9 +187,10 @@ class LLMInference(
     ):
     
     stream: bool
+    correlation_id: str
     messages: List[Message]
     model: str
-    model_params: Optional[LLMParams] = None
+    model_params: Optional[Union[LLMParams, Dict[str, Union[str, int, float]]]] = None
     session_id: Optional[SessionID] = None
 
 class DeltaMessage(
@@ -195,7 +201,7 @@ class DeltaMessage(
     ):
     
     role: Optional[str] = None
-    content: Optional[str] = None
+    content: Optional[Union[int,str]] = None
 
 class Choice(
     msgspec.Struct,
