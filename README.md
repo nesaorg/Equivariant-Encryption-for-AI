@@ -144,7 +144,7 @@ Using domain knowledge to design the loss function L, so that the loss L can cap
 
 ### Brute-force Algorithm Attack
 
-The most naive method of brute force, trying all possible permutations P and choosing the one with the minimal loss value. This algorithm requires time complexity of N!, which is infeasible.
+The most naive method is brute force, trying all possible permutations P and choosing the one with the minimal loss value. This algorithm requires time complexity of N!, which is infeasible.
 
 ### Random Sampling Attack
 
