@@ -1,4 +1,4 @@
-# Nesa "Hack EE" Competition
+# Nesa "Hack EE" Contest
 
 Successfully hack Nesa's EE technology and win **$100,000 USDT** and a **job offer at Nesa.** 
 
