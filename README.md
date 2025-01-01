@@ -184,7 +184,7 @@ print(f"The sentiment was classified as {label} with a confidence scor
 
 ### Nesa Demo on Github (Llama)
 
-## The "Hack EE" Competition
+## The "Hack EE" Contest
 
 We invite the community to examine and test the security claims of Equivariant Encryption. As part of our commitment to transparency and continual refinement, we have organized a competition encouraging participants to probe for weaknesses and demonstrate potential exploits.
 
