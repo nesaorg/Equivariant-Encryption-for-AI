@@ -130,6 +130,30 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, after which pipelines operate as normal. |
 | **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex, secure combinatorial search space, making brute-force attacks impossible. |
 
+## Attacks on EE Security
+
+Nesa's Security team has tested EE robustly with various baseline attack vectors, which can be found here: https://github.com/nesaorg/nesa/blob/main/Attack_Paper.pdf
+
+### LLM-as-a-Judge Attack
+
+Using a state-of-the-art large language model such as GPT-4o to evaluate whether the output P(Oi) is a good answer to the prompt P(Ii).
+
+### Linguistic Domain Knowledge Attack
+
+Using domain knowledge to design the loss function L, so that the loss L can capture the semantic meaning in the (decrypted) input, output and between.
+
+### Brute-force Algorithm Attack
+
+The most naive method of brute force, trying all possible permutations P and choosing the one with the minimal loss value. This algorithm requires time complexity of N!, which is infeasible.
+
+### Random Sampling Attack
+
+Randomly sampling M permutations and choosing the one with the lowest loss value. One can also try genetic algorithms to mix and cross-over multiple tries at different permutations.
+
+### Hill-climbing Algorithm Attack
+
+Starting with an arbitrary initial permutation P. The set of moves is the set of permutations that one can reach by transposing two elements of the permutation.
+
 ## Try EE for Yourself
 
 ### Nesa Demo on Hugging Face (Distilbert)
