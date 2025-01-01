@@ -35,7 +35,7 @@ Latest: Nesa now supports major models and RAG with complete server-blindness.
 
 ## Features ##
 
-### Blind Privacy ###
+### Full Privacy ###
 nesa serves requests with zero visibility on underlying data and full blindness on query. 
 
 ### Speedy ###
