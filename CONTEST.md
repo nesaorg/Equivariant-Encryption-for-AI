@@ -25,7 +25,7 @@ Your objective is to “hack” the system by mapping these private token ids ba
    * Your task is to decrypt these token ids into their original text tokens.
 
 2. **Winning Criteria:**
-   * Submit mappings in the form `{token_id: "original_text"}`.
+   * Submit mappings on https://nesa.ai/contest in the form `{token_id: "original_text"}`
    * Your score depends on how many correct mappings you provide.
 
 3. **Daily Prizes:**
