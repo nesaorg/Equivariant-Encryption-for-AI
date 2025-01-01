@@ -60,6 +60,11 @@ nesa provides a ChatGPT-compatible API for running blind inference with a one li
 ### Quick Set-up ###
 nesa is one click install and go. See documentation.
 
+### Try Our Demo Encryption Model on Huggingface ###
+
+We uploaded a community encrypted model to demonstrate how our EE method works:
+https://huggingface.co/nesaorg/distilbert-sentiment-encrypted
+
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
 At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
