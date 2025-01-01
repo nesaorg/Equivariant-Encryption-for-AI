@@ -60,11 +60,6 @@ nesa provides a ChatGPT-compatible API for running blind inference with a one li
 ### Quick Set-up ###
 nesa is one click install and go. See documentation.
 
-### Try Our Demo Encryption Model on Huggingface ###
-
-We uploaded a community encrypted model to demonstrate how our EE method works:
-https://huggingface.co/nesaorg/distilbert-sentiment-encrypted
-
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
 At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
@@ -135,7 +130,37 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, after which pipelines operate as normal. |
 | **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex, secure combinatorial search space, making brute-force attacks impossible. |
 
-## Nesa "Hack EE" Competition
+## Try EE for Yourself
+
+### Nesa Demo on Hugging Face (Distilbert)
+
+Nesa has a community encrypted model on Hugging Face to demonstrate how EE works:
+https://huggingface.co/nesaorg/distilbert-sentiment-encrypted
+
+To load up the model, use the following code:
+
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+model_name = "nesaorg/distilbert-sentiment-encrypted-community-v1"
+
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+To run inference on an example, use the following code:
+
+inputs = tokenizer("Hello, I love you", return_tensors="pt")
+
+with torch.no_grad():
+    logits = model(**inputs).logits
+
+predicted_class_id = logits.argmax().item()
+label = model.config.id2label[predicted_class_id]
+score = torch.max(torch.nn.Softmax()(logits)).item()
+print(f"The sentiment was classified as {label} with a confidence scor
+
+### Nesa Demo on Github (Llama)
+
+## The "Hack EE" Competition
 
 We invite the community to examine and test the security claims of Equivariant Encryption. As part of our commitment to transparency and continual refinement, we have organized a competition encouraging participants to probe for weaknesses and demonstrate potential exploits.
 
