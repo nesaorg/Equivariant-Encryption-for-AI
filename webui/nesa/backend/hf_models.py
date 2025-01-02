@@ -68,7 +68,7 @@ class HuggingFaceModelMixin:
         system_prompt: Optional[str] = "",
     ) -> Generator[str, None, None]:
         """
-        perform inference on the input text and return class labels with scores.
+        Perform inference on the input text and return class labels with scores in Markdown tables.
         """
         inputs = tokenizer(
             current_msg,
@@ -76,8 +76,13 @@ class HuggingFaceModelMixin:
         )
         
         input_ids = inputs["input_ids"].squeeze().tolist()
-        formatted_input_ids = f"Encrypted Token IDs:  {', '.join(map(str, input_ids))}\n\n"
-        yield formatted_input_ids
+        token_ids_table = (
+            "### **Encrypted Token IDs**\n\n"
+            "| **Token IDs** |\n"
+            "|------------------------|\n"
+            f"| {', '.join(map(str, input_ids))}, ... |\n"
+        )
+        yield token_ids_table
 
         with torch.no_grad():
             outputs = model(**inputs)
@@ -93,13 +98,22 @@ class HuggingFaceModelMixin:
         class_scores = {config.id2label[i]: prob for i, prob in enumerate(probs)}
         sorted_class_scores = dict(sorted(class_scores.items(), key=lambda item: item[1], reverse=True))
 
-        formatted_output = "Class Scores:\n\n"
-        formatted_output += "\n\n".join([f"{label}: {prob:.4f}" for label, prob in sorted_class_scores.items()])
-        yield formatted_output
+        classification_table = (
+            "#### **Classification Result**\n\n"
+            "| **Label** | **Probability** |\n"
+            "|------------|------------------|\n"
+            + "\n".join([
+                f"| {label.capitalize()} {'✔' if prob == max(probs) else ''} | {prob:.4f} |"
+                for label, prob in sorted_class_scores.items()
+            ])
+        )
+        yield classification_table
 
 
-    def detokenize(self, token_ids: List[int]) -> str:
-        return self.tokenizer.decode(token_ids, skip_special_tokens=True)
+
+def detokenize(self, token_ids: List[int]) -> str:
+    return self.tokenizer.decode(token_ids, skip_special_tokens=True)
+
 
 
 if __name__ == "__main__":
