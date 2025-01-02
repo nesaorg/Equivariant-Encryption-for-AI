@@ -186,7 +186,7 @@ print(f"The sentiment was classified as {label} with a confidence scor
 
 ## The "Hack EE" Contest
 <img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/7f3b1150-41c7-442f-bc74-5abf0685c00b" />
-
+</br>
 
 We invite the community to examine and test the security claims of Equivariant Encryption. As part of our commitment to transparency and continual refinement, we have organized a competition encouraging participants to probe for weaknesses and demonstrate potential exploits.
 
