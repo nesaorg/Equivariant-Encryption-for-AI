@@ -253,9 +253,9 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
     output = f'<style>{chat_styles[style]}</style><div class="chat" id="chat"><div class="messages">'
 
     # We use ?character and ?time.time() to force the browser to reset caches
-    img_bot = f'<img src="file/cache/pfp_character_thumb.png?{character}" class="pfp_character">' if Path("cache/pfp_character_thumb.png").exists() else ''
-    img_me = f'<img src="file/cache/pfp_me.png?{time.time() if reset_cache else ""}">' if Path("cache/pfp_me.png").exists() else ''
-
+    img_bot = '<img src="file/cache/bot.png">'
+    img_me = '<img src="file/cache/human-fill.png">'
+    print("Here",img_bot)
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
 
@@ -293,6 +293,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
             """
 
     output += "</div></div>"
+
     return output
 
 
