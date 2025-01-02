@@ -2,6 +2,7 @@ import os
 import warnings
 
 from modules import shared
+from nesa.backend.llms import DistributedLLM # noqa
 
 import accelerate  # This early import makes Intel GPUs happy
 
@@ -33,7 +34,6 @@ import time
 from functools import partial
 from pathlib import Path
 from threading import Lock, Thread
-
 import yaml
 
 import modules.extensions as extensions_module

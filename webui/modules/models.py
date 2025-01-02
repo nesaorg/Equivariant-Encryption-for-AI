@@ -68,6 +68,7 @@ def load_model(model_name, loader=None):
 
     shared.is_seq2seq = False
     shared.model_name = model_name
+    print("model name is ",shared.model_name)
     load_func_map = {
         'Transformers': huggingface_loader,
         'llama.cpp': llamacpp_loader,

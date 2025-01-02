@@ -30,8 +30,7 @@ from modules.html_generator import generate_basic_html
 from modules.logging_colors import logger
 from modules.models import clear_torch_cache, load_model
 from pprint import pprint
-from nesa.backend.service import generate_response_token
-
+from nesa.backend.registry import ModelRegistry
 
 def generate_reply(*args, **kwargs):
     
@@ -42,7 +41,9 @@ def generate_reply(*args, **kwargs):
     print('current history', args[1]['history']['visible'])
     print("current model name", shared.model_name)
     if shared.args.idle_timeout > 0 and shared.model is None and shared.model_name not in [None, 'None']:
-        shared.model, shared.tokenizer = load_model(shared.model_name)
+        ModelClass = ModelRegistry.get_model(shared.model_name, None)
+        shared.handler = ModelClass(shared.model_name)
+        shared.tokenizer, shared.model = shared.handler.load_model_tokenizer(model_name=shared.model_name)
 
     shared.generation_lock.acquire()
     tokens = ""
@@ -51,11 +52,12 @@ def generate_reply(*args, **kwargs):
         history = args[1]['history']['visible'][1:]
         
     try:
-        for token in generate_response_token(current_msg=args[1]['textbox'],
-                                             system_prompt=args[1]["chat-instruct_command"],
-                                              history=history
-                                              ):
-            # print("result",result)
+        for token in shared.handler.perform_inference(
+            current_msg=args[1]['textbox'],
+            tokenizer=shared.tokenizer,
+            model_name=shared.model_name,
+            system_prompt=args[1]["chat-instruct_command"],
+            history=history):
             if token:
                 tokens += token
             yield tokens

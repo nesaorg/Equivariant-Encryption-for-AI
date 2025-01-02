@@ -9,7 +9,7 @@ import gradio as gr
 import psutil
 import torch
 from transformers import is_torch_npu_available, is_torch_xpu_available
-
+from nesa.backend.registry import ModelRegistry
 from modules import loaders, shared, ui, utils
 from modules.logging_colors import logger
 from modules.LoRA import add_lora_to_model
@@ -114,14 +114,14 @@ def create_ui():
                     shared.gradio['autoload_model'] = gr.Checkbox(value=shared.settings['autoload_model'], label='Autoload the model', info='Whether to load the model as soon as it is selected in the Model dropdown.', interactive=not mu)
 
                 with gr.Tab("Download"):
-                    shared.gradio['custom_model_menu'] = gr.Textbox(label="Download model or LoRA",info="Enter the Hugging Face username/model path, for instance: facebook/galactica-125m. To specify a branch, add it at the end after a \":\" character like this: facebook/galactica-125m:main. To download a single file, enter its name in the second box.", interactive=False)
-                    shared.gradio['download_specific_file'] = gr.Textbox(placeholder="File name (for GGUF models)", show_label=False, max_lines=1, interactive=False)
+                    shared.gradio['custom_model_menu'] = gr.Textbox(label="Download model or LoRA",info="Enter the Hugging Face username/model path, for instance: facebook/galactica-125m. To specify a branch, add it at the end after a \":\" character like this: facebook/galactica-125m:main. To download a single file, enter its name in the second box.", interactive=True)
+                    shared.gradio['download_specific_file'] = gr.Textbox(placeholder="File name (for GGUF models)", show_label=False, max_lines=1, interactive=True)
                     with gr.Row():
-                        shared.gradio['download_model_button'] = gr.Button("Download", variant='primary', interactive=False)
-                        shared.gradio['get_file_list'] = gr.Button("Get file list", interactive=False)
+                        shared.gradio['download_model_button'] = gr.Button("Download", variant='primary', interactive=True)
+                        shared.gradio['get_file_list'] = gr.Button("Get file list", interactive=True)
 
                 with gr.Row():
-                    shared.gradio['model_status'] = gr.Markdown('' if shared.model_name == 'None' else 'Ready')
+                    shared.gradio['model_status'] = gr.Markdown('No model is loaded' if shared.model_name == 'None' else 'Ready')
 
 
 def create_event_handlers():
@@ -156,7 +156,7 @@ def load_model_wrapper(selected_model, loader, autoload=False):
     if not autoload:
         yield f"The settings for `{selected_model}` have been updated.\n\nClick on \"Load\" to load it."
         return
-
+    print("selected model",selected_model)
     if selected_model == 'None':
         yield "No model selected"
     else:
@@ -164,15 +164,13 @@ def load_model_wrapper(selected_model, loader, autoload=False):
             yield f"Loading `{selected_model}`..."
             unload_model()
             if selected_model != '':
-                shared.model, shared.tokenizer = load_model(selected_model, loader)
-
-            if shared.model is not None:
+                
+                shared.model_name = selected_model
+                print('here',selected_model, shared.model_name)
+                ModelClass = ModelRegistry.get_model(shared.model_name, None)
+                shared.handler = ModelClass()
+                shared.tokenizer, shared.model = shared.handler.load_model_tokenizer(model_name=shared.model_name)
                 output = f"Successfully loaded `{selected_model}`."
-
-                settings = get_model_metadata(selected_model)
-                if 'instruction_template' in settings:
-                    output += '\n\nIt seems to be an instruction-following model with template "{}". In the chat tab, instruct or chat-instruct modes should be used.'.format(settings['instruction_template'])
-
                 yield output
             else:
                 yield f"Failed to load `{selected_model}`."

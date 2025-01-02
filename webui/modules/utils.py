@@ -75,7 +75,7 @@ def natural_keys(text):
 def get_available_models():
     model_list = []
     for item in list(Path(f'{shared.args.model_dir}/').glob('*')):
-        if not item.name.endswith(('.txt', '-np', '.pt', '.json', '.yaml', '.py')) and 'llama-tokenizer' not in item.name:
+        if not item.name.endswith(('.txt', '-np', '.pt', '.json', '.yaml', '.py', 'DS_Store')) and 'llama-tokenizer' not in item.name:
             model_list.append(item.name)
 
     return ['None'] + sorted(model_list, key=natural_keys)

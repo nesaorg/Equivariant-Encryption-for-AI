@@ -13,13 +13,16 @@ import os
 from transformers import AutoTokenizer
 from typing import Callable
 import html
+import warnings
+from nesa.backend.registry import ModelRegistry
 import re
 import unicodedata
+from typing import Generator, Optional, List, Any, Union
 
 
 response_topic : str = "inference-results"
 request_topic: str = "inference-requests"
-
+model_mappings = {"meta-llama--llama-3.2-1b-instruct":"meta-llama/Llama-3.2-1B-Instruct"}
 def clean_string(message):
     """
     cleans HTML-encoded characters and unwanted characters from a string.
@@ -51,7 +54,6 @@ async def stream_message_handler(inf_request: LLMInference):
         publish_subject,
         stream="inference-requests",
         payload=msgspec.json.encode(inf_request))
-    print("payload",msgspec.json.encode(inf_request))
     consumer_config = js_api.ConsumerConfig( 
         name=node_id,
         deliver_policy=js_api.DeliverPolicy.ALL,
@@ -102,11 +104,11 @@ def generate_prompt_template(
     system_instructions = [ {"role": Role.SYSTEM.value, "content":clean_string(system_prompt) }]  # noqa
     history = history[-lookback:]
     messages = []
+    
     if use_memory:
         for i, msg_pair in enumerate(history):
-            print('hereeee',msg_pair,type(msg_pair),msg_pair[0])
+            
             user_msg, assistant_msg = msg_pair
-                                     
             user_msg = {"role": Role.USER.value, "content": clean_string(user_msg)}
             messages.append(user_msg)
             assistant_msg = {"role": Role.ASSISTANT.value, "content": clean_string(assistant_msg)}
@@ -138,49 +140,56 @@ def process_stream_sync(inf_request, tokenizer):
 
     return sync_generator()
 
-def generate_response_token(
-    current_msg: str,
-    model: str = "meta-llama/Llama-3.2-1B-Instruct",
-    history: Optional[List[str]] = [],
-    system_prompt: Optional[str] = "",
-    ):
+@ModelRegistry.register(
+    "meta-llama--llama-3.2-1b-instruct",
+    is_model_specific=True)
+class DistributedLLM:
     
-    tokenizer_dir = os.path.join("nesa", "models",model.replace("/", '--').lower())
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_dir)
-    if 'llama' in model:
-        terminators = [tokenizer.eos_token_id, # noqa
-                       tokenizer.convert_tokens_to_ids("<|eot_id|>")]    
-    # prompt_template = [{"role": Role.USER.value,
-    #             "content": message}]
-    prompt_template = generate_prompt_template(
-        current_msg=current_msg,
-        system_prompt=system_prompt,
-        history=history
-    )
-    print("prompt_template",prompt_template)
-    input_ids = tokenizer.apply_chat_template(
-            prompt_template,
-            add_generation_prompt=True)
-    print("Input ids", input_ids)
-    inf_request = LLMInference(
-        stream=True,
-        model=model,
-        correlation_id=str(uuid.uuid4()),
-        messages=[
-            Message(
-                content= f'{input_ids}',
-                role=Role.ASSISTANT.value
-            )],
-        session_id=SessionID(ee=True),
-        model_params={}        
-    )
-    for token in process_stream_sync(inf_request, tokenizer):
-        yield token
+    def __init__(self, **kwargs):
+        warnings.warn("Instantiation is deprecated.", DeprecationWarning)
 
-if __name__ == "__main__":
-    model = "meta-llama/Llama-3.2-1B-Instruct"
-    message='write a story on AI and ml'
-    
-    asyncio.run(generate_response_token(message,model))
+    @classmethod
+    def load_model_tokenizer(cls, model_name, **kwargs):
+        
+        model = None
+        tokenizer_dir = os.path.join("nesa", "models",model_name.replace("/", '--').lower())
+        tokenizer = AutoTokenizer.from_pretrained(tokenizer_dir)
+        if 'llama' in model_name:
+            terminators = [tokenizer.eos_token_id, # noqa: // todo:  need a mechanism to forward to backend
+                       tokenizer.convert_tokens_to_ids("<|eot_id|>")]
+        return tokenizer, model # avoid loading the model locally for llms.
 
-    
+    @classmethod
+    def perform_inference(
+        cls,
+        tokenizer: Any,
+        current_msg: str,
+        model_name: Optional[Any] = None,
+        history: Optional[List[str]] = [],
+        system_prompt: Optional[str] = "",
+    ) -> Generator[str, None, None]:
+        
+        prompt_template = generate_prompt_template(
+            current_msg=current_msg,
+            system_prompt=system_prompt,
+            history=history
+        )
+        print("prompt_template",prompt_template)
+        input_ids = tokenizer.apply_chat_template(
+                prompt_template,
+                add_generation_prompt=True)
+        print("Input ids", input_ids)
+        inf_request = LLMInference(
+            stream=True,
+            model=model_mappings[model_name],
+            correlation_id=str(uuid.uuid4()),
+            messages=[
+                Message(
+                    content= f'{input_ids}',
+                    role=Role.ASSISTANT.value
+                )],
+            session_id=SessionID(ee=True),
+            model_params={}        
+        )
+        for token in process_stream_sync(inf_request, tokenizer):
+            yield token
