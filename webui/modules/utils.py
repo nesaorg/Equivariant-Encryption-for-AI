@@ -5,7 +5,7 @@ from pathlib import Path
 
 from modules import github, shared
 from modules.logging_colors import logger
-
+import json
 
 # Helper function to get multiple values from shared.gradio
 def gradio(*keys):
@@ -71,11 +71,29 @@ def replace_all(text, dic):
 def natural_keys(text):
     return [atoi(c) for c in re.split(r'(\d+)', text)]
 
+def get_available_models_names():
+    model_list = []
+    for item in Path(f'{shared.args.model_dir}/').glob('*'):
+        if item.is_dir() and not item.name.endswith(('.txt', '-np', '.pt', '.yaml', '.py', 'DS_Store')) and 'llama-tokenizer' not in item.name:
+            metadata_file = item / 'huggingface-metadata.json'
+            if metadata_file.exists():
+                try:
+                    with open(metadata_file, 'r') as f:
+                        metadata = json.load(f)
+                        if 'model_name' in metadata:
+                            model_list.append(metadata['model_name'])
+                except json.JSONDecodeError:
+                    print(f"Warning: Could not parse metadata file for {item.name}. Skipping...")
+            else:
+                print(f"Warning: Metadata file not found in {item.name}. Skipping...")
+
+    return ['None'] + sorted(model_list, key=natural_keys)
+
 
 def get_available_models():
     model_list = []
     for item in list(Path(f'{shared.args.model_dir}/').glob('*')):
-        if not item.name.endswith(('.txt', '-np', '.pt', '.json', '.yaml', '.py', 'DS_Store')) and 'llama-tokenizer' not in item.name:
+        if not item.name.endswith(('.txt', '-np', '.pt', '.json', '.yaml', '.py', '.DS_Store')) and 'llama-tokenizer' not in item.name:
             model_list.append(item.name)
 
     return ['None'] + sorted(model_list, key=natural_keys)

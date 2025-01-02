@@ -6,6 +6,11 @@ from safetensors.torch import save_file
 from typing import Tuple, List
 import torch
 from pprint import pprint
+from nesa.backend.registry import ModelRegistry
+import warnings
+from modules import shared
+from typing import Generator, Optional, List, Any, Union
+
 
 def add_metadata_to_safetensors(file_path: str):
     
@@ -23,64 +28,76 @@ def add_metadata_to_safetensors(file_path: str):
     updated_metadata.update(metadata)
     save_file(tensors, file_path, metadata=updated_metadata)
 
+@ModelRegistry.register(
+    "nesaorg_distilbert-sentiment-encrypted",
+    is_model_specific=True)
 class HuggingFaceModelMixin:
     """
     A mixin to automate loading of Hugging Face models and tokenizers
     from a local directory or the Hugging Face Hub.
     """
 
-    def __init__(self, model_name: str, local_model_dir: str = None):
-        """
-        initialize with the huggingface model name or local directory.
-        """
-        self.model_name = model_name
-        self.local_model_dir = local_model_dir
-        self.config = None
-        self.model = None
-        self.tokenizer = None
-
-    def load_model_and_tokenizer(self):
+    def __init__(self, **kwargs):
+        warnings.warn("Instantiation is deprecated.", DeprecationWarning)
+    def load_model_tokenizer(cls,model_name):
         """
         load model and tokenizer using configuration and local files.
         """
-        
+        model_dir = os.path.join(shared.args.model_dir,model_name)
 
-        self.config = AutoConfig.from_pretrained(self.model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name,
-                                                       force_download=True,
-                                                       use_auth_token="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",
-                                                       local_files_only=False)
+        tokenizer = AutoTokenizer.from_pretrained(model_dir,
+                                                  local_files_only=True)
         
-        self.model = AutoModelForSequenceClassification.from_pretrained(
-            self.model_name,
-            use_auth_token="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",
-            force_download=True,
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_dir,
             trust_remote_code=True,
-            local_files_only=False
+            local_files_only=True
         )
-        print(f"Model '{self.model_name}' loaded successfully with architecture: {self.config.architectures}")
+        
+        print(f"Model '{model_name}' loaded successfully ")
+        return tokenizer, model
 
-
-    def perform_inference(self, input_text: str) -> Tuple[List[str], List[float]]:
+    @classmethod
+    def perform_inference(
+        cls,
+        tokenizer: Any,
+        model: Any,
+        current_msg: str,
+        model_name: Optional[Any] = None,
+        history: Optional[List[str]] = [],
+        system_prompt: Optional[str] = "",
+    ) -> Generator[str, None, None]:
         """
         perform inference on the input text and return class labels with scores.
         """
-        inputs = self.tokenizer(
-            input_text,
+        inputs = tokenizer(
+            current_msg,
             return_tensors="pt"
         )
+        
+        input_ids = inputs["input_ids"].squeeze().tolist()
+        formatted_input_ids = f"Encrypted Token IDs:  {', '.join(map(str, input_ids))}\n\n"
+        yield formatted_input_ids
+
         with torch.no_grad():
-            outputs = self.model(**inputs)
+            outputs = model(**inputs)
             logits = outputs.logits
 
         probs = torch.nn.functional.softmax(logits, dim=-1)
         probs = probs.squeeze().tolist()
+        
+        model_dir = os.path.join(shared.args.model_dir, model_name.replace("/", "_").lower())
+        config_path = os.path.join(model_dir, "config.json")
+        config = AutoConfig.from_pretrained(config_path, local_files_only=True)
 
-        class_scores = {self.config.id2label[i]: prob for i, prob in enumerate(probs)}
+        class_scores = {config.id2label[i]: prob for i, prob in enumerate(probs)}
         sorted_class_scores = dict(sorted(class_scores.items(), key=lambda item: item[1], reverse=True))
 
-        return sorted_class_scores
-    
+        formatted_output = "Class Scores:\n\n"
+        formatted_output += "\n\n".join([f"{label}: {prob:.4f}" for label, prob in sorted_class_scores.items()])
+        yield formatted_output
+
+
     def detokenize(self, token_ids: List[int]) -> str:
         return self.tokenizer.decode(token_ids, skip_special_tokens=True)
 

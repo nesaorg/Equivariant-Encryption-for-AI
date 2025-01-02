@@ -22,7 +22,7 @@ from typing import Generator, Optional, List, Any, Union
 
 response_topic : str = "inference-results"
 request_topic: str = "inference-requests"
-model_mappings = {"meta-llama--llama-3.2-1b-instruct":"meta-llama/Llama-3.2-1B-Instruct"}
+model_mappings = {"meta-llama_llama-3.2-1b-instruct":"meta-llama/Llama-3.2-1B-Instruct"}
 def clean_string(message):
     """
     cleans HTML-encoded characters and unwanted characters from a string.
@@ -141,7 +141,7 @@ def process_stream_sync(inf_request, tokenizer):
     return sync_generator()
 
 @ModelRegistry.register(
-    "meta-llama--llama-3.2-1b-instruct",
+    "meta-llama_llama-3.2-1b-instruct",
     is_model_specific=True)
 class DistributedLLM:
     
@@ -152,7 +152,7 @@ class DistributedLLM:
     def load_model_tokenizer(cls, model_name, **kwargs):
         
         model = None
-        tokenizer_dir = os.path.join("nesa", "models",model_name.replace("/", '--').lower())
+        tokenizer_dir = os.path.join("models",model_name)
         tokenizer = AutoTokenizer.from_pretrained(tokenizer_dir)
         if 'llama' in model_name:
             terminators = [tokenizer.eos_token_id, # noqa: // todo:  need a mechanism to forward to backend
@@ -167,6 +167,7 @@ class DistributedLLM:
         model_name: Optional[Any] = None,
         history: Optional[List[str]] = [],
         system_prompt: Optional[str] = "",
+        **kwargs
     ) -> Generator[str, None, None]:
         
         prompt_template = generate_prompt_template(

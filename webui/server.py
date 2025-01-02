@@ -3,6 +3,7 @@ import warnings
 
 from modules import shared
 from nesa.backend.llms import DistributedLLM # noqa
+from nesa.backend.hf_models import HuggingFaceModelMixin # noqa
 
 import accelerate  # This early import makes Intel GPUs happy
 

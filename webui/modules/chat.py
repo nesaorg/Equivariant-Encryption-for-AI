@@ -197,6 +197,8 @@ def generate_chat_prompt(user_input, state, **kwargs):
     # Handle truncation
     if shared.tokenizer is not None:
         max_length = get_max_prompt_length(state)
+        print('max length',max_length)
+        max_length = max_length if max_length > 2000 else 2048
         encoded_length = get_encoded_length(prompt)
         while len(messages) > 0 and encoded_length > max_length:
 

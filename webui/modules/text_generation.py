@@ -55,6 +55,7 @@ def generate_reply(*args, **kwargs):
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
             tokenizer=shared.tokenizer,
+            model=shared.model,
             model_name=shared.model_name,
             system_prompt=args[1]["chat-instruct_command"],
             history=history):

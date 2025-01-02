@@ -260,16 +260,19 @@ class ModelDownloader:
         output_folder.mkdir(parents=True, exist_ok=True)
 
         if not is_llamacpp:
-            metadata = f'url: https://huggingface.co/{model}\n' \
-                       f'branch: {branch}\n' \
-                       f'download date: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n'
+            metadata = {
+                "url": f"https://huggingface.co/{model}",
+                "branch": branch,
+                "download_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "model_name": model
+            }
 
-            sha256_str = '\n'.join([f'    {item[1]} {item[0]}' for item in sha256])
-            if sha256_str:
-                metadata += f'sha256sum:\n{sha256_str}'
+            if sha256:
+                metadata["sha256sum"] = {item[0]: item[1] for item in sha256}
 
-            metadata += '\n'
-            (output_folder / 'huggingface-metadata.txt').write_text(metadata)
+            # Write the metadata to a JSON file
+            with open(output_folder / 'huggingface-metadata.json', 'w') as metadata_file:
+                json.dump(metadata, metadata_file, indent=4)
 
         if specific_file:
             print(f"Downloading {specific_file} to {output_folder}")
