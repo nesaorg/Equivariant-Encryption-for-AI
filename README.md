@@ -158,7 +158,7 @@ Starting with an arbitrary initial permutation P. The set of moves is the set of
 
 ### Nesa Demo on Hugging Face (Distilbert)
 
-Nesa provides a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how EE (Encrypted Execution) works.
+We provide a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how Equivariant Encryption (EE) works.
 
 #### Loading the Model
 
