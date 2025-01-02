@@ -17,7 +17,6 @@ def get_fallback_settings():
         'max_seq_len': 2048,
         'n_ctx': 2048,
         'rope_freq_base': 0,
-        'compress_pos_emb': 1,
         'alpha_value': 1,
         'truncation_length': shared.settings['truncation_length'],
         'skip_special_tokens': shared.settings['skip_special_tokens'],

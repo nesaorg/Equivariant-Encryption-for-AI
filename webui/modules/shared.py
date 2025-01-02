@@ -125,7 +125,6 @@ group.add_argument('--mlock', action='store_true', help='Force the system to kee
 group.add_argument('--n-gpu-layers', type=int, default=0, help='Number of layers to offload to the GPU.')
 group.add_argument('--tensor_split', type=str, default=None, help='Split the model across multiple GPUs. Comma-separated list of proportions. Example: 60,40.')
 group.add_argument('--numa', action='store_true', help='Activate NUMA task allocation for llama.cpp.')
-group.add_argument('--logits_all', action='store_true', help='Needs to be set for perplexity evaluation to work. Otherwise, ignore it, as it makes prompt processing slower.')
 group.add_argument('--no_offload_kqv', action='store_true', help='Do not offload the  K, Q, V to the GPU. This saves VRAM but reduces the performance.')
 group.add_argument('--cache-capacity', type=str, help='Maximum cache capacity (llama-cpp-python). Examples: 2000MiB, 2GiB. When provided without units, bytes will be assumed.')
 group.add_argument('--row_split', action='store_true', help='Split the model by rows across GPUs. This may improve multi-gpu performance.')
@@ -135,8 +134,6 @@ group.add_argument('--tokenizer-dir', type=str, help='Load the tokenizer from th
 
 # ExLlamaV2
 group = parser.add_argument_group('ExLlamaV2')
-group.add_argument('--gpu-split', type=str, help='Comma-separated list of VRAM (in GB) to use per GPU device for model layers. Example: 20,7,7.')
-group.add_argument('--autosplit', action='store_true', help='Autosplit the model tensors across the available GPUs. This causes --gpu-split to be ignored.')
 group.add_argument('--max_seq_len', type=int, default=2048, help='Maximum sequence length.')
 group.add_argument('--cfg-cache', action='store_true', help='ExLlamav2_HF: Create an additional cache for CFG negative prompts. Necessary to use CFG with that loader.')
 group.add_argument('--no_flash_attn', action='store_true', help='Force flash-attention to not be used.')
