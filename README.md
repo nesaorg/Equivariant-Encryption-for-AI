@@ -158,31 +158,38 @@ Starting with an arbitrary initial permutation P. The set of moves is the set of
 
 ### Nesa Demo on Hugging Face (Distilbert)
 
-Nesa has a community encrypted model on Hugging Face to demonstrate how EE works:
-https://huggingface.co/nesaorg/distilbert-sentiment-encrypted
+Nesa provides a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how EE (Encrypted Execution) works.
 
-To load up the model, use the following code:
+#### Loading the Model
 
+```python
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-model_name = "nesaorg/distilbert-sentiment-encrypted-community-v1"
 
+# Initialize model and tokenizer
+model_name = "nesaorg/distilbert-sentiment-encrypted-community-v1"
 model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+```
 
-To run inference on an example, use the following code:
+#### Running Inference
 
+```python
+# Prepare input and run inference
 inputs = tokenizer("Hello, I love you", return_tensors="pt")
 
 with torch.no_grad():
     logits = model(**inputs).logits
 
+# Process results
 predicted_class_id = logits.argmax().item()
 label = model.config.id2label[predicted_class_id]
 score = torch.max(torch.nn.Softmax()(logits)).item()
-print(f"The sentiment was classified as {label} with a confidence scor
 
-### Nesa Demo on Github (Llama)
+print(f"The sentiment was classified as {label} with a confidence score of {score:.2f}")
+```
+
+<!-- ### Nesa Demo on Github (Llama) --> 
 
 ## The "Hack EE" Contest
 <img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/7f3b1150-41c7-442f-bc74-5abf0685c00b" />
