@@ -306,30 +306,10 @@ def create_event_handlers():
     shared.gradio['your_picture'].change(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         chat.handle_your_picture_change, gradio('your_picture', 'interface_state'), gradio('display'), show_progress=False)
-
-    shared.gradio['send_instruction_to_default'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_send_instruction_click, gradio('interface_state'), gradio('textbox-default'), show_progress=False).then(
-        None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_default()}}')
-
-    shared.gradio['send_instruction_to_notebook'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_send_instruction_click, gradio('interface_state'), gradio('textbox-notebook'), show_progress=False).then(
-        None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_notebook()}}')
-
+    
     shared.gradio['send_instruction_to_negative_prompt'].click(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         chat.handle_send_instruction_click, gradio('interface_state'), gradio('negative_prompt'), show_progress=False).then(
         None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_generation_parameters()}}')
-
-    shared.gradio['send-chat-to-default'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_send_chat_click, gradio('interface_state'), gradio('textbox-default'), show_progress=False).then(
-        None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_default()}}')
-
-    shared.gradio['send-chat-to-notebook'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_send_chat_click, gradio('interface_state'), gradio('textbox-notebook'), show_progress=False).then(
-        None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_notebook()}}')
-
+        
     shared.gradio['show_controls'].change(None, gradio('show_controls'), None, js=f'(x) => {{{ui.show_controls_js}; toggle_controls(x)}}')

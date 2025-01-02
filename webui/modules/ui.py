@@ -223,8 +223,6 @@ def list_interface_input_elements():
         'tfs',
         'top_a',
     ]
-
-    # Chat elements
     elements += [
         'textbox',
         'start_with',
@@ -244,18 +242,7 @@ def list_interface_input_elements():
         'chat-instruct_command',
     ]
 
-    # Notebook/default elements
-    elements += [
-        'textbox-notebook',
-        'textbox-default',
-        'output_textbox',
-        'prompt_menu-default',
-        'prompt_menu-notebook',
-    ]
-
-    # Model elements
     elements += list_model_elements()
-
     return elements
 
 
@@ -275,11 +262,6 @@ def gather_interface_values(*args):
 def apply_interface_values(state, use_persistent=False):
     if use_persistent:
         state = shared.persistent_interface_state
-        if 'textbox-default' in state and 'prompt_menu-default' in state:
-            state.pop('prompt_menu-default')
-
-        if 'textbox-notebook' and 'prompt_menu-notebook' in state:
-            state.pop('prompt_menu-notebook')
 
     elements = list_interface_input_elements()
 
