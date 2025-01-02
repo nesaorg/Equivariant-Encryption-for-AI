@@ -17,7 +17,8 @@ import warnings
 from nesa.backend.registry import ModelRegistry
 import re
 import unicodedata
-from typing import Generator, Optional, List, Any, Union
+import httpx
+from typing import Generator, AsyncGenerator, AsyncIterator, Optional, List, Any, Union
 
 
 response_topic : str = "inference-results"
@@ -36,57 +37,98 @@ def clean_string(message):
 
 
 async def stream_message_handler(inf_request: LLMInference):
-    agent_uuid = str(uuid.uuid4())
-    node_id = str(uuid.uuid4())
-    sanitized_model = sanitize_subject_token(inf_request.model)
+    url = "https://79ad-2600-1700-9f90-31d0-ac28-fe8c-db2b-5a94.ngrok-free.app/request"
+    headers = {"Content-Type": "application/octet-stream"}
+    print(msgspec.json.encode(inf_request))
 
-    publish_subject = f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.request.{sanitized_model}-he.cuda"
-    consume_subject = [f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.result.{sanitized_model}-he.{inf_request.correlation_id}"]
-    print("publish subject",publish_subject)
-    print("consume_subject subject",consume_subject)
-    
-    nc = await nats.connect(
-        servers=settings.publish_configs["servers"],
-        user_credentials=settings.publish_configs["creds_file"])
-    js = nc.jetstream()
-    
-    _ = await js.publish(
-        publish_subject,
-        stream="inference-requests",
-        payload=msgspec.json.encode(inf_request))
-    consumer_config = js_api.ConsumerConfig( 
-        name=node_id,
-        deliver_policy=js_api.DeliverPolicy.ALL,
-        max_ack_pending=10000,
-        filter_subjects=consume_subject,
-        ack_wait=300,
-        inactive_threshold=360,
-        max_deliver=3,
-    )
     try:
-        stream = settings.consume_configs["stream"]
-        await js.add_consumer(stream=stream, config=consumer_config)
-        sub = await js.pull_subscribe_bind(
-            node_id,
-            stream=stream
-        )
-        while True:
-            try:
-                msgs = await sub.fetch(1)
-                for msg in msgs:
+        with httpx.stream('POST', url, data=msgspec.json.encode(inf_request), headers=headers) as response:
+            response.raise_for_status()
+
+            timeout = 60
+            start_time = asyncio.get_event_loop().time()
+            first_message_received = False
+
+            for chunk in response.iter_raw():
+                if chunk.strip():
                     try:
-                        inf_response = msgspec.json.decode(msg.data, type=InferenceResponse)
+
+                        inf_response = msgspec.json.decode(chunk, type=InferenceResponse)
+
+                        if not first_message_received:
+                            first_message_received = True
+
                         if inf_response.choices[0].finish_reason:
                             return
+
                         yield inf_response.choices[0].delta.content
-                        await msg.ack()
                     except Exception as e:
-                            print(f"error processing message: {str(e)}")
-            except TimeoutError as _:
-                    continue
-    finally:
-        await sub.unsubscribe()
-        await nc.close()
+                        print(f"Error processing streaming response: {str(e)}")
+
+                if not first_message_received and asyncio.get_event_loop().time() - start_time > timeout:
+                    yield ""
+
+    except httpx.HTTPStatusError as e:
+        print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+        raise e
+    except Exception as e:
+        print(f"Unexpected error occurred: {str(e)}")
+        raise e
+
+
+
+# async def stream_message_handler(inf_request: LLMInference):
+#     agent_uuid = str(uuid.uuid4())
+#     node_id = str(uuid.uuid4())
+#     sanitized_model = sanitize_subject_token(inf_request.model)
+
+#     publish_subject = f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.request.{sanitized_model}-he.cuda"
+#     consume_subject = [f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.result.{sanitized_model}-he.{inf_request.correlation_id}"]
+#     print("publish subject",publish_subject)
+#     print("consume_subject subject",consume_subject)
+    
+#     nc = await nats.connect(
+#         servers=settings.publish_configs["servers"],
+#         user_credentials=settings.publish_configs["creds_file"])
+#     js = nc.jetstream()
+    
+#     _ = await js.publish(
+#         publish_subject,
+#         stream="inference-requests",
+#         payload=msgspec.json.encode(inf_request))
+#     consumer_config = js_api.ConsumerConfig( 
+#         name=node_id,
+#         deliver_policy=js_api.DeliverPolicy.ALL,
+#         max_ack_pending=10000,
+#         filter_subjects=consume_subject,
+#         ack_wait=300,
+#         inactive_threshold=360,
+#         max_deliver=3,
+#     )
+#     try:
+#         stream = settings.consume_configs["stream"]
+#         await js.add_consumer(stream=stream, config=consumer_config)
+#         sub = await js.pull_subscribe_bind(
+#             node_id,
+#             stream=stream
+#         )
+#         while True:
+#             try:
+#                 msgs = await sub.fetch(1)
+#                 for msg in msgs:
+#                     try:
+#                         inf_response = msgspec.json.decode(msg.data, type=InferenceResponse)
+#                         if inf_response.choices[0].finish_reason:
+#                             return
+#                         yield inf_response.choices[0].delta.content
+#                         await msg.ack()
+#                     except Exception as e:
+#                             print(f"error processing message: {str(e)}")
+#             except TimeoutError as _:
+#                     continue
+#     finally:
+#         await sub.unsubscribe()
+#         await nc.close()
 
 
 def generate_prompt_template(
