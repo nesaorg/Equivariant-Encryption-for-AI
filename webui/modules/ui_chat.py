@@ -81,17 +81,15 @@ def create_ui():
 
         with gr.Row(elem_id='chat-controls', elem_classes=['pretty_scrollbar']):
             with gr.Column():
+                
                 with gr.Row():
-                    shared.gradio['start_with'] = gr.Textbox(label='Start reply with', placeholder='Sure thing!', value=shared.settings['start_with'], elem_classes=['add_scrollbar'])
+                    shared.gradio['mode'] = gr.Radio(choices=['chat-instruct'], value=shared.settings['mode'] if shared.settings['mode'] in ['chat', 'chat-instruct'] else None, label='Mode', info='Defines how the chat prompt is generated. In instruct and chat-instruct modes, the instruction template Parameters > Instruction template is used.', elem_id='chat-mode')
 
                 with gr.Row():
-                    shared.gradio['mode'] = gr.Radio(choices=['chat', 'chat-instruct', 'instruct'], value=shared.settings['mode'] if shared.settings['mode'] in ['chat', 'chat-instruct'] else None, label='Mode', info='Defines how the chat prompt is generated. In instruct and chat-instruct modes, the instruction template Parameters > Instruction template is used.', elem_id='chat-mode')
+                    shared.gradio['chat_style'] = gr.Dropdown(choices=utils.get_available_chat_styles(), label='Chat Theme', value=shared.settings['chat_style'], visible=shared.settings['mode'] != 'instruct')
 
                 with gr.Row():
-                    shared.gradio['chat_style'] = gr.Dropdown(choices=utils.get_available_chat_styles(), label='Chat style', value=shared.settings['chat_style'], visible=shared.settings['mode'] != 'instruct')
-
-                with gr.Row():
-                    shared.gradio['chat-instruct_command'] = gr.Textbox(value=shared.settings['chat-instruct_command'], lines=12, label='Command for chat-instruct mode', info='<|character|> and <|prompt|> get replaced with the bot name and the regular chat prompt respectively.', visible=shared.settings['mode'] == 'chat-instruct', elem_classes=['add_scrollbar'])
+                    shared.gradio['chat-instruct_command'] = gr.Textbox(value=shared.settings['chat-instruct_command'], lines=12, label='System Prompt', info='\n', visible=shared.settings['mode'] == 'chat-instruct', elem_classes=['add_scrollbar'])
 
 
 def create_chat_settings_ui():

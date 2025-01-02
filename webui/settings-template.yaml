@@ -67,9 +67,7 @@ chat_template_str: |-
       {%- endif -%}
   {%- endfor -%}
 chat-instruct_command: |-
-  Continue the chat dialogue below. Write a single reply for the character "<|character|>".
-
-  <|prompt|>
+  talk like a human
 autoload_model: false
 gallery-items_per_page: 50
 gallery-open: false

@@ -1,6 +1,0 @@
-msgspec==0.19.0
-pydantic==2.10.4
-python-dotenv==1.0.1
-pydantic-settings==2.7.0
-nats-py[nkeys]
-transformers==4.45.2

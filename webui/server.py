@@ -46,7 +46,6 @@ from modules import (
     ui_parameters,
     utils
 )
-from modules.extensions import apply_extensions
 from modules.models import load_model, unload_model_if_idle
 from modules.models_settings import (
     get_fallback_settings,
@@ -78,10 +77,6 @@ def create_interface():
             auth.extend(x.strip() for line in file for x in line.split(',') if x.strip())
     auth = [tuple(cred.split(':')) for cred in auth]
 
-    # Import the extensions and execute their setup() functions
-    if shared.args.extensions is not None and len(shared.args.extensions) > 0:
-        extensions_module.load_extensions()
-
     # Force some events to be triggered on page load
     shared.persistent_interface_state.update({
         'loader': shared.args.loader or 'Transformers',
@@ -96,13 +91,9 @@ def create_interface():
     if Path("cache/pfp_character.png").exists():
         Path("cache/pfp_character.png").unlink()
 
-    # css/js strings
     css = ui.css
     js = ui.js
-    css += apply_extensions('css')
-    js += apply_extensions('js')
-
-    # Interface state elements
+   # Interface state elements
     shared.input_elements = ui.list_interface_input_elements()
 
     with gr.Blocks(css=css, analytics_enabled=False, title=title, theme=ui.theme) as shared.gradio['interface']:

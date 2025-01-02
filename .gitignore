@@ -2,4 +2,12 @@
 __pycache__/
 *.creds
 .env
-models/
+webui/nesa/models/
+webui/models
+webui/loras
+webui/logs
+webui/installer_files
+webui/docs
+webui/extensions
+webui/docker
+webui/characters

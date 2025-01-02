@@ -6,7 +6,6 @@ import torch
 import yaml
 from transformers import is_torch_xpu_available
 
-import extensions
 from modules import shared
 
 with open(Path(__file__).resolve().parent / '../css/NotoSans/stylesheet.css', 'r') as f:
@@ -225,7 +224,6 @@ def list_interface_input_elements():
     ]
     elements += [
         'textbox',
-        'start_with',
         'character_menu',
         'history',
         'unique_id',

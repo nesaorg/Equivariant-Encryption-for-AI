@@ -5,7 +5,6 @@ from inspect import signature
 
 import gradio as gr
 
-import extensions
 import modules.shared as shared
 from modules.logging_colors import logger
 
