@@ -8,7 +8,7 @@
 <br>
 <br>
 <p>
-Nesa: Run on-prem AI for a fraction of the cost in a blind API.
+Nesa: Run AI models end-to-end encrypted.
 </p>
 
 <h3 style="margin-top: 15px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px;">
@@ -31,7 +31,7 @@ Nesa: Run on-prem AI for a fraction of the cost in a blind API.
 
 Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises do.
 
-Latest: Nesa now supports major models and RAG with complete server-blindness.
+Latest: Nesa now supports image and video models and RAG with complete server-blindness.
 
 ## Features ##
 
