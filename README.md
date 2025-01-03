@@ -42,7 +42,7 @@ nesa serves AI requests with zero visibility on underlying data and full blindne
 nesa delivers zero latency on protected inference.
 
 ### Wide Model Coverage ###
-nesa supports models like Llama, Mistral, Stable Diffusion and thousands of others.
+nesa supports a wide selection of models including Llama, Mistral, Stable Diffusion and thousands of others.
 
 ### Cost Savings ###
 nesa can deliver significant cost savings vs. on-prem AI infrastructure costs.
