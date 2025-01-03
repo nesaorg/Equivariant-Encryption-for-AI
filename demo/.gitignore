@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.creds
+.env
+nesa/models/
+models
+loras
+logs
+installer_files
+docker

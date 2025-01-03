@@ -1,0 +1,2 @@
+*.txt linguist-language=Python
+*.ipynb linguist-vendored=true
