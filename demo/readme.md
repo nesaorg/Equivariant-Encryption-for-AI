@@ -1,12 +1,20 @@
-
-# Local Equivariant Encryption Demo
+# Nesa Encrypted AI Demo
 
 This folder contains a modified version of [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) set up to demonstrate Nesa’s Equivariant Encryption (EE) on two models:
 
-1. **DistilBert** – For encrypted sentiment classification
-2. **Llama-3.2-1B-Instruct** – For encrypted chat
+1. **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)** – An encrypted version of `distilbert/distilbert-base-uncased-finetuned-sst-2-english` for sentiment classification.
+2. **[nesaorg/Llama-3.2-1B-Instruct-Encrypted](https://huggingface.co/nesaorg/Llama-3.2-1B-Instruct-Encrypted)** – An encrypted version of `meta-llama/Llama-3.2-1B-Instruct` for autoregressive text-generation.
 
-Use this guide to install and run the demo locally!
+---
+## Prerequisites
+
+- **Python 3.9+** (recommended)
+- **Internet connection** (for downloading models; only needed once)
+- **GPU drivers** (NVIDIA or AMD) if you plan to run on GPU for faster performance
+
+> **Note:** If you choose CPU mode, large or complex prompts may run more slowly. For best performance, we recommend using a compatible GPU.
+
+---
 
 ## Installation
 
@@ -26,6 +34,7 @@ Use this guide to install and run the demo locally!
 
 4.	After installation completes, it should automatically launch a local client, or you can manually navigate to http://localhost:7860.
 
+Usage
 ## Usage
 We automatically download and select a model for the user, so they can start using right away after the local client loads. We've included information about switching between both demo models below:
 
