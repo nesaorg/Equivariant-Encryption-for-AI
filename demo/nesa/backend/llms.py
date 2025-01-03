@@ -158,7 +158,7 @@ def process_stream_sync(inf_request, tokenizer):
     Converts the async streaming handler into a synchronous generator.
     """
     async def async_wrapper():
-        async for content in nats_message_handler(inf_request):
+        async for content in stream_message_handler(inf_request):
             yield content
             
     def sync_generator():
