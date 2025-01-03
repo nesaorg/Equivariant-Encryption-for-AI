@@ -149,40 +149,69 @@ Starting with an arbitrary initial permutation P. The set of moves is the set of
 
 ## Try EE for Yourself
 
-### Nesa Demo on Hugging Face (Distilbert)
+We provide a the following model weights and tokenizer on Hugging Face to demonstrate how Equivariant Encryption works:
+- **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)** (classification)
+- **[nesaorg/Llama-3.2-1B-Instruct-Encrypted](https://huggingface.co/nesaorg/Llama-3.2-1B-Instruct-Encrypted)** (chat)
 
-We provide a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how Equivariant Encryption works.
+### Local WebUI
 
-#### Loading the Model
+See the [demo/README.md](demo/README.md) for instructions on installing and launching the local web UI for running these models.
+
+### Manual
+
+##### Distillbert
 
 ```python
 import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+from transformers import  AutoModelForSequenceClassification, AutoTokenizer
 
 # Initialize model and tokenizer
-model_name = "nesaorg/distilbert-sentiment-encrypted-community-v1"
-model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-```
-
-#### Running Inference
-
-```python
-# Prepare input and run inference
-inputs = tokenizer("Hello, I love you", return_tensors="pt")
+model_name  =  "nesaorg/distilbert-sentiment-encrypted"
+model  =  AutoModelForSequenceClassification.from_pretrained(model_name)
+tokenizer  =  AutoTokenizer.from_pretrained(model_name)
+inputs  =  tokenizer("I feel much safer using the app now that two-factor authentication has been added", return_tensors="pt")
 
 with torch.no_grad():
-    logits = model(**inputs).logits
+	logits  =  model(**inputs).logits
+probs  = torch.nn.Softmax(dim=-1)(logits)[0].tolist()
+class_scores  = {model.config.id2label[i]: prob  for  i, prob  in  enumerate(probs)}
 
-# Process results
-predicted_class_id = logits.argmax().item()
-label = model.config.id2label[predicted_class_id]
-score = torch.max(torch.nn.Softmax()(logits)).item()
+sorted_class_scores  =  dict(sorted(class_scores.items(), key=lambda  item: item[1], reverse=True))
+print("Class Scores:", sorted_class_scores)
+```
+##### nesaorg/Llama-3.2-1B-Instruct-Encrypted
 
-print(f"The sentiment was classified as {label} with a confidence score of {score:.2f}")
+###### Load the Tokenizer
+
+```python
+from transformers import AutoTokenizer
+
+hf_token = "<HF TOKEN>"  # Replace with your token
+model_id = "nesaorg/Llama-3.2-1B-Instruct-Encrypted"
+tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token, local_files_only=True)
 ```
 
-<!-- ### Nesa Demo on Github (Llama) --> 
+###### Tokenize and Decode Text
+
+```python
+text = "I'm super excited to join Nesa's Equivariant Encryption initiative!"
+
+# Encode text into token IDs
+token_ids = tokenizer.encode(text)
+print("Token IDs:", token_ids)
+
+# Decode token IDs back to text
+decoded_text = tokenizer.decode(token_ids)
+print("Decoded Text:", decoded_text)
+```
+
+###### Example Output:
+
+```
+Token IDs: [128000, 1495, 1135, 2544, 6705, 284, 2219, 11659, 17098, 22968, 8707, 2544, 3539, 285, 34479]
+Decoded Text: I'm super excited to join Nesa's Equivariant Encryption initiative!
+```
 
 ## The "Hack EE" Contest
 <img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/7f3b1150-41c7-442f-bc74-5abf0685c00b" />
