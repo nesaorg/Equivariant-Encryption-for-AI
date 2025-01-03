@@ -39,7 +39,7 @@ Latest: Nesa now supports image and video models and RAG with complete server-bl
 nesa serves AI requests with zero visibility on underlying data and full blindness on query. 
 
 ### Speedy ###
-nesa delivers zero latency on protected inference.
+nesa delivers zero latency on encrypted inference.
 
 ### Wide Model Coverage ###
 nesa supports a wide selection of models including Llama, Mistral, Stable Diffusion and thousands of others.
