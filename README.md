@@ -31,7 +31,7 @@ Nesa: Run AI models end-to-end encrypted.
 
 Forget multi-million dollar on-prem infrastructure for AI, get the same privacy guarantees in an API: run AI like the biggest enterprises do.
 
-Latest: Nesa now supports image and video models and RAG with complete server-blindness.
+Latest: Nesa now supports image and video models and RAG with end-to-end encryption.
 
 ## Features ##
 
@@ -42,23 +42,23 @@ nesa serves AI requests with zero visibility on underlying data and full blindne
 nesa delivers zero latency on encrypted inference.
 
 ### Wide Model Coverage ###
-nesa supports a wide selection of models including Llama, Mistral, Stable Diffusion and thousands of others.
+nesa supports encryption on many models including Llama, Mistral, Stable Diffusion and thousands of others.
 
 ### Cost Savings ###
-nesa can deliver significant cost savings vs. on-prem AI infrastructure costs.
+nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure.
 
 ### RAG Support ###
-nesa supports integrating blind RAG datastores in-cloud.
+nesa supports encryption of RAG for full end-to-end privacy in-cloud.
 
 ### ChatGPT Compatible ###
-nesa provides a ChatGPT-compatible API for running blind inference with a one line change.
+nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change.
 
 ### Quick Set-up ###
 nesa is one click install and go. See documentation.
 
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
-At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests with no latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
+At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests without high latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
 Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures designed to provide complete inference encryption without additional latency. 
 
