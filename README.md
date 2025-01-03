@@ -39,7 +39,7 @@ Latest: Nesa now supports image and video models and RAG with end-to-end encrypt
 nesa serves AI requests with zero visibility on underlying data and full blindness on query. 
 
 ### Speedy ###
-nesa delivers zero latency on encrypted inference.
+nesa delivers zero latency on encrypted inference (sub 1% original execution time).
 
 ### Wide Model Coverage ###
 nesa supports encryption on many models including Llama, Mistral, Stable Diffusion and thousands of others.
