@@ -1,5 +1,5 @@
 
-# Nesa Encrypted AI Demo
+# Local Equivariant Encryption Demo
 
 This folder contains a modified version of [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) set up to demonstrate Nesa’s Equivariant Encryption (EE) on two models:
 
