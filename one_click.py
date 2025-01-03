@@ -322,7 +322,7 @@ def install_webui():
 
 
 def get_extensions_names():
-    return [foldername for foldername in os.listdir('extensions') if os.path.isfile(os.path.join('extensions', foldername, 'requirements.txt'))]
+    return [foldername for foldername in os.listdir('extensions') if os.path.isfile(os.path.join('extensions', foldername,"requirements", 'requirements.txt'))]
 
 
 def install_extensions_requirements():
@@ -330,7 +330,7 @@ def install_extensions_requirements():
     extensions = get_extensions_names()
     for i, extension in enumerate(extensions):
         print(f"\n\n--- [{i + 1}/{len(extensions)}]: {extension}\n\n")
-        extension_req_path = os.path.join("extensions", extension, "requirements.txt")
+        extension_req_path = os.path.join("extensions", extension,"requirements", "requirements.txt")
         run_cmd(f"python -m pip install -r {extension_req_path} --upgrade", assert_success=False, environment=True)
 
 
@@ -364,7 +364,7 @@ def update_requirements(initial_installation=False, pull=True):
     print(f"TORCH: {torver}\n")
 
     # Prepare the requirements file
-    textgen_requirements = open(requirements_file).read().splitlines()
+    textgen_requirements = open(os.path.join("requirements",requirements_file)).read().splitlines()
     if is_cuda118:
         textgen_requirements = [
             req.replace('+cu121', '+cu118').replace('+cu122', '+cu118')
@@ -438,7 +438,7 @@ if __name__ == "__main__":
                 if choice == 'A':
                     install_extensions_requirements()
                 else:
-                    extension_req_path = os.path.join("extensions", choices[choice], "requirements.txt")
+                    extension_req_path = os.path.join("extensions", choices[choice],"requirements", "requirements.txt")
                     run_cmd(f"python -m pip install -r {extension_req_path} --upgrade", assert_success=False, environment=True)
 
                 update_requirements(pull=False)
