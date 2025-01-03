@@ -45,9 +45,7 @@ nesa delivers zero latency on protected inference.
 nesa supports models like Llama, Mistral, Stable Diffusion and thousands of others.
 
 ### Cost Savings ###
-nesa can deliver significant cost savings vs on-prem AI while delivering the same level of privacy.
-
-Considerations on cost savings rely on assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
+nesa can deliver significant cost savings vs on-prem AI infrastructure and staffing costs.
 
 ### RAG Support ###
 nesa supports integrating blind RAG datastores in-cloud.
