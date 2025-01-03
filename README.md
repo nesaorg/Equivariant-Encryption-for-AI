@@ -54,7 +54,7 @@ nesa supports encryption of RAG for full end-to-end privacy in-cloud.
 nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change.
 
 ### Quick Set-up ###
-nesa is one click install and go. See documentation.
+nesa is one click to install and go. See documentation.
 
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
