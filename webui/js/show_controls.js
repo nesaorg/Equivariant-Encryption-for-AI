@@ -30,3 +30,4 @@ function toggle_controls(value) {
     document.getElementById("chat-tab").style.paddingBottom = "0px";
   }
 }
+

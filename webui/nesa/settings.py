@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     consume_configs: Dict[str, Any] = Field(
         default_factory=dict, description="Generic consume configurations"
     )
+    stream_url: str = "https://79ad-2600-1700-9f90-31d0-ac28-fe8c-db2b-5a94.ngrok-free.app/request"
     
     class Config:
         env_file = ".env"

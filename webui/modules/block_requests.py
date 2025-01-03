@@ -51,6 +51,8 @@ def my_open(*args, **kwargs):
         file_contents = file_contents.replace('cdnjs.cloudflare.com', '127.0.0.1')
         file_contents = file_contents.replace(
             '</head>',
+            '\n    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>'
+            '\n    <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>'
             '\n    <script src="file/js/katex/katex.min.js"></script>'
             '\n    <script src="file/js/katex/auto-render.min.js"></script>'
             '\n    <script src="file/js/highlightjs/highlight.min.js"></script>'

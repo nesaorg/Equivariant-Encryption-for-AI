@@ -5,3 +5,4 @@ function updateBigPicture() {
     existingElement.src = "/file/cache/pfp_character.png?time=" + timestamp;
   }
 }
+
