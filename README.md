@@ -29,27 +29,24 @@ Nesa: Run AI models end-to-end encrypted.
 ---
 -->
 
-Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in a blind API: run AI like the biggest enterprises do.
+Forget multi-million dollar on-prem AI infrastructure, get the same privacy guarantees in an API: run AI like the biggest enterprises do.
 
 Latest: Nesa now supports image and video models and RAG with complete server-blindness.
 
 ## Features ##
 
 ### Full Privacy ###
-nesa serves requests with zero visibility on underlying data and full blindness on query. 
+nesa serves AI requests with zero visibility on underlying data and full blindness on query. 
 
 ### Speedy ###
 nesa delivers zero latency on protected inference.
 
 ### Wide Model Coverage ###
-nesa supports coverage on 50,000+ models and multiple modalities.
+nesa supports Llama, Mistral, Stable Diffusion and thousands of models.
 
 ### Cost Savings ###
-vs Cloud AI: Nesa can be ~80% cheaper
-
-vs On-prem AI: Nesa can be ~99% cheaper*
-
-*Considerations on cost savings rely on assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
+nesa can deliver significant cost savings vs on-prem AI while delivering the same level of privacy.
+Considerations on cost savings rely on assumptions of GPU, infra and staffing costs. Detailed comparison info can be found in our docs.
 
 ### RAG Support ###
 nesa supports integrating blind RAG datastores in-cloud.
