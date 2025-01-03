@@ -775,7 +775,7 @@ def load_instruction_template(template):
     if template == 'None':
         return ''
 
-    for filepath in [Path(f'instruction-templates/{template}.yaml'), Path('instruction-templates/Alpaca.yaml')]:
+    for filepath in [Path(f'instruction-templates/{template}.yaml'), Path('instruction-templates/default.yaml')]:
         if filepath.exists():
             break
     else:

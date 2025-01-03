@@ -84,9 +84,7 @@ async def nats_message_handler(inf_request: LLMInference):
 
     publish_subject = f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.request.{sanitized_model}-he.cuda"
     consume_subject = [f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.result.{sanitized_model}-he.{inf_request.correlation_id}"]
-    print("publish subject",publish_subject)
-    print("consume_subject subject",consume_subject)
-    
+
     nc = await nats.connect(
         servers=settings.publish_configs["servers"],
         user_credentials=settings.publish_configs["creds_file"])
