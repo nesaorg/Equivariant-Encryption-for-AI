@@ -42,7 +42,7 @@ nesa serves AI requests with zero visibility on underlying data and full blindne
 nesa delivers zero latency on encrypted inference (<1% original execution time).
 
 ### Wide Model Coverage ###
-nesa supports encryption on many models including Llama, Mistral, Stable Diffusion and thousands of others.
+nesa supports encrypting Llama, Mistral, Stable Diffusion and thousands of other models.
 
 ### Cost Savings ###
 nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure.
