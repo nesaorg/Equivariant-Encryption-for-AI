@@ -128,7 +128,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 
 ## Attacks on EE Security
 
-Nesa's Security team has tested EE with various baseline attack vectors, which can be found here: https://github.com/nesaorg/nesa/blob/main/Attack_Paper.pdf
+We have tested EE with various baseline attack vectors, which can be found here: https://github.com/nesaorg/nesa/blob/main/Attack_Paper.pdf
 
 ### LLM-as-a-Judge Attack
 
@@ -154,7 +154,7 @@ Starting with an arbitrary initial permutation P. The set of moves is the set of
 
 ### Nesa Demo on Hugging Face (Distilbert)
 
-We provide a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how Equivariant Encryption (EE) works.
+We provide a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how Equivariant Encryption works.
 
 #### Loading the Model
 
