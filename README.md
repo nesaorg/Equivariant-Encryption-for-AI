@@ -148,16 +148,29 @@ Randomly sampling M permutations and choosing the one with the lowest loss value
 Starting with an arbitrary initial permutation P. The set of moves is the set of permutations that one can reach by transposing two elements of the permutation.
 
 ## Try EE for Yourself
+Equivariant Encryption (EE) isn’t just a theoretical concept—it’s fully operational and ready for you to explore today! We’ve provided two demo models on Hugging Face so you can see, firsthand, how EE keeps data encrypted end-to-end while preserving the model’s functionality and accuracy.
 
-We provide a the following model weights and tokenizer on Hugging Face to demonstrate how Equivariant Encryption works:
-- **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)** (classification)
-- **[nesaorg/Llama-3.2-1B-Instruct-Encrypted](https://huggingface.co/nesaorg/Llama-3.2-1B-Instruct-Encrypted)** (chat)
+Available Models:
+- **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)**
+  Encrypted version of DistilBert for sentiment classification. It demonstrates how text is encrypted before the model sees it, yet you still get accurate sentiment predictions on the decrypted output, 100% locally.
 
-### Local WebUI
+- **[nesaorg/Llama-3.2-1B-Instruct-Encrypted](https://huggingface.co/nesaorg/Llama-3.2-1B-Instruct-Encrypted)**
+Encrypted version of a Llama-3.2-based model for interactive chat. This demo is half on Nesa's network, which is great for showing that only encrypted data is sent back and forth. The server doesn't have access to the tokenizer.
 
-See the [demo/README.md](demo/readme.md) for instructions on installing and launching the local web UI for running these models.
+### Local Web UI
+The quickest way to experience EE in action is to use the local web UI we provide.
 
-### Manual
+Follow [demo/readme.md](demo/readme.md) to:
+	1.	Run the platform-specific start script to install dependencies.
+	2.	Wait for the local text-generation-WebUI to launch in your browser.
+	3.	Enter your prompt.
+	4.	Enjoy encrypted inference!
+
+Under the hood, the text you type is turned into encrypted tokens, the model processes those tokens, and you see the final plaintext output only on your side. It’s a seamless experience with no extra overhead.
+
+### Manual Python Usage
+
+If you’d like to peek under the hood, below are quick examples demonstrating how to load the models directly from Hugging Face and run basic inferences.
 
 ##### Distillbert
 
@@ -181,6 +194,9 @@ sorted_class_scores  =  dict(sorted(class_scores.items(), key=lambda  item: item
 print("Class Scores:", sorted_class_scores)
 ```
 ##### nesaorg/Llama-3.2-1B-Instruct-Encrypted
+Unlike DistilBert, this model’s weights reside on Nesa’s secure server, but the tokenizer is on Hugging Face. You can still use the tokenizer to encode and decode text and then submit it for inference via the Nesa network!
+
+```python
 
 ###### Load the Tokenizer
 
@@ -214,6 +230,7 @@ Decoded Text: I'm super excited to join Nesa's Equivariant Encryption initiative
 ```
 
 ## The "Hack EE" Contest
+
 <img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/7f3b1150-41c7-442f-bc74-5abf0685c00b" />
 &nbsp;
 &nbsp;
