@@ -2,7 +2,7 @@
 
 <!-- Logo with light mode support -->
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="docs/nesa-logo.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/nesa-logo-light.png">
   <img alt="Nesa Logo" src="docs/nesa-logo.png" width="50%">
 </picture>
 <br>
@@ -36,7 +36,7 @@ Latest: Nesa now supports image and video models and RAG with end-to-end encrypt
 ## Features ##
 
 ### Full Privacy ###
-nesa serves AI requests with zero visibility on underlying data and full blindness on query. 
+nesa serves AI requests with zero visibility on underlying data and full blindness on query.
 
 ### Speedy ###
 nesa delivers zero latency on encrypted inference (<0.1% original execution time).
@@ -57,7 +57,7 @@ nesa is one click to install and go. See documentation.
 
 At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests without high latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
-Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures designed to provide complete inference encryption without additional latency. 
+Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures designed to provide complete inference encryption without additional latency.
 
 The result is the first portable on-prem AI infrastructure solution inside of an API. Your cloud provider cannot see your data and queries with Nesa.
 
@@ -182,7 +182,7 @@ score = torch.max(torch.nn.Softmax()(logits)).item()
 print(f"The sentiment was classified as {label} with a confidence score of {score:.2f}")
 ```
 
-<!-- ### Nesa Demo on Github (Llama) --> 
+<!-- ### Nesa Demo on Github (Llama) -->
 
 ## The "Hack EE" Contest
 <img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/7f3b1150-41c7-442f-bc74-5abf0685c00b" />
