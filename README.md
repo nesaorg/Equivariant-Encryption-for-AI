@@ -47,9 +47,6 @@ nesa supports encrypting Llama, Mistral, Stable Diffusion and thousands of other
 ### Cost Savings ###
 nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure.
 
-### RAG Support ###
-nesa supports encryption of RAG for full end-to-end privacy in-cloud.
-
 ### ChatGPT Compatible ###
 nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change.
 
