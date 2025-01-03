@@ -109,11 +109,11 @@ def get_available_ggufs():
 
 
 def get_available_presets():
-    return sorted(set((k.stem for k in Path('presets').glob('*.yaml'))), key=natural_keys)
+    return sorted(set((k.stem for k in Path('resources/presets').glob('*.yaml'))), key=natural_keys)
 
 
 def get_available_prompts():
-    prompt_files = list(Path('prompts').glob('*.txt'))
+    prompt_files = list(Path('templates/prompts').glob('*.txt'))
     sorted_files = sorted(prompt_files, key=lambda x: x.stat().st_mtime, reverse=True)
     prompts = [file.stem for file in sorted_files]
     prompts.append('None')
@@ -121,12 +121,12 @@ def get_available_prompts():
 
 
 def get_available_characters():
-    paths = (x for x in Path('characters').iterdir() if x.suffix in ('.json', '.yaml', '.yml'))
+    paths = (x for x in Path('resources/characters').iterdir() if x.suffix in ('.json', '.yaml', '.yml'))
     return sorted(set((k.stem for k in paths)), key=natural_keys)
 
 
 def get_available_instruction_templates():
-    path = "instruction-templates"
+    path = "resources/instruction-templates"
     paths = []
     if os.path.exists(path):
         paths = (x for x in Path(path).iterdir() if x.suffix in ('.json', '.yaml', '.yml'))

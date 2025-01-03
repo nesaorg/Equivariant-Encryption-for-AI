@@ -711,7 +711,7 @@ def generate_pfp_cache(character):
     if not cache_folder.exists():
         cache_folder.mkdir()
 
-    for path in [Path(f"characters/{character}.{extension}") for extension in ['png', 'jpg', 'jpeg']]:
+    for path in [Path(f"resources/characters/{character}.{extension}") for extension in ['png', 'jpg', 'jpeg']]:
         if path.exists():
             original_img = Image.open(path)
             original_img.save(Path(f'{cache_folder}/pfp_character.png'), format='PNG')
@@ -731,7 +731,7 @@ def load_character(character, name1, name2):
 
     filepath = None
     for extension in ["yml", "yaml", "json"]:
-        filepath = Path(f'characters/{character}.{extension}')
+        filepath = Path(f'resources/characters/{character}.{extension}')
         if filepath.exists():
             break
 
@@ -775,7 +775,7 @@ def load_instruction_template(template):
     if template == 'None':
         return ''
 
-    for filepath in [Path(f'instruction-templates/{template}.yaml'), Path('instruction-templates/default.yaml')]:
+    for filepath in [Path(f'resources/instruction-templates/{template}.yaml'), Path('resources/instruction-templates/default.yaml')]:
         if filepath.exists():
             break
     else:
@@ -817,17 +817,17 @@ def upload_character(file, img, tavern=False):
 
     outfile_name = name
     i = 1
-    while Path(f'characters/{outfile_name}.yaml').exists():
+    while Path(f'resources/characters/{outfile_name}.yaml').exists():
         outfile_name = f'{name}_{i:03d}'
         i += 1
 
-    with open(Path(f'characters/{outfile_name}.yaml'), 'w', encoding='utf-8') as f:
+    with open(Path(f'resources/characters/{outfile_name}.yaml'), 'w', encoding='utf-8') as f:
         f.write(yaml_data)
 
     if img is not None:
-        img.save(Path(f'characters/{outfile_name}.png'))
+        img.save(Path(f'resources/characters/{outfile_name}.png'))
 
-    logger.info(f'New character saved to "characters/{outfile_name}.yaml".')
+    logger.info(f'New character saved to "resources/characters/{outfile_name}.yaml".')
     return gr.update(value=outfile_name, choices=get_available_characters())
 
 
@@ -902,9 +902,9 @@ def save_character(name, greeting, context, picture, filename):
         return
 
     data = generate_character_yaml(name, greeting, context)
-    filepath = Path(f'characters/{filename}.yaml')
+    filepath = Path(f'resources/characters/{filename}.yaml')
     save_file(filepath, data)
-    path_to_img = Path(f'characters/{filename}.png')
+    path_to_img = Path(f'resources/characters/{filename}.png')
     if picture is not None:
         picture.save(path_to_img)
         logger.info(f'Saved {path_to_img}.')
@@ -912,9 +912,9 @@ def save_character(name, greeting, context, picture, filename):
 
 def delete_character(name, instruct=False):
     for extension in ["yml", "yaml", "json"]:
-        delete_file(Path(f'characters/{name}.{extension}'))
+        delete_file(Path(f'resources/characters/{name}.{extension}'))
 
-    delete_file(Path(f'characters/{name}.png'))
+    delete_file(Path(f'resources/characters/{name}.png'))
 
 
 def jinja_template_from_old_format(params, verbose=False):
@@ -1197,7 +1197,7 @@ def handle_save_template_click(instruction_template_str):
     contents = generate_instruction_template_yaml(instruction_template_str)
     return [
         "My Template.yaml",
-        "instruction-templates/",
+        "resources/instruction-templates/",
         contents,
         gr.update(visible=True)
     ]
@@ -1206,7 +1206,7 @@ def handle_save_template_click(instruction_template_str):
 def handle_delete_template_click(template):
     return [
         f"{template}.yaml",
-        "instruction-templates/",
+        "resources/instruction-templates/",
         gr.update(visible=False)
     ]
 

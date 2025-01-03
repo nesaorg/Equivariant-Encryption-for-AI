@@ -57,7 +57,7 @@ def presets_params():
 def load_preset(name, verbose=False):
     generate_params = default_preset()
     if name not in ['None', None, '']:
-        path = Path(f'presets/{name}.yaml')
+        path = Path(f'resources/presets/{name}.yaml')
         if path.exists():
             with open(path, 'r') as infile:
                 preset = yaml.safe_load(infile)
