@@ -1,15 +1,3 @@
-'''
-
-Converts a transformers model to safetensors format and shards it.
-
-This makes it faster to load (because of safetensors) and lowers its RAM usage
-while loading (because of sharding).
-
-Based on the original script by 81300:
-
-https://gist.github.com/81300/fe5b08bff1cba45296a829b9d6b0f303
-
-'''
 
 import argparse
 from pathlib import Path

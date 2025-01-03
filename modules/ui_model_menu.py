@@ -22,6 +22,7 @@ from modules.models_settings import (
     update_model_parameters
 )
 from modules.utils import gradio
+from nesa.download import ModelDownloader
 
 
 def create_ui():
@@ -195,7 +196,7 @@ def download_model_wrapper(repo_id, specific_file, progress=gr.Progress(), retur
 
         repo_id = repo_id.strip()
         specific_file = specific_file.strip()
-        downloader = importlib.import_module("download-model").ModelDownloader()
+        downloader = ModelDownloader()
 
         progress(0.0)
         model, branch = downloader.sanitize_model_and_branch_names(repo_id, None)
@@ -243,7 +244,7 @@ def download_model_wrapper(repo_id, specific_file, progress=gr.Progress(), retur
 
 def create_llamacpp_hf(gguf_name, unquantized_url, progress=gr.Progress()):
     try:
-        downloader = importlib.import_module("download-model").ModelDownloader()
+        downloader = ModelDownloader()
 
         progress(0.0)
         model, branch = downloader.sanitize_model_and_branch_names(unquantized_url, None)

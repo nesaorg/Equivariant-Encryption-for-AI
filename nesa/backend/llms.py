@@ -82,8 +82,8 @@ async def nats_message_handler(inf_request: LLMInference):
     node_id = str(uuid.uuid4())
     sanitized_model = sanitize_subject_token(inf_request.model)
 
-    publish_subject = f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.request.{sanitized_model}-he.cuda"
-    consume_subject = [f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.result.{sanitized_model}-he.{inf_request.correlation_id}"]
+    publish_subject = f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.request.meta-llama/llama-3#a#2-1b-instruct-he.cuda"
+    consume_subject = [f"inference.agent-by-nesa-agent-worker-{agent_uuid}.private.base.result.meta-llama/llama-3#a#2-1b-instruct-he.{inf_request.correlation_id}"]
 
     nc = await nats.connect(
         servers=settings.publish_configs["servers"],
