@@ -155,7 +155,7 @@ We provide a the following model weights and tokenizer on Hugging Face to demons
 
 ### Local WebUI
 
-See the [demo/README.md](demo/README.md) for instructions on installing and launching the local web UI for running these models.
+See the [demo/README.md](demo/readme.md) for instructions on installing and launching the local web UI for running these models.
 
 ### Manual
 
