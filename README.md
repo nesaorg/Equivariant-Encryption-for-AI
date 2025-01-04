@@ -29,7 +29,7 @@ Nesa: Run AI models end-to-end encrypted.
 ---
 -->
 
-Forget multi-million dollar on-prem infrastructure for AI, get the same privacy guarantees in an API: run AI like the biggest enterprises do.
+Forget multi-million dollar on-prem infrastructure, get the same privacy guarantees in an API: run AI like the biggest enterprises do.
 
 ## Features ##
 
