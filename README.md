@@ -121,12 +121,12 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | Property | Homomorphic Encryption (HE) | Equivariant Encryption (EE) |
 | --- | --- | --- |
 | **Data Confidentiality (Server Blindness)** | The server never sees plaintext data. | The server never sees plaintext data. |
-| **Encrypted Computation** | Operations should be fully on encrypted data, with no intermediate decryptions. | EE models run directly on encrypted tokens. No intermediate decryptions are required. |
-| **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens using the EE tokenizer as a private key. |
-| **Preservation of Accuracy** | The decrypted output should match the result of plaintext inference. | EE ensures final results are identical to plaintext inference outputs, with no accuracy loss. |
-| **Support for Arbitrary Model Structures** | HE struggles with non-linearities and complex NN layers. | EE is designed for modern neural architectures and preserves non-linearities. |
-| **Minimal Performance Overhead** | HE incurs large computational overhead. | EE imposes no overhead; inference latency matches that of the underlying model on plaintext data. |
-| **No Approximation of Functions** | HE may require approximations of complex operations. | EE avoids approximations, preserving exact neural network functions post-transformation. |
+| **Encrypted Computation** | Operations fully on encrypted data, with no intermediate decryptions. | EE models run directly on encrypted tokens, with no intermediate decryptions. |
+| **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens using EE tokenizer. |
+| **Preservation of Accuracy** | The decrypted output should match the result of plaintext inference. | EE ensures final results are identical to plaintext inference outputs. |
+| **Support for Arbitrary Model Structures** | HE struggles with non-linearities and complex NN layers. | EE is designed for modern neural architectures, preserving non-linearities. |
+| **Minimal Performance Overhead** | HE incurs very large computational overhead. | EE imposes no overhead; inference latency matches that of plaintext data. |
+| **No Approximation of Functions** | HE may require approximations of complex operations. | EE avoids approximations, preserving exact neural network functions. |
 | **Scalability to Large Models** | Handling large models under HE is impractical. | EE scales naturally with large models without any computational penalties. |
 | **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, after which pipelines operate as normal. |
 | **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex, secure combinatorial search space, making brute-force attacks impossible. |
