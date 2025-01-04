@@ -122,7 +122,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | --- | --- | --- |
 | **Data Confidentiality (Server Blindness)** | The server never sees plaintext data. | The server never sees plaintext data. |
 | **End-to-end Encrypted Computation** | Operations fully on encrypted data, no intermediate decryptions. | EE models run directly on encrypted tokens, no intermediate decryptions. |
-| **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens using EE tokenizer. |
+| **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens. |
 | **Preservation of Accuracy** | The decrypted output should match the result of plaintext inference. | EE ensures final results are identical to plaintext inference outputs. |
 | **Support for Arbitrary Model Structures** | HE struggles with non-linearities and complex NN layers. | EE is designed for modern neural architectures as well as non-linearities. |
 | **Minimal Performance Overhead** | HE incurs very large computational overhead. | EE imposes no overhead; inference latency matches that of plaintext data. |
