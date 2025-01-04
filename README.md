@@ -49,7 +49,7 @@ Forget multi-million dollar on-prem infrastructure for AI, get the same privacy 
  </tr>
  <tr>
     <td><b style="font-size:30px">Cost Savings</b></td>
-    <td>nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure</td>
+    <td>nesa can deliver significant cost savings by API vs. on-prem AI infrastructure</td>
  </tr>
 <tr>
     <td><b style="font-size:30px">ChatGPT Compatible</b></td>
@@ -57,7 +57,7 @@ Forget multi-million dollar on-prem infrastructure for AI, get the same privacy 
  </tr>
  <tr>
     <td><b style="font-size:30px">Quick Set-up</b></td>
-    <td>nesa is one click to install and go. See documentation</td>
+    <td>nesa is one click install and go. See documentation</td>
  </tr>
 </table>
 
