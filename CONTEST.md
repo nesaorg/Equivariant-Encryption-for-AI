@@ -4,7 +4,7 @@
 
 Successfully hack Nesa's EE technology and win **$100,000** and a **job offer at Nesa.** 
 
-Grand Prize: **$100,000** ($50,000 USDT + $50,000 NES) to the person who hacks EE and provides the full prompt of the day, along with code.
+Grand Prize: **$100,000** ($50,000 USDT + $50,000 NES) to the person who hacks EE and provides the full prompt of the day, with code.
 
 Runner-up Prize: **$1,000** (in USDT or NES) every day to the person who decrypts the most prompt (highest score).
 
