@@ -1,12 +1,14 @@
-# Nesa "Hack EE" Contest
+"<img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/8b9e0eea-97a2-4a3e-b792-233aa0237137" />
 
-Successfully hack Nesa's EE technology and win **$100,000 USDT** and a **job offer at Nesa.** 
+# Nesa Hack EE" Contest
 
-Grand Prize: **$100,000 USDT** to the person who hacks EE and provides the full prompt of the day, along with code.
+Successfully hack Nesa's EE technology and win **$100,000** half in USDT half in NES, and a **job offer at Nesa.** 
 
-Runner-up Prize: **$1,000 in either $NES token or USDT** every day to the person who decrypts the most prompt (highest score). 
+Grand Prize: **$100,000** ($50,000 USDT + $50,000 NES) to the person who hacks EE and provides the full prompt of the day, along with code.
 
-Community Prize: **$1,000 in $NES token** every day to the person who guesses the right word in the prompt. Must invite to be eligible!
+Runner-up Prize: **$1,000** (USDT or NES based on the day) to the person who decrypts the most prompt (highest score) every day.
+
+Community Prize: **$1,000 in NES** every day to the person who guesses the right word in the prompt. Must invite to be eligible!
 
 Welcome to Nesa's "Hack EE" Competition. This event challenges participants to decode encrypted token mappings from a large language model that has been encrypted with Nesa's EE technology to preserve data privacy. Test your skill and try to extract the text from private token ids.
 
