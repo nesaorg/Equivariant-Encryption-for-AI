@@ -160,6 +160,16 @@ Starting with an arbitrary initial permutation P. The set of moves is the set of
 
 ## Try EE for Yourself
 
+Equivariant Encryption (EE) isn’t just a theoretical concept—it’s fully operational and ready to explore today! We’ve provided two demo models on Hugging Face so you can see, firsthand, how EE keeps data encrypted end-to-end while preserving the model’s functionality and accuracy.
+
+Available Test Models:
+- **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)**
+  An encrypted version of DistilBert for sentiment classification. It demonstrates how text is encrypted before the model sees it, yet you still get accurate sentiment predictions on the decrypted output, 100% locally.
+
+- **[nesaorg/Llama-3.2-1B-Instruct-Encrypted](https://huggingface.co/nesaorg/Llama-3.2-1B-Instruct-Encrypted)**
+Encrypted version of a Llama-3.2-based model for interactive chat. This demo is half on Nesa's network, which is great for showing that only encrypted data is sent back and forth. The server doesn't have access to the tokenizer.
+
+
 ### Nesa Demo on Hugging Face (Distilbert)
 
 We provide a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how Equivariant Encryption works.
