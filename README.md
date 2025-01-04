@@ -133,7 +133,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 
 ## Attacks on EE Security
 
-We have tested EE with various baseline attack vectors, which can be found here: https://github.com/nesaorg/nesa/blob/main/Attack_Paper.pdf
+We have tested Equivariant Encryption with various baseline attack vectors, which can be found here: https://github.com/nesaorg/nesa/blob/main/Attack_Paper.pdf
 
 ### LLM-as-a-Judge Attack
 
