@@ -2,8 +2,8 @@
 
 <!-- Logo with light mode support -->
 <picture>
-  <source media="(prefers-color-scheme: light)" srcset="docs/nesa-logo-light.png">
-  <img alt="Nesa Logo" src="docs/nesa-logo.png" width="33%">
+  <source media="(prefers-color-scheme: light)" srcset="docs/nesa-logo.png">
+  <img alt="Nesa Logo" src="docs/nesa-logo.png" width="50%">
 </picture>
 <br>
 <br>
@@ -31,31 +31,44 @@ Nesa: Run AI models end-to-end encrypted.
 
 Forget multi-million dollar on-prem infrastructure for AI, get the same privacy guarantees in an API: run AI like the biggest enterprises do.
 
+Latest: Nesa now supports image and video models and RAG with end-to-end encryption.
+
 ## Features ##
 
-### Full Privacy ###
-nesa serves AI requests with zero visibility on underlying data and full blindness on query.
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">Full Privacy</b></td>
+    <td>nesa serves AI requests with zero visibility on underlying data and full blindness on query</b></td>
+ </tr>
+ <tr>
+    <td><b style="font-size:30px">Speedy </td>
+    <td>nesa delivers zero latency on encrypted inference (<0.1% original execution time)</td>
+ </tr>
+<tr>
+    <td><b style="font-size:30px">Wide Model Coverage</b></td>
+    <td>nesa supports encrypting Llama, Mistral, Stable Diffusion and thousands of other models</td>
+    
+ </tr>
+ <tr>
+    <td><b style="font-size:30px">Cost Savings</b></td>
+    <td>nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure</td>
+ </tr>
+<tr>
+    <td><b style="font-size:30px">ChatGPT Compatible</b></td>
+    <td>nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change</td>
+ </tr>
+ <tr>
+    <td><b style="font-size:30px">Quick Set-up</b></td>
+    <td>nesa is one click to install and go. See documentation</td>
+ </tr>
+</table>
 
-### Speedy ###
-nesa delivers zero latency on encrypted inference (<0.1% original execution time).
-
-### Wide Model Coverage ###
-nesa supports encrypting Llama, Mistral, Stable Diffusion and thousands of other models.
-
-### Cost Savings ###
-nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure.
-
-### ChatGPT Compatible ###
-nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change.
-
-### Quick Set-up ###
-nesa is one click to install and go. See documentation.
 
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
 At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests without high latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
 
-Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures designed to provide complete inference encryption without additional latency.
+Equivariant Encryption (EE) is a new security technology by Nesa, similar to Homomorphic Encryption (HE) in arithmetic-based privacy-preserving structure, but executed inside unique discrete architectures designed to provide complete inference encryption without additional latency. 
 
 The result is the first portable on-prem AI infrastructure solution inside of an API. Your cloud provider cannot see your data and queries with Nesa.
 
@@ -146,89 +159,43 @@ Randomly sampling M permutations and choosing the one with the lowest loss value
 Starting with an arbitrary initial permutation P. The set of moves is the set of permutations that one can reach by transposing two elements of the permutation.
 
 ## Try EE for Yourself
-Equivariant Encryption (EE) isn’t just a theoretical concept—it’s fully operational and ready to explore today! We’ve provided two demo models on Hugging Face so you can see, firsthand, how EE keeps data encrypted end-to-end while preserving the model’s functionality and accuracy.
 
-Available Models:
-- **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)**
-  An encrypted version of DistilBert for sentiment classification. It demonstrates how text is encrypted before the model sees it, yet you still get accurate sentiment predictions on the decrypted output, 100% locally.
+### Nesa Demo on Hugging Face (Distilbert)
 
-- **[nesaorg/Llama-3.2-1B-Instruct-Encrypted](https://huggingface.co/nesaorg/Llama-3.2-1B-Instruct-Encrypted)**
-Encrypted version of a Llama-3.2-based model for interactive chat. This demo is half on Nesa's network, which is great for showing that only encrypted data is sent back and forth. The server doesn't have access to the tokenizer.
+We provide a [community encrypted model](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted) on Hugging Face to demonstrate how Equivariant Encryption works.
 
-### Local Web UI
-The quickest way to experience EE is to use the local web UI we provide.
-
-Follow [demo/readme.md](demo/readme.md) to:
-1. Run the platform-specific start script to install dependencies.
-2. Wait for the local text-generation-WebUI to launch in your browser.
-3. Enter your prompt.
-4. Enjoy encrypted inference!
-
-Under the hood, the text you type is turned into encrypted tokens, the model processes those tokens, and you see the final plaintext output only on your side. It’s a seamless experience with no extra overhead.
-
-### Manual Python Usage
-
-If you’d like to peek under the hood, below are quick examples demonstrating how to load the models directly from Hugging Face and run basic inferences.
-
-##### Distillbert
+#### Loading the Model
 
 ```python
 import torch
-
-from transformers import  AutoModelForSequenceClassification, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 # Initialize model and tokenizer
-model_name  =  "nesaorg/distilbert-sentiment-encrypted"
-model  =  AutoModelForSequenceClassification.from_pretrained(model_name)
-tokenizer  =  AutoTokenizer.from_pretrained(model_name)
-inputs  =  tokenizer("I feel much safer using the app now that two-factor authentication has been added", return_tensors="pt")
+model_name = "nesaorg/distilbert-sentiment-encrypted-community-v1"
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+```
+
+#### Running Inference
+
+```python
+# Prepare input and run inference
+inputs = tokenizer("Hello, I love you", return_tensors="pt")
 
 with torch.no_grad():
-	logits  =  model(**inputs).logits
-probs  = torch.nn.Softmax(dim=-1)(logits)[0].tolist()
-class_scores  = {model.config.id2label[i]: prob  for  i, prob  in  enumerate(probs)}
+    logits = model(**inputs).logits
 
-sorted_class_scores  =  dict(sorted(class_scores.items(), key=lambda  item: item[1], reverse=True))
-print("Class Scores:", sorted_class_scores)
-```
-##### nesaorg/Llama-3.2-1B-Instruct-Encrypted
-Unlike DistilBert, this model’s weights reside on Nesa’s secure server, but the tokenizer is on Hugging Face. You can still use the tokenizer to encode and decode text and then submit it for inference via the Nesa network!
+# Process results
+predicted_class_id = logits.argmax().item()
+label = model.config.id2label[predicted_class_id]
+score = torch.max(torch.nn.Softmax()(logits)).item()
 
-```python
-
-###### Load the Tokenizer
-
-```python
-from transformers import AutoTokenizer
-
-hf_token = "<HF TOKEN>"  # Replace with your token
-model_id = "nesaorg/Llama-3.2-1B-Instruct-Encrypted"
-tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token, local_files_only=True)
+print(f"The sentiment was classified as {label} with a confidence score of {score:.2f}")
 ```
 
-###### Tokenize and Decode Text
-
-```python
-text = "I'm super excited to join Nesa's Equivariant Encryption initiative!"
-
-# Encode text into token IDs
-token_ids = tokenizer.encode(text)
-print("Token IDs:", token_ids)
-
-# Decode token IDs back to text
-decoded_text = tokenizer.decode(token_ids)
-print("Decoded Text:", decoded_text)
-```
-
-###### Example Output:
-
-```
-Token IDs: [128000, 1495, 1135, 2544, 6705, 284, 2219, 11659, 17098, 22968, 8707, 2544, 3539, 285, 34479]
-Decoded Text: I'm super excited to join Nesa's Equivariant Encryption initiative!
-```
+<!-- ### Nesa Demo on Github (Llama) --> 
 
 ## The "Hack EE" Contest
-
 <img width="1870" alt="Hack_EE" src="https://github.com/user-attachments/assets/7f3b1150-41c7-442f-bc74-5abf0685c00b" />
 &nbsp;
 &nbsp;
