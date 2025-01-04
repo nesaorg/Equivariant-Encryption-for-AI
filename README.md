@@ -124,11 +124,11 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | **End-to-end Encrypted Computation** | Operations fully on encrypted data, no intermediate decryptions. | EE models run directly on encrypted tokens, no intermediate decryptions. |
 | **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens. |
 | **Preservation of Accuracy** | The decrypted output should match the result of plaintext inference. | EE ensures final results are identical to plaintext inference outputs. |
-| **Support for Arbitrary Model Structures** | HE struggles with non-linearities and complex NN layers. | EE is designed for modern neural architectures as well as non-linearities. |
-| **Minimal Performance Overhead** | HE incurs very large computational overhead. | EE imposes no overhead; inference latency matches that of plaintext data. |
+| **Support for Arbitrary Model Structures** | HE struggles with non-linearities and complex NN layers. | EE is designed for modern neural architectures and non-linearities. |
+| **Minimal Performance Overhead** | HE incurs very large computational overhead. | EE imposes no overhead; latency matches that on plaintext data. |
 | **No Approximation of Functions** | HE may require approximations of complex operations. | EE avoids approximations, preserving exact neural network functions. |
 | **Scalability to Large Models** | Handling large models under HE is impractical. | EE scales naturally with large models without any computational penalties. |
-| **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, then pipelines operate as normal. |
+| **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE does a one-time transformation, then pipelines operate as normal. |
 | **Clear Security Model & Robustness** | HE is rooted in strong theoretical foundations. | EE provides a massively complex and secure combinatorial search space. |
 
 ## Attacks on EE Security
