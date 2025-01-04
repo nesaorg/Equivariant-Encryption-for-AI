@@ -129,7 +129,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | **No Approximation of Functions** | HE may require approximations of complex operations. | EE avoids approximations, preserving exact neural network functions. |
 | **Scalability to Large Models** | Handling large models under HE is impractical. | EE scales naturally with large models without any computational penalties. |
 | **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, after which pipelines operate as normal. |
-| **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex, secure combinatorial search space, making brute-force attacks impossible. |
+| **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex and secure combinatorial search space. |
 
 ## Attacks on EE Security
 
