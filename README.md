@@ -148,7 +148,7 @@ Starting with an arbitrary initial permutation P. The set of moves is the set of
 ## Try EE for Yourself
 Equivariant Encryption (EE) isn’t just a theoretical concept—it’s fully operational and ready to explore today! We’ve provided two demo models on Hugging Face so you can see, firsthand, how EE keeps data encrypted end-to-end while preserving the model’s functionality and accuracy.
 
-Available Models:
+Available Test Models:
 - **[nesaorg/distilbert-sentiment-encrypted](https://huggingface.co/nesaorg/distilbert-sentiment-encrypted)**
   An encrypted version of DistilBert for sentiment classification. It demonstrates how text is encrypted before the model sees it, yet you still get accurate sentiment predictions on the decrypted output, 100% locally.
 
