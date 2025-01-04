@@ -36,7 +36,7 @@ Forget multi-million dollar on-prem infrastructure for AI, get the same privacy 
 <table border="0">
  <tr>
     <td><b style="font-size:30px">Full Privacy</b></td>
-    <td>nesa serves requests with zero visibility on underlying data and full blindness on query</b></td>
+    <td>nesa serves AI with zero visibility on underlying data and full blindness on query</b></td>
  </tr>
  <tr>
     <td><b style="font-size:30px">Speedy </td>
