@@ -33,23 +33,33 @@ Forget multi-million dollar on-prem infrastructure for AI, get the same privacy 
 
 ## Features ##
 
-### Full Privacy ###
-nesa serves AI requests with zero visibility on underlying data and full blindness on query.
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">Full Privacy</b></td>
+    <td>nesa serves AI requests with zero visibility on underlying data and full blindness on query</b></td>
+ </tr>
+ <tr>
+    <td><b style="font-size:30px">Speedy </td>
+    <td>nesa delivers zero latency on encrypted inference (<0.1% original execution time)</td>
+ </tr>
+<tr>
+    <td><b style="font-size:30px">Wide Model Coverage</b></td>
+    <td>nesa supports encrypting Llama, Mistral, Stable Diffusion and thousands of other models</td>
 
-### Speedy ###
-nesa delivers zero latency on encrypted inference (<0.1% original execution time).
-
-### Wide Model Coverage ###
-nesa supports encrypting Llama, Mistral, Stable Diffusion and thousands of other models.
-
-### Cost Savings ###
-nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure.
-
-### ChatGPT Compatible ###
-nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change.
-
-### Quick Set-up ###
-nesa is one click to install and go. See documentation.
+ </tr>
+ <tr>
+    <td><b style="font-size:30px">Cost Savings</b></td>
+    <td>nesa can deliver significant cost savings as an API vs. on-prem AI infrastructure</td>
+ </tr>
+<tr>
+    <td><b style="font-size:30px">ChatGPT Compatible</b></td>
+    <td>nesa provides a ChatGPT-compatible API for running encrypted AI with a one line change</td>
+ </tr>
+ <tr>
+    <td><b style="font-size:30px">Quick Set-up</b></td>
+    <td>nesa is one click to install and go. See documentation</td>
+ </tr>
+</table>
 
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
@@ -198,7 +208,6 @@ Unlike DistilBert, this model’s weights reside on Nesa’s secure server, but 
 
 ###### Load the Tokenizer
 
-```python
 from transformers import AutoTokenizer
 
 hf_token = "<HF TOKEN>"  # Replace with your token
