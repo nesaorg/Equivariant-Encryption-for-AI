@@ -120,7 +120,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 
 | Property | Homomorphic Encryption (HE) | Equivariant Encryption (EE) |
 | --- | --- | --- |
-| **Data Confidentiality (Server Blindness)** | The server never sees plaintext data. | The server never sees plaintext data. |
+| **Data Confidentiality (Server Blindness)** | The server never sees the plaintext data. | The server never sees the plaintext data. |
 | **Encrypted Computation** | Operations fully on encrypted data, with no intermediate decryptions. | EE models run directly on encrypted tokens, with no intermediate decryptions. |
 | **User-Controlled Encryption** | Users should hold keys and control encryption/decryption. | Only the user can map plaintext to transformed tokens using EE tokenizer. |
 | **Preservation of Accuracy** | The decrypted output should match the result of plaintext inference. | EE ensures final results are identical to plaintext inference outputs. |
@@ -129,7 +129,7 @@ Below is a more detailed breakdown of how Equivariant Encryption matches or outp
 | **No Approximation of Functions** | HE may require approximations of complex operations. | EE avoids approximations, preserving exact neural network functions. |
 | **Scalability to Large Models** | Handling large models under HE is impractical. | EE scales naturally with large models without any computational penalties. |
 | **Compatibility with Existing Pipelines** | HE often requires extensive pipeline modifications. | EE requires a one-time transformation, after which pipelines operate as normal. |
-| **Clear Security Model & Robustness** | HE has strong theoretical foundations. | EE provides a massively complex and secure combinatorial search space. |
+| **Clear Security Model & Robustness** | HE has very strong theoretical foundations. | EE provides a massively complex and secure combinatorial search space. |
 
 ## Attacks on EE Security
 
