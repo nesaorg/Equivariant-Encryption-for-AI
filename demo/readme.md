@@ -26,11 +26,10 @@ This folder contains a modified version of [oobabooga/text-generation-webui](htt
 	Or download the ZIP from GitHub and unzip it.
 
 2.	Run the Installation Script matching your OS:
-	•	Linux/Mac: `./start_linux.sh` or `./start_macos.sh`
-	•	Windows: `start_windows.bat`
-	•	WSL: `start_wsl.bat`
+	- Linux/Mac: `./start_linux.sh` or `./start_macos.sh`
+	- Windows: `start_windows.bat`
 
-3.	Choose Your GPU Vendor when prompted (NVIDIA, AMD, CPU, etc.). The script will install necessary dependencies 		(PyTorch, Transformers, etc.).
+3.	Choose Your GPU Vendor when prompted (NVIDIA, AMD, CPU, etc.). The script will install necessary dependencies (PyTorch, Transformers, etc.).
 
 4.	After installation completes, it should automatically launch a local client, or you can manually navigate to http://localhost:7860.
 
@@ -39,13 +38,13 @@ Usage
 We automatically download and select a model for the user, so they can start using right away after the local client loads. We've included information about switching between both demo models below:
 
 #### Llama 3.2
-1.	Switch to “Llama 3.2 (Encrypted) Chat” in the Model selection.
-2.	Type your prompt into the chat box (for example, “Explain Equivariant Encryption in simple terms.”).
+1.	Switch to `nesaorg/Llama-3.2-1B-Instruct-Encrypted` in the Model selection.
+2.	Type your prompt into the chat box (for example, `Explain Equivariant Encryption in simple terms.`).
 3.	Click Submit to receive an encrypted response. The UI handles local decryption so you see plaintext.
 
 **Note**:
-	•	The Llama 3.2 encrypted tokenizer is on Hugging Face, but the model weights reside on Nesa’s secure server.
-	•	Your user key stays with you, so we never see unencrypted data.
+- The Llama 3.2 encrypted tokenizer is on Hugging Face, but the model weights reside on Nesa’s secure server.
+- Your user key stays with you, so we never see unencrypted data.
 
 
 #### DistilBert Classification Mode
@@ -54,9 +53,9 @@ We automatically download and select a model for the user, so they can start usi
 3.	Click Submit to see classification output.
 
 **Note**:
-	•	We have both the encrypted tokenizer and DistilBert weights locally.
-	•	The entire inference pass is performed on encrypted tokens.
-	•	Latency should be near-zero overhead.
+- We have both the encrypted tokenizer and DistilBert weights locally.
+- The entire inference pass is performed on encrypted tokens.
+- Latency should be near-zero overhead.
 
 
 
