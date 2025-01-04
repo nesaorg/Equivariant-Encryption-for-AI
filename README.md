@@ -53,7 +53,7 @@ Forget multi-million dollar on-prem infrastructure for AI, get the same privacy 
  </tr>
 <tr>
     <td><b style="font-size:30px">ChatGPT Compatible</b></td>
-    <td>nesa supports a ChatGPT-compatible API for running encrypted AI with a one line change</td>
+    <td>nesa has a ChatGPT-compatible API for running encrypted AI with a one line change</td>
  </tr>
  <tr>
     <td><b style="font-size:30px">Quick Set-up</b></td>
