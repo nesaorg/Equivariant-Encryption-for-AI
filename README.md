@@ -1,4 +1,4 @@
-<div align="center">
+	<div align="center">
 
 <!-- Logo with light mode support -->
 <picture>
@@ -212,7 +212,7 @@ from transformers import AutoTokenizer
 
 hf_token = "<HF TOKEN>"  # Replace with your token
 model_id = "nesaorg/Llama-3.2-1B-Instruct-Encrypted"
-tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token, local_files_only=True)
+tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token, local_files_only=False)
 ```
 
 ###### Tokenize and Decode Text
