@@ -40,7 +40,7 @@ Forget multi-million dollar on-prem infrastructure for AI, get the same privacy 
  </tr>
  <tr>
     <td><b style="font-size:30px">Speedy </td>
-    <td>nesa delivers zero latency on encrypted inference (<0.1% original execution time)</td>
+    <td>nesa delivers no latency on encrypted inference (<0.1% original execution time)</td>
  </tr>
 <tr>
     <td><b style="font-size:30px">Wide Model Coverage</b></td>
