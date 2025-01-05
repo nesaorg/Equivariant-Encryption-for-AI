@@ -13,7 +13,7 @@ Community Prize: **$1,000** (in NES) every day to the person who guesses the rig
 Welcome to Nesa's "Hack EE" Competition. This event challenges participants to decode encrypted token mappings from a large language model that has been encrypted with Nesa's EE technology to preserve data privacy. Test your skill and try to extract the text from private token ids.
 
 ### Background:
-At Nesa, privacy and security are essential goals. As part of our efforts toward universal private AI, we have developed **Equivariant Encryption**, a novel security method devloped by Nesa in the spirit of Homomorphic Encryption, applying it to thousands of models including Llama 3, Mistral, and BERT. To test the robustness of Nesa's approach for private AI, we invite you to attempt to recover original text from encrypted token ids.
+At Nesa, privacy and security are essential goals. As part of our efforts toward universal private AI, we have developed **Equivariant Encryption**, a novel security method developed by Nesa in the spirit of Homomorphic Encryption, applying it to thousands of models, including Llama 3, Mistral, and BERT. To test the robustness of Nesa's approach for private AI, we invite you to attempt to recover original text from encrypted token ids.
 
 In this challenge, we focus on our Llama 3 encryption. Our platform will provide prompts and responses as sequences of private token ids over HTTP. For a reference on tokenization, see the [Hugging Face documentation](https://huggingface.co/docs/transformers/en/main_classes/tokenizer).
 
@@ -61,7 +61,7 @@ Decode all provided tokens for a given day without any errors, and you win the g
    * Submit early to maximize points.
 
 4. **Bonus Points:**
-   * After submitting, tweet at Nesa before 9pm EST mentioning the rarest token (by frequency in that day’s data).
+   * After submitting, tweet at Nesa before 9pm EST, mentioning the rarest token (by frequency in that day’s data).
    * If you win the day and your rarest token guess is correct, you receive 50% more payout.
    * No tweet means no bonus.
 
