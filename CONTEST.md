@@ -27,7 +27,7 @@ Your objective is to “hack” the system by mapping these private token ids ba
    * Your task is to decrypt these token ids into their original text tokens.
 
 2. **Winning Criteria:**
-   * Submit mappings on https://nesa.ai/contest in the form `{token_id: "original_text"}`
+   * Submit mappings on https://nesa.ai/contest in the form `{"tokens":{"12":"an","345":"swer","678":" he","90":"re"}}`
    * Your score depends on how many correct mappings you provide.
 
 3. **Daily Prizes:**
@@ -53,7 +53,7 @@ Decode all provided tokens for a given day without any errors, and you win the g
      * The day’s prompt and output sequences in tokenized form.
 
 2. **Submission Portal:**
-   * Submit your `{token_id: "original_text"}` mappings, user ID, and timestamp through our secure portal.
+   * Submit your `{"tokens":{"12":"an","345":"swer","678":" he","90":"re"}}` mappings, user ID, and timestamp through our secure portal.
 
 3. **Daily Clues:**
    * We may release clues about certain tokens during the day.
