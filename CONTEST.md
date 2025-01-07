@@ -38,7 +38,7 @@ Your objective is to “hack” the system by mapping these private token ids ba
    * In case of a tie, the earliest submission wins.
 
 4. **Submission Rules:**
-   * Only your first submission of the day is considered.
+   * Only one submission per day is accepted.
    * No additional submissions for that day will be evaluated, so choose carefully.
    * For help with tokenizers as well as example submission format see this notebook [here](https://github.com/nesaorg/Equivariant-Encryption-for-AI/blob/main/tokenizer_example.ipynb).
      
