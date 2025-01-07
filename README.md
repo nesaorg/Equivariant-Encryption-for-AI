@@ -96,14 +96,9 @@ Despite this, the conceptual promise of HE—running inference on encrypted data
 
 Our solution is **Equivariant Encryption (EE)**. The term **equivariance** signifies a change in representation that preserves the operational structure from the model’s perspective. In other words, we transform the input data into an encrypted domain where the neural network’s computations can be carried out as though it were processing plaintext, all while maintaining the secrecy of the underlying information.
 
-
-<div align="center" style="margin-top: 32px; margin-bottom: 32px;">
-    <picture>
-        <source media="(prefers-color-scheme: light)" srcset="docs/ee-light.png">
-        <img alt="equivariant encryption diagram" src="docs/ee.png" width="100%">
-    </picture>
+<div align="center">
+  <img src="docs/ee.png" alt="equivariant encryption diagram">
 </div>
-
 
 Rather than relying exclusively on arithmetic operations compatible with HE, EE integrates specialized transformations designed around the internal properties of neural networks. We exploit the known architecture, layer composition, and input-output mappings of the model to construct a system in which each step of inference operates correctly on encrypted inputs. This approach avoids expensive retraining on encrypted datasets. Instead, by following a set of mathematical guidelines, we can generate a new variant of the model that works with our encryption schema in a matter of seconds.
 
@@ -113,13 +108,9 @@ Crucially, the complexity of inference under EE does not surpass that of the une
 
 To illustrate this with a tangible example, consider transformer-based models like ChatGPT, Claude, or Llama. These models employ tokenizers to convert text into discrete tokens, each mapped to an integer token ID. Under EE, we implement a specialized tokenizer that produces a different, encrypted set of token IDs. The network, now adapted to EE, treats these encrypted token IDs as standard inputs. It processes them identically to how it would process normal tokens, ultimately returning encrypted output tokens that can be decrypted locally by the user. The following diagram outlines this workflow:
 
-<div align="center" style="margin-top: 64px; margin-bottom: 64px;">
-    <picture>
-        <source media="(prefers-color-scheme: light)" srcset="docs/tokenizer-light.png">
-        <img alt="tokenizer diagram" src="docs/tokenizer.png" width="100%">
-    </picture>
+<div align="center">
+  <img src="docs/tokenizer.png" alt="tokenizer diagram">
 </div>
-
 
 In this setup, all data traveling over the network remains encrypted, and the transformations that produce and consume these tokens are carefully chosen to deny any straightforward method for recovering the plaintext. The attacker sees only encrypted tokens and a model variant designed to operate on that encrypted space, providing no direct, low-cost avenue to extract the original information.
 
