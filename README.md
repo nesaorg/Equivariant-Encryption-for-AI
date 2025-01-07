@@ -61,6 +61,13 @@ Forget multi-million dollar on-prem infrastructure, get the same privacy guarant
  </tr>
 </table>
 
+<div align="center" style="margin-top: 32px; margin-bottom: 32px;">
+    <picture>
+        <source media="(prefers-color-scheme: light)" srcset="docs/solution-light.png">
+        <img alt="inference with and without equivariant encryption diagram" src="docs/solution.png" width="100%">
+    </picture>
+</div>
+
 ## How Nesa Achieves Blind AI: Equivariant Encryption (EE) ##
 
 At Nesa, privacy is a critical objective. On our path toward universal private AI, we confronted a key challenge: **how can we perform inference on neural networks without exposing the underlying input and output data to external parties, while returning requests without high latency?** Traditional approaches, such as differential privacy, ZKML or homomorphic encryption (HE), while conceptually strong, fall short in practical deployments for complex neural architectures. These methods struggle to handle non-linear operations efficiently, often imposing substantial computational overhead that makes them infeasible to integrate into real-time or large-scale systems.
