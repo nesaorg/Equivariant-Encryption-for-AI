@@ -8,6 +8,8 @@ import gradio as gr
 import modules.shared as shared
 from modules.logging_colors import logger
 
+
+
 state = {}
 available_extensions = []
 setup_called = set()

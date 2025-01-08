@@ -23,7 +23,8 @@ from modules.logging_colors import logger
 
 try:
     import flash_attn
-except Exception:
+except Exception as e:
+    print('thiss',e)
     logger.warning('Failed to load flash-attention due to the following error:\n')
     traceback.print_exc()
 

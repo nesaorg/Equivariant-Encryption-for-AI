@@ -167,7 +167,6 @@ def load_model_wrapper(selected_model, loader, autoload=False):
             if selected_model != '':
                 
                 shared.model_name = selected_model
-                print('here',selected_model, shared.model_name)
                 ModelClass = ModelRegistry.get_model(shared.model_name, None)
                 shared.handler = ModelClass()
                 shared.tokenizer, shared.model = shared.handler.load_model_tokenizer(model_name=shared.model_name)

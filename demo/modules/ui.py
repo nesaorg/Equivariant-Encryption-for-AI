@@ -5,9 +5,9 @@ import gradio as gr
 import torch
 import yaml
 from transformers import is_torch_xpu_available
-
+import json
 from modules import shared
-
+import modules.extensions as extensions
 with open(Path(__file__).resolve().parent / '../css/NotoSans/stylesheet.css', 'r') as f:
     css = f.read()
 with open(Path(__file__).resolve().parent / '../css/main.css', 'r') as f:
@@ -217,8 +217,18 @@ def gather_interface_values(*args):
 
     output = {}
     for element, value in zip(interface_elements, args):
+        if element == 'history':
+            if "root" in value:
+                value = value.split("root=")[1]
+                value = value.replace("'",'"')
+                value = json.loads(value)
+                
+                    
+            # output[element] = {'internal': [], 'visible': []}
+            # print(output[element])
+        # else:
         output[element] = value
-
+        
     if not shared.args.multi_user:
         shared.persistent_interface_state = output
 

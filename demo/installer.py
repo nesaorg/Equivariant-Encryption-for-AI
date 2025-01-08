@@ -402,7 +402,6 @@ def update_requirements(initial_installation=False, pull=True):
 
 
 def launch_webui():
-    print("arguments", flags)
     run_cmd(f"python server.py {flags}", environment=True)
 
 
