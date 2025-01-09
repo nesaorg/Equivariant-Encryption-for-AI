@@ -34,12 +34,7 @@ from nesa.backend.registry import ModelRegistry
 
 def generate_reply(*args, **kwargs):
     
-    # print(type(args))
-    # pprint(args)
-    print("current system prompt", args[1]["chat-instruct_command"])
-    print('current message', args[1]['textbox'])
-    print('current history', args[1]['history']['visible'])
-    print("current model name", shared.model_name)
+
     if shared.args.idle_timeout > 0 and shared.model is None and shared.model_name not in [None, 'None']:
         ModelClass = ModelRegistry.get_model(shared.model_name, None)
         shared.handler = ModelClass(shared.model_name)
