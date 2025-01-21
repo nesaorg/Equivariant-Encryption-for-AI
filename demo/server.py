@@ -76,7 +76,7 @@ try:
         pass
     def create_interface():
 
-        title = 'Text generation web UI'
+        title = 'Onyx Encrypted AI'
 
         # Password authentication
         auth = []
