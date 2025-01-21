@@ -248,6 +248,27 @@ def generate_instruct_html(history):
 
     return output
 
+def check_file_availability(input_string, substr="[file]"):
+    """
+    Splits the input string into two parts based on the given substring and removes the substring.
+    If the substring appears twice, the second part will contain content between the two occurrences.
+    """
+    
+    pattern = re.escape(substr) + r'(.*?)' + re.escape(substr)
+    match = re.search(pattern, input_string)
+
+    if match:
+        left_part = input_string[:match.start()].strip()
+        middle_part = match.group(1).strip()
+        return left_part, middle_part
+      
+    split_index = input_string.find(substr)
+    if split_index != -1:
+        left_part = input_string[:split_index].strip()
+        right_part = input_string[split_index + len(substr):].strip()
+        return left_part, right_part
+
+    return input_string, ""
 
 def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=False):
     output = f'<style>{chat_styles[style]}</style><div class="chat" id="chat"><div class="messages">'
@@ -255,6 +276,8 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
     # We use ?character and ?time.time() to force the browser to reset caches
     img_bot = '<img src="file/cache/bot.png">'
     img_me = '<img src="file/cache/human-fill.png">'
+    img_file = '<img src="file/cache/encryption.png">'
+    
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
 
@@ -274,7 +297,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                     </div>
                   </div>
                 """
-
+        row[1],file = check_file_availability(row[1])
         output += f"""
               <div class="message">
                 <div class="circle-bot">
@@ -286,10 +309,33 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                   </div>
                   <div class="message-body">
                     {row[1]}
+                    
                   </div>
                 </div>
               </div>
             """
+        
+        if file:
+
+          output += f"""
+                <div class="message">
+                  <div class="circle-bot">
+                    {img_file}
+                  </div>
+                  <div class="text">
+                    <div class="username">
+                      Onyx Encryption
+                    </div>
+                    <div class="message-body">
+                      <p>View the equivariant encryption inference outputs.</p>
+                      <a href="https://ipfs-gw-test.nesa.ai/ipfs/{file}" class="file-link" target="_blank">
+                        <span class="file-icon">🔗</span>
+                        Encryption summary
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              """
 
     output += "</div></div>"
 

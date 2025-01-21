@@ -197,7 +197,6 @@ def generate_chat_prompt(user_input, state, **kwargs):
     # Handle truncation
     if shared.tokenizer is not None:
         max_length = get_max_prompt_length(state)
-        print('max length',max_length)
         max_length = max_length if max_length > 2000 else 2048
         encoded_length = get_encoded_length(prompt)
         while len(messages) > 0 and encoded_length > max_length:
@@ -384,6 +383,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
         output['visible'][-1][1] = output['visible'][-1][1][:-1]
 
     output['visible'][-1][1] = apply_extensions('output', output['visible'][-1][1], state, is_chat=True)
+    
     yield output
 
 
@@ -410,6 +410,7 @@ def generate_chat_reply(text, state, regenerate=False, _continue=False, loading_
             return
 
     for history in chatbot_wrapper(text, state, regenerate=regenerate, _continue=_continue, loading_message=loading_message, for_ui=for_ui):
+
         yield history
 
 
@@ -1165,6 +1166,7 @@ def handle_character_menu_change(state):
 
 
 def handle_mode_change(state):
+
     history = load_latest_history(state)
     histories = find_all_histories_with_first_prompts(state)
     html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])

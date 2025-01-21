@@ -226,6 +226,7 @@ def generate_reply_wrapper(question, state, stopping_strings=None):
     """
     Returns formatted outputs for the UI
     """
+    print("inside this func")
     reply = question if not shared.is_seq2seq else ''
     yield formatted_outputs(reply, shared.model_name)
 

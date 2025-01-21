@@ -26,7 +26,8 @@ def create_ui():
                 with gr.Row(elem_id='past-chats-buttons'):
                     shared.gradio['rename_chat'] = gr.Button('Rename', elem_classes='refresh-button', interactive=not mu)
                     shared.gradio['delete_chat'] = gr.Button('🗑️', elem_classes='refresh-button', interactive=not mu)
-                    shared.gradio['Start new chat'] = gr.Button('New chat', elem_classes=['refresh-button', 'focus-on-chat-input'])
+                    shared.gradio['Start new chat'] = gr.Button('New chat', 
+                                                                 elem_id='start-new-chat',elem_classes=['refresh-button', 'focus-on-chat-input'])
 
                 with gr.Row(elem_id='delete-chat-row', visible=False) as shared.gradio['delete-chat-row']:
                     shared.gradio['delete_chat-cancel'] = gr.Button('Cancel', elem_classes=['refresh-button', 'focus-on-chat-input'])
@@ -90,7 +91,21 @@ def create_ui():
 
                 with gr.Row():
                     shared.gradio['chat-instruct_command'] = gr.Textbox(value=shared.settings['chat-instruct_command'], lines=12, label='System Prompt', info='\n', visible=shared.settings['mode'] == 'chat-instruct', elem_classes=['add_scrollbar'])
-
+with gr.Box(visible=False):
+    gr.HTML("""
+    <script>
+    window.addEventListener('load', function() {
+        let interval = setInterval(function(){
+            let btn = document.getElementById("start-new-chat");
+            if (btn) {
+                console.log("Auto-clicked 'New chat' button.");
+                btn.click();
+                clearInterval(interval);
+            }
+        }, 200);
+    });
+    </script>
+    """)
 
 def create_chat_settings_ui():
     mu = shared.args.multi_user

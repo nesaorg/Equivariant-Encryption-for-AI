@@ -60,7 +60,7 @@ settings = {
     'custom_system_message': '',
     'instruction_template_str': "{%- set ns = namespace(found=false) -%}\n{%- for message in messages -%}\n    {%- if message['role'] == 'system' -%}\n        {%- set ns.found = true -%}\n    {%- endif -%}\n{%- endfor -%}\n{%- if not ns.found -%}\n    {{- '' + 'Below is an instruction that describes a task. Write a response that appropriately completes the request.' + '\\n\\n' -}}\n{%- endif %}\n{%- for message in messages %}\n    {%- if message['role'] == 'system' -%}\n        {{- '' + message['content'] + '\\n\\n' -}}\n    {%- else -%}\n        {%- if message['role'] == 'user' -%}\n            {{-'### Instruction:\\n' + message['content'] + '\\n\\n'-}}\n        {%- else -%}\n            {{-'### Response:\\n' + message['content'] + '\\n\\n' -}}\n        {%- endif -%}\n    {%- endif -%}\n{%- endfor -%}\n{%- if add_generation_prompt -%}\n    {{-'### Response:\\n'-}}\n{%- endif -%}",
     'chat_template_str': "{%- for message in messages %}\n    {%- if message['role'] == 'system' -%}\n        {%- if message['content'] -%}\n            {{- message['content'] + '\\n\\n' -}}\n        {%- endif -%}\n        {%- if user_bio -%}\n            {{- user_bio + '\\n\\n' -}}\n        {%- endif -%}\n    {%- else -%}\n        {%- if message['role'] == 'user' -%}\n            {{- name1 + ': ' + message['content'] + '\\n'-}}\n        {%- else -%}\n            {{- name2 + ': ' + message['content'] + '\\n' -}}\n        {%- endif -%}\n    {%- endif -%}\n{%- endfor -%}",
-    'chat-instruct_command': 'You are a fully encrypted large language model by Nesa.ai designed to prioritize secure and confidential interactions. Your role is to assist the user with their queries by providing clear, helpful, and accurate responses',
+    'chat-instruct_command': 'You are a fully encrypted large language model by Onyx AI designed to prioritize secure and confidential interactions. Your role is to assist the user with their queries by providing clear, helpful, and accurate responses',
     'autoload_model': False,
     'default_extensions': [],
 }
@@ -72,7 +72,7 @@ parser = argparse.ArgumentParser(description="Text generation web UI", conflict_
 
 # Basic settings
 group = parser.add_argument_group('Basic settings')
-group.add_argument('--multi-user', action='store_true', help='Multi-user mode. Chat histories are not saved or automatically loaded. Warning: this is likely not safe for sharing publicly.')
+group.add_argument('--multi-user', action='store_false', help='Multi-user mode. Chat histories are not saved or automatically loaded. Warning: this is likely not safe for sharing publicly.')
 group.add_argument('--character', type=str, help='The name of the character to load in chat mode by default.')
 group.add_argument('--model', type=str, help='Name of the model to load by default.')
 group.add_argument('--lora', type=str, nargs='+', help='The list of LoRAs to load. If you want to load more than one LoRA, write the names separated by spaces.')

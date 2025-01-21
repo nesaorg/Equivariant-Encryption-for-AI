@@ -67,8 +67,9 @@ try:
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    PRELOAD_MODELS = ['nesaorg/Llama-3.2-1B-Instruct-Encrypted',
-                    'nesaorg/distilbert-sentiment-encrypted']
+    PRELOAD_MODELS = [#'nesaorg/Llama-3.2-1B-Instruct-Encrypted',
+                      'nesaorg/Llama-3.1-8B-Instruct-Encrypted',
+                      'nesaorg/distilbert-sentiment-encrypted']
 
     def dummy_progress(_=0.0):
         
@@ -121,7 +122,6 @@ try:
 
             # Text Generation tab
             ui_chat.create_ui()
-            
             ui_parameters.create_ui(shared.settings['preset'])  # Parameters tab
             ui_model_menu.create_ui()
             

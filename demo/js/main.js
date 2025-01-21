@@ -1,3 +1,24 @@
+function initializeToken() {
+  let token = localStorage.getItem('user_token'); // Check for an existing token in localStorage
+  if (!token) {
+    token = crypto.randomUUID(); // Generate a new UUID if none exists
+    localStorage.setItem('user_token', token); // Store the token in localStorage
+  }
+  return token;
+}
+
+// Run token initialization on page load
+const userToken = initializeToken();
+
+// Pass the token to the backend (Gradio integration)
+document.addEventListener("DOMContentLoaded", () => {
+  const tokenInput = document.querySelector('input[name="state"]'); // Locate the hidden state input
+  if (tokenInput) {
+    tokenInput.value = userToken; // Set the token value for backend use
+  }
+});
+
+
 let main_parent = document.getElementById("chat-tab").parentNode;
 let extensions = document.getElementById("extensions");
 
