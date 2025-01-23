@@ -297,7 +297,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                     </div>
                   </div>
                 """
-        row[1],file = check_file_availability(row[1])
+        row[1], file = check_file_availability(row[1])
         output += f"""
               <div class="message">
                 <div class="circle-bot">
@@ -309,35 +309,22 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                   </div>
                   <div class="message-body">
                     {row[1]}
-                    
+        """
+        if file:
+            output += f"""
+                    <p></p>
+                    <a href="https://ipfs-gw-test.nesa.ai/ipfs/{file}" class="file-link" target="_blank">
+                      <span class="file-icon">🔗</span>
+                      Encryption summary
+                    </a>
+        """
+
+        output += f"""
                   </div>
                 </div>
               </div>
-            """
-        
-        if file:
+        """
 
-          output += f"""
-                <div class="message">
-                  <div class="circle-bot">
-                    {img_file}
-                  </div>
-                  <div class="text">
-                    <div class="username">
-                      Onyx Encryption
-                    </div>
-                    <div class="message-body">
-                      <p>View the equivariant encryption inference outputs.</p>
-                      <a href="https://ipfs-gw-test.nesa.ai/ipfs/{file}" class="file-link" target="_blank">
-                        <span class="file-icon">🔗</span>
-                        Encryption summary
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              """
-
-    output += "</div></div>"
 
     return output
 
