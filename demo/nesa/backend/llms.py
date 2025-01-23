@@ -82,7 +82,7 @@ async def sse_message_handler(inf_request, timeout=60):
 
 
 def generate_prompt_template(
-    current_msg: str, system_prompt: Optional[str], history: Optional[str], lookback=3, use_memory=True
+    current_msg: str, system_prompt: Optional[str], history: Optional[str], lookback=10, use_memory=True
 ):
     current_msg = [{"role": Role.USER.value, "content": clean_string(current_msg)}]
     system_instructions = [{"role": Role.SYSTEM.value, "content": clean_string(system_prompt)}]  # noqa
