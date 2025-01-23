@@ -194,8 +194,8 @@ def list_interface_input_elements():
         'textbox',
         'character_menu',
         'history',
-        'unique_id',
         'name1',
+        'unique_id',
         'user_bio',
         'name2',
         'greeting',
@@ -294,7 +294,7 @@ def create_refresh_button(refresh_component, refresh_method, refreshed_args, ele
 
         return gr.update(**(args or {}))
 
-    refresh_button = gr.Button(refresh_symbol, elem_classes=elem_class, interactive=interactive)
+    refresh_button = gr.Button(refresh_symbol, elem_classes=elem_class, interactive=interactive,visible=False)
     refresh_button.click(
         fn=lambda: {k: tuple(v) if type(k) is list else v for k, v in refresh().items()},
         inputs=[],

@@ -13,35 +13,130 @@ from modules.utils import gradio
 inputs = ('Chat input', 'interface_state')
 reload_arr = ('history', 'name1', 'name2', 'mode', 'chat_style', 'character_menu')
 
+custom_css = """
+#sampling-parameters-heading, #model-settings-heading {
+    margin-bottom: 5px; /* Close the gap between heading and line */
+    padding: 0;
+    text-align: center; /* Center-align the headings */
+}
 
+#sampling-parameters-divider, #model-settings-divider {
+    border: 0;
+    border-top: 1px solid #555; /* Dimmer line color */
+    margin: 0; /* Remove margin to stick it close to the heading */
+    width: 100%; /* Full-width underline */
+}
+"""
 def create_ui():
     mu = shared.args.multi_user
 
     shared.gradio['Chat input'] = gr.State()
     shared.gradio['history'] = gr.JSON({'internal': [], 'visible': []}, visible=False)
 
-    with gr.Tab('Chat', elem_id='chat-tab'):
+    with gr.Tab('Chat', elem_id='chat-tab',visible=True):
         with gr.Row(elem_id='past-chats-row', elem_classes=['pretty_scrollbar']):
             with gr.Column():
-                with gr.Row(elem_id='past-chats-buttons'):
-                    shared.gradio['rename_chat'] = gr.Button('Rename', elem_classes='refresh-button', interactive=not mu)
-                    shared.gradio['delete_chat'] = gr.Button('🗑️', elem_classes='refresh-button', interactive=not mu)
-                    shared.gradio['Start new chat'] = gr.Button('New chat', 
-                                                                 elem_id='start-new-chat',elem_classes=['refresh-button', 'focus-on-chat-input'])
-
-                with gr.Row(elem_id='delete-chat-row', visible=False) as shared.gradio['delete-chat-row']:
-                    shared.gradio['delete_chat-cancel'] = gr.Button('Cancel', elem_classes=['refresh-button', 'focus-on-chat-input'])
-                    shared.gradio['delete_chat-confirm'] = gr.Button('Confirm', variant='stop', elem_classes=['refresh-button', 'focus-on-chat-input'])
-
-                with gr.Row(elem_id='rename-row', visible=False) as shared.gradio['rename-row']:
-                    shared.gradio['rename_to'] = gr.Textbox(label='Rename to:', placeholder='New name', elem_classes=['no-background'])
-                    with gr.Row():
-                        shared.gradio['rename_to-cancel'] = gr.Button('Cancel', elem_classes=['refresh-button', 'focus-on-chat-input'])
-                        shared.gradio['rename_to-confirm'] = gr.Button('Confirm', elem_classes=['refresh-button', 'focus-on-chat-input'], variant='primary')
 
                 with gr.Row():
                     shared.gradio['unique_id'] = gr.Radio(label="", elem_classes=['slim-dropdown', 'pretty_scrollbar'], interactive=not mu, elem_id='past-chats')
 
+
+                with gr.Row(elem_id='rename-row', visible=False) as shared.gradio['rename-row']:
+                    shared.gradio['rename_to'] = gr.Textbox(label='Rename to:', placeholder='New name', elem_classes=['no-background'])
+                    
+                gr.HTML(f"<style>{custom_css}</style>")
+
+                # Model Settings Section Heading
+                gr.Markdown(
+                    value="### Model Settings",
+                    elem_id="model-settings-heading"
+                )
+                gr.HTML(
+                    value='<hr id="model-settings-divider">'
+                )
+                gr.Dropdown(
+                label="Model",
+                choices=['Llama-3.1-8B-Instruct-ee'],
+                value='Llama-3.1-8B-Instruct-ee',
+                elem_id="model-dropdown",
+                interactive=True)
+                gr.Dropdown(
+                label="Response Format",
+                choices=["text"],  # Add more formats if available
+                value="text",
+                elem_id="response-format-dropdown",
+                interactive=True)
+                gr.Markdown(
+                value="### Sampling Parameters",
+                elem_id="sampling-parameters-heading"
+                )
+                gr.HTML(
+                    value='<hr id="sampling-parameters-divider">'
+                )
+                gr.Slider(
+                    label="Temperature",
+                    minimum=0.0,
+                    maximum=2.0,
+                    value=1.0,
+                    step=0.01,
+                    elem_id="temperature-slider",
+                    interactive=True
+                )
+                gr.Slider(
+                label="Max Tokens",
+                minimum=1,
+                maximum=4096,  # Adjust the max value based on your model
+                value=2048,
+                step=1,
+                elem_id="max-tokens-slider",
+                interactive=True)
+
+                
+                gr.Slider(
+                label="Top P",
+                minimum=0.0,
+                maximum=1.0,
+                value=1.0,
+                step=0.01,
+                elem_id="top-p-slider",
+                interactive=True
+            )
+
+                # Frequency Penalty Slider
+                gr.Slider(
+                    label="Frequency Penalty",
+                    minimum=0.0,
+                    maximum=2.0,
+                    value=0.0,
+                    step=0.01,
+                    elem_id="frequency-penalty-slider",
+                    interactive=True
+                )
+
+                # Presence Penalty Slider
+                gr.Slider(
+                    label="Presence Penalty",
+                    minimum=0.0,
+                    maximum=2.0,
+                    value=0.0,
+                    step=0.01,
+                    elem_id="presence-penalty-slider",
+                    interactive=True
+                )
+                gr.Textbox(
+                    label="Stop Sequences (comma-separated)",
+                    placeholder="Enter sequences and press Tab",
+                    elem_id="stop-sequences-box",
+                    interactive=True
+                )
+
+                # Save Button
+                gr.Button(
+                    value="Save Settings",
+                    elem_id="save-settings-button",
+                    variant="primary"
+                )
+               
         with gr.Row():
             with gr.Column(elem_id='chat-col'):
                 shared.gradio['display'] = gr.HTML(value=chat_html_wrapper({'internal': [], 'visible': []}, '', '', 'chat', 'cai-chat', ''))
@@ -88,6 +183,7 @@ def create_ui():
 
                 with gr.Row():
                     shared.gradio['chat_style'] = gr.Dropdown(choices=utils.get_available_chat_styles(), label='Chat Theme', value=shared.settings['chat_style'], visible=shared.settings['mode'] != 'instruct')
+                    shared.gradio['character'] = gr.Dropdown(choices=['Assistant'],info="Used in chat and chat-instruct modes.",label='Character', value='Assistant', visible=True, interactive=True)
 
                 with gr.Row():
                     shared.gradio['chat-instruct_command'] = gr.Textbox(value=shared.settings['chat-instruct_command'], lines=12, label='System Prompt', info='\n', visible=shared.settings['mode'] == 'chat-instruct', elem_classes=['add_scrollbar'])
@@ -114,10 +210,10 @@ def create_chat_settings_ui():
             with gr.Column(scale=8):
                 with gr.Tab("Character"):
                     with gr.Row():
-                        shared.gradio['character_menu'] = gr.Dropdown(value=None, choices=utils.get_available_characters(), label='Character', elem_id='character-menu', info='Used in chat and chat-instruct modes.', elem_classes='slim-dropdown')
-                        ui.create_refresh_button(shared.gradio['character_menu'], lambda: None, lambda: {'choices': utils.get_available_characters()}, 'refresh-button', interactive=not mu)
-                        shared.gradio['save_character'] = gr.Button('💾', elem_classes='refresh-button', elem_id="save-character", interactive=not mu)
-                        shared.gradio['delete_character'] = gr.Button('🗑️', elem_classes='refresh-button', interactive=not mu)
+                        shared.gradio['character_menu'] = gr.Dropdown(value=None, choices=utils.get_available_characters(), label='Character', elem_id='character-menu', info='Used in chat and chat-instruct modes.', elem_classes='slim-dropdown',visible=False)
+                        ui.create_refresh_button(shared.gradio['character_menu'], lambda: None, lambda: {'choices': utils.get_available_characters()}, 'refresh-button', interactive=True)
+                        shared.gradio['save_character'] = gr.Button('💾', elem_classes='refresh-button', elem_id="save-character", interactive=not mu,visible=False)
+                        shared.gradio['delete_character'] = gr.Button('🗑️', elem_classes='refresh-button', interactive=not mu,visible=False)
 
                     shared.gradio['name2'] = gr.Textbox(value='', lines=1, label='Character\'s name')
                     shared.gradio['context'] = gr.Textbox(value='', lines=10, label='Context', elem_classes=['add_scrollbar'])
@@ -253,39 +349,39 @@ def create_event_handlers():
             ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
             chat.handle_unique_id_select, gradio('interface_state'), gradio('history', 'display'), show_progress=False)
 
-    shared.gradio['Start new chat'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_start_new_chat_click, gradio('interface_state'), gradio('history', 'display', 'unique_id'), show_progress=False)
+    # shared.gradio['Start new chat'].click(
+    #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+    #     chat.handle_start_new_chat_click, gradio('interface_state'), gradio('history', 'display', 'unique_id'), show_progress=False)
 
-    shared.gradio['delete_chat'].click(lambda: gr.update(visible=True), None, gradio('delete-chat-row'))
-    shared.gradio['delete_chat-cancel'].click(lambda: gr.update(visible=False), None, gradio('delete-chat-row'))
-    shared.gradio['delete_chat-confirm'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_delete_chat_confirm_click, gradio('interface_state'), gradio('history', 'display', 'unique_id', 'delete-chat-row'), show_progress=False)
+    # shared.gradio['delete_chat'].click(lambda: gr.update(visible=True), None, gradio('delete-chat-row'))
+    # shared.gradio['delete_chat-cancel'].click(lambda: gr.update(visible=False), None, gradio('delete-chat-row'))
+    # shared.gradio['delete_chat-confirm'].click(
+    #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+    #     chat.handle_delete_chat_confirm_click, gradio('interface_state'), gradio('history', 'display', 'unique_id', 'delete-chat-row'), show_progress=False)
 
-    shared.gradio['rename_chat'].click(chat.handle_rename_chat_click, None, gradio('rename_to', 'rename-row'), show_progress=False)
-    shared.gradio['rename_to-cancel'].click(lambda: gr.update(visible=False), None, gradio('rename-row'), show_progress=False)
-    shared.gradio['rename_to-confirm'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_rename_chat_confirm, gradio('rename_to', 'interface_state'), gradio('unique_id', 'rename-row'))
+    # shared.gradio['rename_chat'].click(chat.handle_rename_chat_click, None, gradio('rename_to', 'rename-row'), show_progress=False)
+    # shared.gradio['rename_to-cancel'].click(lambda: gr.update(visible=False), None, gradio('rename-row'), show_progress=False)
+    # shared.gradio['rename_to-confirm'].click(
+    #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+    #     chat.handle_rename_chat_confirm, gradio('rename_to', 'interface_state'), gradio('unique_id', 'rename-row'))
 
-    shared.gradio['rename_to'].submit(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_rename_chat_confirm, gradio('rename_to', 'interface_state'), gradio('unique_id', 'rename-row'), show_progress=False)
+    # shared.gradio['rename_to'].submit(
+    #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+    #     chat.handle_rename_chat_confirm, gradio('rename_to', 'interface_state'), gradio('unique_id', 'rename-row'), show_progress=False)
 
     shared.gradio['load_chat_history'].upload(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_upload_chat_history, gradio('load_chat_history', 'interface_state'), gradio('history', 'display', 'unique_id'), show_progress=False).then(
+        chat.handle_upload_chat_history, gradio('load_chat_history', 'interface_state'), gradio('history', 'display'), show_progress=False).then(
         None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_chat()}}')
 
     shared.gradio['character_menu'].change(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_character_menu_change, gradio('interface_state'), gradio('history', 'display', 'name1', 'name2', 'character_picture', 'greeting', 'context', 'unique_id'), show_progress=False).then(
+        chat.handle_character_menu_change, gradio('interface_state'), gradio('history', 'display', 'name1', 'name2', 'character_picture', 'greeting', 'context'), show_progress=False).then(
         None, None, None, js=f'() => {{{ui.update_big_picture_js}; updateBigPicture()}}')
 
     shared.gradio['mode'].change(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_mode_change, gradio('interface_state'), gradio('history', 'display', 'chat_style', 'chat-instruct_command', 'unique_id'), show_progress=False).then(
+        chat.handle_mode_change, gradio('interface_state'), gradio('history', 'display', 'chat_style', 'chat-instruct_command'), show_progress=False).then(
         None, gradio('mode'), None, js="(mode) => {mode === 'instruct' ? document.getElementById('character-menu').parentNode.parentNode.style.display = 'none' : document.getElementById('character-menu').parentNode.parentNode.style.display = ''}")
 
     shared.gradio['chat_style'].change(chat.redraw_html, gradio(reload_arr), gradio('display'), show_progress=False)

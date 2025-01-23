@@ -104,9 +104,21 @@ try:
         js = ui.js
     # Interface state elements
         shared.input_elements = ui.list_interface_input_elements()
+        custom_css = """
+        .tab-nav.scroll-hide.svelte-1uw5tnk.header_bar {
+        display: none !important; /* Hides the element completely */
+        width: 0 !important;      /* Ensures no width is allocated */
+        height: 0 !important;     /* Ensures no height is allocated */
+        padding: 0 !important;    /* Removes any padding */
+        margin: 0 !important;     /* Removes any margin */
+        overflow: hidden !important; /* Hides any remaining content */
+    }
+        """
+        combined_css = css + custom_css
 
         with gr.Blocks(css=css, analytics_enabled=False, title=title, theme=ui.theme) as shared.gradio['interface']:
 
+        
             # Interface state
             shared.gradio['interface_state'] = gr.State({k: None for k in shared.input_elements})
 
