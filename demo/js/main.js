@@ -1,3 +1,25 @@
+function initializeToken() {
+  let token = localStorage.getItem('user_token'); // Check for an existing token in localStorage
+  if (!token) {
+    token = crypto.randomUUID(); // Generate a new UUID if none exists
+    localStorage.setItem('user_token', token); // Store the token in localStorage
+  }
+  return token;
+}
+
+// Run token initialization on page load
+const userToken = initializeToken();
+
+// Pass the token to the backend (Gradio integration)
+document.addEventListener("DOMContentLoaded", () => {
+  const tokenInput = document.querySelector('input[name="state"]'); // Locate the hidden state input
+  if (tokenInput) {
+    tokenInput.value = userToken; // Set the token value for backend use
+  }
+  
+});
+
+
 let main_parent = document.getElementById("chat-tab").parentNode;
 let extensions = document.getElementById("extensions");
 
@@ -349,7 +371,7 @@ document.addEventListener("click", function (event) {
   if (isMobile()) {
   // Check if the click did NOT originate from any of the specified toggle buttons or elements
     if (
-      target.closest("#navigation-toggle") !== navigationToggle &&
+      // target.closest("#navigation-toggle") !== navigationToggle &&
     target.closest("#past-chats-toggle") !== pastChatsToggle &&
     target.closest("#chat-controls-toggle") !== chatControlsToggle &&
     target.closest(".header_bar") !== headerBar &&
@@ -661,11 +683,11 @@ if (chatTab) {
 }
 
 // Create navigation toggle div
-const navigationToggle = document.createElement("div");
-navigationToggle.id = "navigation-toggle";
-navigationToggle.innerHTML = leftArrowSVG; // Set initial icon to right arrow
-navigationToggle.classList.add("navigation-left"); // Set initial position
-headerBar.appendChild(navigationToggle);
+// const navigationToggle = document.createElement("div");
+// navigationToggle.id = "navigation-toggle";
+// navigationToggle.innerHTML = leftArrowSVG; // Set initial icon to right arrow
+// navigationToggle.classList.add("navigation-left"); // Set initial position
+// headerBar.appendChild(navigationToggle);
 
 // Retrieve the dynamically created toggle buttons
 const pastChatsToggle = document.getElementById("past-chats-toggle");
@@ -675,9 +697,9 @@ function handleIndividualSidebarClose(event) {
   const target = event.target;
 
   // Close navigation bar if click is outside and it is open
-  if (!headerBar.contains(target) && !headerBar.classList.contains("sidebar-hidden")) {
-    toggleSidebar(headerBar, navigationToggle, true);
-  }
+  // if (!headerBar.contains(target) && !headerBar.classList.contains("sidebar-hidden")) {
+  //   toggleSidebar(headerBar, navigationToggle, true);
+  // }
 
   // Close past chats row if click is outside and it is open
   if (!pastChatsRow.contains(target) && !pastChatsRow.classList.contains("sidebar-hidden")) {
@@ -729,46 +751,25 @@ function isMobile() {
 
 // Function to initialize sidebars
 function initializeSidebars() {
-  const isOnMobile = isMobile();
-  
-  if (isOnMobile) {
-    // Mobile state: Hide sidebars and set closed states
-    [pastChatsRow, chatControlsRow, headerBar].forEach(el => {
-      el.classList.add("sidebar-hidden");
-      el.classList.remove("sidebar-shown");
-    });
+  // Hide pastChatsRow (chat sidebar) and other sidebars by default
+  [pastChatsRow].forEach((sidebar) => {
+    sidebar.classList.add("sidebar-hidden");
+    sidebar.classList.remove("sidebar-shown");
+  });
 
-    document.documentElement.style.setProperty("--header-width", "0px");
-    pastChatsRow.classList.add("negative-header");
-    pastChatsToggle.classList.add("negative-header", "past-chats-closed");
-    pastChatsToggle.classList.remove("past-chats-open");
+  // Update the toggle buttons to match the closed state
+  pastChatsToggle.classList.add("past-chats-closed");
+  pastChatsToggle.classList.remove("past-chats-open");
+  pastChatsToggle.innerHTML = rightArrowSVG;
 
-    [chatControlsToggle, navigationToggle].forEach(el => {
-      el.classList.add("chat-controls-closed");
-      el.classList.remove("chat-controls-open");
-    });
+  chatControlsToggle.classList.add("chat-controls-closed");
+  chatControlsToggle.classList.remove("chat-controls-open");
+  chatControlsToggle.innerHTML = leftArrowSVG;
 
-    pastChatsToggle.innerHTML = rightArrowSVG;
-    chatControlsToggle.innerHTML = leftArrowSVG;
-    navigationToggle.innerHTML = hamburgerMenuSVG;
-  } else {
-    // Desktop state: Show sidebars and set open states
-    [pastChatsRow, chatControlsRow].forEach(el => {
-      el.classList.remove("sidebar-hidden", "sidebar-shown");
-    });
+  // navigationToggle.innerHTML = hamburgerMenuSVG;
 
-    pastChatsToggle.classList.add("past-chats-open");
-    pastChatsToggle.classList.remove("past-chats-closed");
-
-    [chatControlsToggle, navigationToggle].forEach(el => {
-      el.classList.add("chat-controls-open");
-      el.classList.remove("chat-controls-closed");
-    });
-
-    pastChatsToggle.innerHTML = leftArrowSVG;
-    chatControlsToggle.innerHTML = rightArrowSVG;
-    navigationToggle.innerHTML = closeMenuSVG;
-  }
+  // Ensure header width is reset
+  document.documentElement.style.setProperty("--header-width", "0px");
 }
 
 // Run the initializer when the page loads
@@ -783,9 +784,9 @@ chatControlsToggle.addEventListener("click", () => {
   toggleSidebar(chatControlsRow, chatControlsToggle);
 });
 
-navigationToggle.addEventListener("click", () => {
-  toggleSidebar(headerBar, navigationToggle);
-});
+// navigationToggle.addEventListener("click", () => {
+//   toggleSidebar(headerBar, navigationToggle);
+// });
 
 //------------------------------------------------
 // Fixes #chat-input textarea height issue

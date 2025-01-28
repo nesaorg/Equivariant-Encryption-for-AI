@@ -67,15 +67,16 @@ try:
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    PRELOAD_MODELS = ['nesaorg/Llama-3.2-1B-Instruct-Encrypted',
-                    'nesaorg/distilbert-sentiment-encrypted']
+    PRELOAD_MODELS = [#'nesaorg/Llama-3.2-1B-Instruct-Encrypted',
+                      'nesaorg/Llama-3.1-8B-Instruct-Encrypted',
+                      'nesaorg/distilbert-sentiment-encrypted']
 
     def dummy_progress(_=0.0):
         
         pass
     def create_interface():
 
-        title = 'Text generation web UI'
+        title = 'Onyx Encrypted AI'
 
         # Password authentication
         auth = []
@@ -103,9 +104,21 @@ try:
         js = ui.js
     # Interface state elements
         shared.input_elements = ui.list_interface_input_elements()
+        custom_css = """
+        .tab-nav.scroll-hide.svelte-1uw5tnk.header_bar {
+        display: none !important; /* Hides the element completely */
+        width: 0 !important;      /* Ensures no width is allocated */
+        height: 0 !important;     /* Ensures no height is allocated */
+        padding: 0 !important;    /* Removes any padding */
+        margin: 0 !important;     /* Removes any margin */
+        overflow: hidden !important; /* Hides any remaining content */
+    }
+        """
+        combined_css = css + custom_css
 
         with gr.Blocks(css=css, analytics_enabled=False, title=title, theme=ui.theme) as shared.gradio['interface']:
 
+        
             # Interface state
             shared.gradio['interface_state'] = gr.State({k: None for k in shared.input_elements})
 
@@ -121,7 +134,6 @@ try:
 
             # Text Generation tab
             ui_chat.create_ui()
-            
             ui_parameters.create_ui(shared.settings['preset'])  # Parameters tab
             ui_model_menu.create_ui()
             
@@ -160,9 +172,9 @@ try:
         with OpenMonkeyPatch():
             shared.gradio['interface'].launch(
                 max_threads=64,
+                server_name= '0.0.0.0',
                 prevent_thread_lock=True,
                 share=shared.args.share,
-                server_name=None if not shared.args.listen else (shared.args.listen_host or '0.0.0.0'),
                 server_port=shared.args.listen_port,
                 inbrowser=shared.args.auto_launch,
                 auth=auth or None,

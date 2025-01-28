@@ -42,10 +42,13 @@ def generate_reply(*args, **kwargs):
 
     shared.generation_lock.acquire()
     tokens = ""
-    history = args[1]['history']['visible']
-    if not args[1]['history']['visible'][0][0]:
-        history = args[1]['history']['visible'][1:]
-        
+    try:
+        history = args[1]['history']['visible']
+        if not args[1]['history']['visible'][0][0]:
+            history = args[1]['history']['visible'][1:]
+    except:
+        history = []
+            
     try:
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
@@ -226,6 +229,7 @@ def generate_reply_wrapper(question, state, stopping_strings=None):
     """
     Returns formatted outputs for the UI
     """
+    print("inside this func")
     reply = question if not shared.is_seq2seq else ''
     yield formatted_outputs(reply, shared.model_name)
 
