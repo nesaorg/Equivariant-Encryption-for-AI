@@ -48,14 +48,22 @@ def generate_reply(*args, **kwargs):
             history = args[1]['history']['visible'][1:]
     except:
         history = []
-            
     try:
+        model_params = {
+            "temperature": shared.gradio['temperature'],
+            "max_new_tokens": shared.gradio['max_new_tokens'],
+            "top_p": shared.gradio['top_p'],
+            "frequency_penalty": shared.gradio['frequency_penalty'],
+            "presence_penalty": shared.gradio['presence_penalty'],
+            "custom_stopping_strings": shared.gradio['custom_stopping_strings'],
+        }
+        print("model_params = ", model_params)
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
             tokenizer=shared.tokenizer,
             model=shared.model,
             model_name=shared.model_name,
-            system_prompt=args[1]["chat-instruct_command"],
+            system_prompt=args[1]["onyx-encrypt_command"],
             history=history):
             if token:
                 tokens += token

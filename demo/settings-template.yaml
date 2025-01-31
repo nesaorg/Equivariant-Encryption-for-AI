@@ -1,8 +1,8 @@
 dark_theme: true
 show_controls: true
 start_with: ''
-mode: chat-instruct
-chat_style: cai-chat
+mode: onyx-encrypt
+chat_style: classic-chat
 prompt-default: QA
 prompt-notebook: QA
 preset: min_p
@@ -66,7 +66,7 @@ chat_template_str: |-
           {%- endif -%}
       {%- endif -%}
   {%- endfor -%}
-chat-instruct_command: |-
+onyx-encrypt_command: |-
   talk like a human
 autoload_model: false
 gallery-items_per_page: 50

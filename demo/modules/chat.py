@@ -29,7 +29,6 @@ from modules.text_generation import (
     get_max_prompt_length
 )
 from modules.utils import delete_file, get_available_characters, save_file
-
 # Copied from the Transformers library
 jinja_env = ImmutableSandboxedEnvironment(trim_blocks=True, lstrip_blocks=True)
 
@@ -133,7 +132,8 @@ def generate_chat_prompt(user_input, state, **kwargs):
         if user_msg not in ['', '<|BEGIN-VISIBLE-CHAT|>']:
             messages.insert(insert_pos, {"role": "user", "content": user_msg})
 
-    user_input = user_input.strip()
+    if user_input:
+        user_input = user_input.strip()
     if user_input and not impersonate and not _continue:
         messages.append({"role": "user", "content": user_input})
 
@@ -145,18 +145,18 @@ def generate_chat_prompt(user_input, state, **kwargs):
         return prompt
 
     def make_prompt(messages):
-        if state['mode'] == 'chat-instruct' and _continue:
+        if state['mode'] == 'onyx-encrypt' and _continue:
             prompt = renderer(messages=messages[:-1])
         else:
             prompt = renderer(messages=messages)
 
-        if state['mode'] == 'chat-instruct':
+        if state['mode'] == 'onyx-encrypt':
             outer_messages = []
             if state['custom_system_message'].strip() != '':
                 outer_messages.append({"role": "system", "content": state['custom_system_message']})
 
             prompt = remove_extra_bos(prompt)
-            command = state['chat-instruct_command']
+            command = state['onyx-encrypt_command']
             command = command.replace('<|character|>', state['name2'] if not impersonate else state['name1'])
             command = command.replace('<|prompt|>', prompt)
             command = replace_character_names(command, state['name1'], state['name2'])
@@ -252,12 +252,12 @@ def get_stopping_strings(state):
     stopping_strings = []
     renderers = []
 
-    if state['mode'] in ['instruct', 'chat-instruct']:
+    if state['mode'] in ['instruct', 'onyx-encrypt']:
         template = jinja_env.from_string(state['instruction_template_str'])
         renderer = partial(template.render, add_generation_prompt=False)
         renderers.append(renderer)
 
-    if state['mode'] in ['chat', 'chat-instruct']:
+    if state['mode'] in ['chat', 'onyx-encrypt']:
         template = jinja_env.from_string(state['chat_template_str'])
         renderer = partial(template.render, add_generation_prompt=False, name1=state['name1'], name2=state['name2'])
         renderers.append(renderer)
@@ -297,6 +297,8 @@ def get_stopping_strings(state):
 
 
 def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_message=True, for_ui=False):
+    # if text is None:
+    #     return
     history = state['history']
     output = copy.deepcopy(history)
     output = apply_extensions('history', output)
@@ -308,7 +310,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
 
     # Prepare the input
     if not (regenerate or _continue):
-        visible_text = html.escape(text)
+        visible_text = html.escape(text) if text is not None else ""
 
         # Apply extensions
         text, visible_text = apply_extensions('chat_input', text, visible_text, state)
@@ -353,7 +355,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
     for j, reply in enumerate(generate_reply(prompt, state, stopping_strings=stopping_strings, is_chat=True, for_ui=for_ui)):
 
         # Extract the reply
-        if state['mode'] in ['chat', 'chat-instruct']:
+        if state['mode'] in ['chat', 'onyx-encrypt']:
             visible_reply = re.sub("(<USER>|<user>|{{user}})", state['name1'], reply + '❚')
         else:
             visible_reply = reply + '❚'
@@ -408,14 +410,12 @@ def generate_chat_reply(text, state, regenerate=False, _continue=False, loading_
         if (len(history['visible']) == 1 and not history['visible'][0][0]) or len(history['internal']) == 0:
             yield history
             return
-
     for history in chatbot_wrapper(text, state, regenerate=regenerate, _continue=_continue, loading_message=loading_message, for_ui=for_ui):
-
         yield history
 
 
 def character_is_loaded(state, raise_exception=False):
-    if state['mode'] in ['chat', 'chat-instruct'] and state['name2'] == '':
+    if state['mode'] in ['chat', 'onyx-encrypt'] and state['name2'] == '':
         logger.error('It looks like no character is loaded. Please load one under Parameters > Character.')
         if raise_exception:
             raise ValueError
@@ -425,6 +425,7 @@ def character_is_loaded(state, raise_exception=False):
         return True
 
 
+
 def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
     '''
     Same as above but returns HTML for the UI
@@ -432,14 +433,24 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
 
     if not character_is_loaded(state):
         return
-
-    
     history = state['history']
+    print("history outside:", history);
     for i, history in enumerate(generate_chat_reply(text, state, regenerate, _continue, loading_message=True, for_ui=True)):
         yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu']), history
 
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
 
+def generate_history_token(text, state, regenerate=False, _continue=False):
+    if not character_is_loaded(state):
+        return
+    history = state['history']
+    print("history outside in generate_history_token:", history);
+
+    for i, history in enumerate(
+            generate_chat_reply(text, state, regenerate, _continue, loading_message=False, for_ui=True)):
+        print("history inside:", history);
+        yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
+                                state['character_menu']), history
 
 def remove_last_message(history):
     if len(history['visible']) > 0 and history['internal'][-1][0] != '<|BEGIN-VISIBLE-CHAT|>':
@@ -623,7 +634,7 @@ def find_all_histories_with_first_prompts(state):
 
 def load_latest_history(state):
     '''
-    Loads the latest history for the given character in chat or chat-instruct
+    Loads the latest history for the given character in chat or onyx-encrypt
     mode, or the latest instruct history for instruct mode.
     '''
 
@@ -642,7 +653,7 @@ def load_latest_history(state):
 
 def load_history_after_deletion(state, idx):
     '''
-    Loads the latest history for the given character in chat or chat-instruct
+    Loads the latest history for the given character in chat or onyx-encrypt
     mode, or the latest instruct history for instruct mode.
     '''
 
@@ -1182,7 +1193,7 @@ def handle_mode_change(state):
         history,
         html,
         gr.update(visible=state['mode'] != 'instruct'),
-        gr.update(visible=state['mode'] == 'chat-instruct'),
+        gr.update(visible=state['mode'] == 'onyx-encrypt'),
         past_chats_update
     ]
 
