@@ -631,22 +631,20 @@ moveToChatTab();
 // Buttons to toggle the sidebars
 //------------------------------------------------
 
-const leftArrowSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-arrow-bar-left">
-  <path d="M4 12l10 0"></path>
-  <path d="M4 12l4 4"></path>
-  <path d="M4 12l4 -4"></path>
-  <path d="M20 4l0 16"></path>
-</svg>`;
+const leftArrowSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+  </svg>`;
 
 const rightArrowSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-arrow-bar-right">
-  <path d="M20 12l-10 0"></path>
-  <path d="M20 12l-4 4"></path>
-  <path d="M20 12l-4 -4"></path>
-  <path d="M4 4l0 16"></path>
-</svg>`;
-
+  <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+  </svg>`;
+const outputOnSVG =`<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>`;
+const outputOffSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zM7 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>`;
+const svgDataOnUrl = `data:image/svg+xml,${encodeURIComponent(outputOnSVG)}`;
+const svgDataOffUrl = `data:image/svg+xml,${encodeURIComponent(outputOffSVG)}`;
 const hamburgerMenuSVG = `
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-hamburger-menu">
   <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -663,13 +661,21 @@ const closeMenuSVG = `
 const chatTab = document.getElementById("chat-tab");
 const pastChatsRow = document.getElementById("past-chats-row");
 const chatControlsRow = document.getElementById("chat-controls");
-
+const outputOffToggle = document.getElementById("toggle-off");
+const outputOnToggle = document.getElementById("toggle-on");
+outputOffToggle.style.backgroundImage = `url("${svgDataOffUrl}")`;
+outputOnToggle.style.backgroundImage = `url("${svgDataOnUrl}")`;
 if (chatTab) {
   // Create past-chats-toggle div
   const pastChatsToggle = document.createElement("div");
   pastChatsToggle.id = "past-chats-toggle";
   pastChatsToggle.innerHTML = leftArrowSVG; // Set initial icon to left arrow
   pastChatsToggle.classList.add("past-chats-open"); // Set initial position
+
+  const logoToggle = document.createElement("div");
+  logoToggle.id = "logo-toggle";
+  logoToggle.innerHTML = logoSVG; // Set initial icon to left arrow
+  logoToggle.classList.add("logo"); // Set initial position
 
   // Create chat-controls-toggle div
   const chatControlsToggle = document.createElement("div");
@@ -692,6 +698,8 @@ if (chatTab) {
 // Retrieve the dynamically created toggle buttons
 const pastChatsToggle = document.getElementById("past-chats-toggle");
 const chatControlsToggle = document.getElementById("chat-controls-toggle");
+const leftSideToggle = document.getElementById("left-side");
+const outputText = document.getElementById("output-text");
 
 function handleIndividualSidebarClose(event) {
   const target = event.target;
@@ -730,12 +738,28 @@ function toggleSidebar(sidebar, toggle, forceClose = false) {
     // Past chats sidebar
     toggle.classList.toggle("past-chats-closed", shouldClose);
     toggle.classList.toggle("past-chats-open", !shouldClose);
+    if(!shouldClose){
+      leftSideToggle.classList.add("logo-hidden");
+      pastChatsToggle.classList.remove("past-chat-move");
+    }else{
+      leftSideToggle.classList.remove("logo-hidden");
+      pastChatsToggle.classList.add("past-chat-move");
+    }
     toggle.innerHTML = shouldClose ? rightArrowSVG : leftArrowSVG;
   } else if (sidebar === chatControlsRow) {
     // Chat controls sidebar
     toggle.classList.toggle("chat-controls-closed", shouldClose);
     toggle.classList.toggle("chat-controls-open", !shouldClose);
     toggle.innerHTML = shouldClose ? leftArrowSVG : rightArrowSVG;
+    if(!shouldClose){
+      outputOnToggle.classList.add("right-side-move");
+      outputOffToggle.classList.add("right-side-move");
+      outputText.classList.remove("output-move");
+    }else{
+      outputOffToggle.classList.remove("right-side-move");
+      outputOnToggle.classList.remove("right-side-move");
+      outputText.classList.add("output-move");
+    }
   }
 
   // Mobile handling
@@ -762,9 +786,13 @@ function initializeSidebars() {
   pastChatsToggle.classList.remove("past-chats-open");
   pastChatsToggle.innerHTML = rightArrowSVG;
 
-  chatControlsToggle.classList.add("chat-controls-closed");
-  chatControlsToggle.classList.remove("chat-controls-open");
-  chatControlsToggle.innerHTML = leftArrowSVG;
+  outputText.classList.remove("output-move");
+  outputOnToggle.classList.add("right-side-move");
+  outputOffToggle.classList.add("right-side-move");
+  pastChatsToggle.classList.add("past-chat-move");
+  chatControlsToggle.classList.remove("chat-controls-closed");
+  chatControlsToggle.classList.add("chat-controls-open");
+  chatControlsToggle.innerHTML = rightArrowSVG;
 
   // navigationToggle.innerHTML = hamburgerMenuSVG;
 
@@ -775,6 +803,14 @@ function initializeSidebars() {
 // Run the initializer when the page loads
 initializeSidebars();
 
+outputOffToggle.addEventListener("click", () => {
+  outputOffToggle.classList.add("hideCurOutput");
+  outputOnToggle.classList.remove("hideCurOutput");
+});
+outputOnToggle.addEventListener("click", () => {
+  outputOffToggle.classList.remove("hideCurOutput");
+  outputOnToggle.classList.add("hideCurOutput");
+});
 // Add click event listeners to toggle buttons
 pastChatsToggle.addEventListener("click", () => {
   toggleSidebar(pastChatsRow, pastChatsToggle);
