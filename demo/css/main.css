@@ -429,6 +429,7 @@ div.svelte-362y77>*, div.svelte-362y77>.form>* {
 
 #chat-tab {
     padding: 0;
+    margin-top: -5px;
 }
 
 #chat-tab > :nth-child(1) {

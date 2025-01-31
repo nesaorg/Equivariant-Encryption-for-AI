@@ -48,8 +48,16 @@ def generate_reply(*args, **kwargs):
             history = args[1]['history']['visible'][1:]
     except:
         history = []
-            
     try:
+        model_params = {
+            "temperature": shared.gradio['temperature'],
+            "max_new_tokens": shared.gradio['max_new_tokens'],
+            "top_p": shared.gradio['top_p'],
+            "frequency_penalty": shared.gradio['frequency_penalty'],
+            "presence_penalty": shared.gradio['presence_penalty'],
+            "custom_stopping_strings": shared.gradio['custom_stopping_strings'],
+        }
+        print("model_params = ", model_params)
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
             tokenizer=shared.tokenizer,

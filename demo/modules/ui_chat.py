@@ -16,6 +16,7 @@ reload_arr = ('history', 'name1', 'name2', 'mode', 'chat_style', 'character_menu
 custom_css = """
 #sampling-parameters-heading, #model-settings-heading {
     margin-bottom: 5px; /* Close the gap between heading and line */
+    margin-top: 5px;
     padding: 0;
     text-align: center; /* Center-align the headings */
     font-size: var(--text-lg);
@@ -23,12 +24,15 @@ custom_css = """
     line-height: 1.3;
     color: var(--body-text-color);
 }
-
+#model-settings-heading {
+    margin-top: 3px;
+}
 #sampling-parameters-divider, #model-settings-divider {
     border: 0;
     border-top: 1px solid #555; /* Dimmer line color */
     margin: 0; /* Remove margin to stick it close to the heading */
     width: 100%; /* Full-width underline */
+    margin-bottom: 5px !important;
 }
 #left-chat{
     padding: 0 10px;
@@ -146,13 +150,6 @@ def create_ui():
                     interactive=True
                 )
 
-                # Save Button
-                # gr.Button(
-                #     value="Save Settings",
-                #     elem_id="save-settings",
-                #     variant="primary"
-                # )
-
         with gr.Row():
             with gr.Column(elem_id='chat-col'):
                 shared.gradio['display'] = gr.HTML(value=chat_html_wrapper({'internal': [], 'visible': []}, '', '', 'chat', 'classic-chat', ''))
@@ -194,7 +191,7 @@ def create_ui():
             with gr.Column():
 
                 with gr.Row():
-                    shared.gradio['mode'] = gr.Radio(choices=['onyx-encrypt'], value=shared.settings['mode'] if shared.settings['mode'] in ['chat', 'onyx-encrypt'] else None, label='Encrypted Model', info='Your data insertions, prompts and responses remain fully encrypted, blind to your cloud provider, including Onyx.', elem_id='chat-mode')
+                    shared.gradio['mode'] = gr.Radio(choices=['onyx-encrypt'], value=shared.settings['mode'] if shared.settings['mode'] in ['chat', 'onyx-encrypt'] else None, label='Encrypted Model', info='Your data insertions, prompts and responses remain fully encrypted, blind to your cloud provider and the AI inference provider.', elem_id='chat-mode')
 
                 with gr.Row():
                     shared.gradio['chat_style'] = gr.Dropdown(choices=utils.get_available_chat_styles(), label='Chat Theme', value=shared.settings['chat_style'], visible=shared.settings['mode'] != 'instruct')
@@ -303,8 +300,8 @@ def create_event_handlers():
     # Obsolete variables, kept for compatibility with old extensions
     shared.input_params = gradio(inputs)
     shared.reload_inputs = gradio(reload_arr)
-    shared.gradio['Output Off'].click(set_output_format)
-    shared.gradio['Output On'].click(set_output_format)
+    shared.gradio['Output Off'].click(set_output_format).then(chat.generate_history_token, gradio(inputs), gradio('display', 'history'), show_progress=False)
+    shared.gradio['Output On'].click(set_output_format).then(chat.generate_history_token, gradio(inputs), gradio('display', 'history'), show_progress=False)
     shared.gradio['Generate'].click(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
