@@ -385,7 +385,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
         output['visible'][-1][1] = output['visible'][-1][1][:-1]
 
     output['visible'][-1][1] = apply_extensions('output', output['visible'][-1][1], state, is_chat=True)
-    
+
     yield output
 
 
@@ -434,23 +434,21 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
     if not character_is_loaded(state):
         return
     history = state['history']
-    print("history outside:", history);
     for i, history in enumerate(generate_chat_reply(text, state, regenerate, _continue, loading_message=True, for_ui=True)):
+        shared.history_Info = history
         yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu']), history
+
 
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
 
 def generate_history_token(text, state, regenerate=False, _continue=False):
-    if not character_is_loaded(state):
-        return
-    history = state['history']
-    print("history outside in generate_history_token:", history);
+    if(shared.history_Info == {}):
+            shared.history_Info = load_latest_history(state)
+    return chat_html_wrapper(shared.history_Info, state['name1'], state['name2'], state['mode'], state['chat_style'],
+                      state['character_menu']), shared.history_Info
 
-    for i, history in enumerate(
-            generate_chat_reply(text, state, regenerate, _continue, loading_message=False, for_ui=True)):
-        print("history inside:", history);
-        yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
-                                state['character_menu']), history
+
+
 
 def remove_last_message(history):
     if len(history['visible']) > 0 and history['internal'][-1][0] != '<|BEGIN-VISIBLE-CHAT|>':
