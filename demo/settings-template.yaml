@@ -1,7 +1,7 @@
 dark_theme: true
 show_controls: true
 start_with: ''
-mode: onyx-encrypt
+mode: equivariant-encrypt
 chat_style: classic-chat
 prompt-default: QA
 prompt-notebook: QA
@@ -66,7 +66,7 @@ chat_template_str: |-
           {%- endif -%}
       {%- endif -%}
   {%- endfor -%}
-onyx-encrypt_command: |-
+equivariant-encrypt_command: |-
   talk like a human
 autoload_model: false
 gallery-items_per_page: 50

@@ -63,7 +63,7 @@ def generate_reply(*args, **kwargs):
             tokenizer=shared.tokenizer,
             model=shared.model,
             model_name=shared.model_name,
-            system_prompt=args[1]["onyx-encrypt_command"],
+            system_prompt=args[1]["equivariant-encrypt_command"],
             history=history):
             if token:
                 tokens += token

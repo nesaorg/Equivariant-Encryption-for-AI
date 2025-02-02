@@ -48,13 +48,6 @@ def create_ui():
     shared.gradio['history'] = gr.JSON({'internal': [], 'visible': []}, visible=False)
 
     with gr.Row():
-        gr.HTML(
-            value="""
-                    <div class = "left-side" id = "left-side">
-                        <img src="file/cache/logo.png" class="logo">
-                    </div>
-                    """
-        )
         gr.HTML(value="""<div id = "output-text" class = "output-text">output</div>""")
         shared.gradio['Output Off'] = gr.Button(value="", elem_id="toggle-off", elem_classes="toggle")
         shared.gradio['Output On'] = gr.Button(value="", elem_id="toggle-on", elem_classes="toggle hideCurOutput")
@@ -191,14 +184,14 @@ def create_ui():
             with gr.Column():
 
                 with gr.Row():
-                    shared.gradio['mode'] = gr.Radio(choices=['onyx-encrypt'], value=shared.settings['mode'] if shared.settings['mode'] in ['chat', 'onyx-encrypt'] else None, label='Encrypted Model', info='Your data insertions, prompts and responses remain fully encrypted, blind to your cloud provider and the AI inference provider.', elem_id='chat-mode')
+                    shared.gradio['mode'] = gr.Radio(choices=['equivariant-encrypt'], value=shared.settings['mode'] if shared.settings['mode'] in ['chat', 'equivariant-encrypt'] else None, label='Encrypted Model', info='Your data insertions, prompts and responses remain fully encrypted, blind to your cloud provider and the AI inference provider.', elem_id='chat-mode')
 
                 with gr.Row():
                     shared.gradio['chat_style'] = gr.Dropdown(choices=utils.get_available_chat_styles(), label='Chat Theme', value=shared.settings['chat_style'], visible=shared.settings['mode'] != 'instruct')
-                    shared.gradio['character'] = gr.Dropdown(choices=['Assistant'],info="Used in chat and onyx-encrypt modes.",label='Character', value='Assistant', visible=True, interactive=True)
+                    shared.gradio['character'] = gr.Dropdown(choices=['Assistant'],info="Used in chat and equivariant-encrypt modes.",label='Character', value='Assistant', visible=True, interactive=True)
 
                 with gr.Row():
-                    shared.gradio['onyx-encrypt_command'] = gr.Textbox(value=shared.settings['onyx-encrypt_command'], lines=12, label='System Prompt', info='\n', visible=shared.settings['mode'] == 'onyx-encrypt', elem_classes=['add_scrollbar'])
+                    shared.gradio['equivariant-encrypt_command'] = gr.Textbox(value=shared.settings['equivariant-encrypt_command'], lines=12, label='System Prompt', info='\n', visible=shared.settings['mode'] == 'equivariant-encrypt', elem_classes=['add_scrollbar'])
 with gr.Box(visible=False):
     gr.HTML("""
     <script>
@@ -221,7 +214,7 @@ def create_chat_settings_ui():
             with gr.Column(scale=8):
                 with gr.Tab("Character"):
                     with gr.Row():
-                        shared.gradio['character_menu'] = gr.Dropdown(value=None, choices=utils.get_available_characters(), label='Character', elem_id='character-menu', info='Used in chat and onyx-encrypt modes.', elem_classes='slim-dropdown',visible=False)
+                        shared.gradio['character_menu'] = gr.Dropdown(value=None, choices=utils.get_available_characters(), label='Character', elem_id='character-menu', info='Used in chat and equivariant-encrypt modes.', elem_classes='slim-dropdown',visible=False)
                         ui.create_refresh_button(shared.gradio['character_menu'], lambda: None, lambda: {'choices': utils.get_available_characters()}, 'refresh-button', interactive=True)
                         shared.gradio['save_character'] = gr.Button('💾', elem_classes='refresh-button', elem_id="save-character", interactive=not mu,visible=False)
                         shared.gradio['delete_character'] = gr.Button('🗑️', elem_classes='refresh-button', interactive=not mu,visible=False)
@@ -281,7 +274,7 @@ def create_chat_settings_ui():
         with gr.Row():
             with gr.Column():
                 shared.gradio['custom_system_message'] = gr.Textbox(value=shared.settings['custom_system_message'], lines=2, label='Custom system message', info='If not empty, will be used instead of the default one.', elem_classes=['add_scrollbar'])
-                shared.gradio['instruction_template_str'] = gr.Textbox(value='', label='Instruction template', lines=24, info='Change this according to the model/LoRA that you are using. Used in instruct and onyx-encrypt modes.', elem_classes=['add_scrollbar', 'monospace'])
+                shared.gradio['instruction_template_str'] = gr.Textbox(value='', label='Instruction template', lines=24, info='Change this according to the model/LoRA that you are using. Used in instruct and equivariant-encrypt modes.', elem_classes=['add_scrollbar', 'monospace'])
                 with gr.Row():
                     shared.gradio['send_instruction_to_default'] = gr.Button('Send to default', elem_classes=['small-button'])
                     shared.gradio['send_instruction_to_notebook'] = gr.Button('Send to notebook', elem_classes=['small-button'])
@@ -397,7 +390,7 @@ def create_event_handlers():
 
     shared.gradio['mode'].change(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_mode_change, gradio('interface_state'), gradio('history', 'display', 'chat_style', 'onyx-encrypt_command'), show_progress=False).then(
+        chat.handle_mode_change, gradio('interface_state'), gradio('history', 'display', 'chat_style', 'equivariant-encrypt_command'), show_progress=False).then(
         None, gradio('mode'), None, js="(mode) => {mode === 'instruct' ? document.getElementById('character-menu').parentNode.parentNode.style.display = 'none' : document.getElementById('character-menu').parentNode.parentNode.style.display = ''}")
 
     shared.gradio['chat_style'].change(chat.redraw_html, gradio(reload_arr), gradio('display'), show_progress=False)

@@ -20,9 +20,8 @@ with open(Path(__file__).resolve().parent / '../css/html_readable_style.css', 'r
 with open(Path(__file__).resolve().parent / '../css/html_instruct_style.css', 'r') as f:
     instruct_css = f.read()
 
-hf_token = "11"
-model_id = "11"
-tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token)
+model_id = "nesaorg/Llama-3.1-8B-Instruct-Encrypted"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 # Custom chat styles
 chat_styles = {}

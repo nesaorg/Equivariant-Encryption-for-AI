@@ -145,18 +145,18 @@ def generate_chat_prompt(user_input, state, **kwargs):
         return prompt
 
     def make_prompt(messages):
-        if state['mode'] == 'onyx-encrypt' and _continue:
+        if state['mode'] == 'equivariant-encrypt' and _continue:
             prompt = renderer(messages=messages[:-1])
         else:
             prompt = renderer(messages=messages)
 
-        if state['mode'] == 'onyx-encrypt':
+        if state['mode'] == 'equivariant-encrypt':
             outer_messages = []
             if state['custom_system_message'].strip() != '':
                 outer_messages.append({"role": "system", "content": state['custom_system_message']})
 
             prompt = remove_extra_bos(prompt)
-            command = state['onyx-encrypt_command']
+            command = state['equivariant-encrypt_command']
             command = command.replace('<|character|>', state['name2'] if not impersonate else state['name1'])
             command = command.replace('<|prompt|>', prompt)
             command = replace_character_names(command, state['name1'], state['name2'])
@@ -252,12 +252,12 @@ def get_stopping_strings(state):
     stopping_strings = []
     renderers = []
 
-    if state['mode'] in ['instruct', 'onyx-encrypt']:
+    if state['mode'] in ['instruct', 'equivariant-encrypt']:
         template = jinja_env.from_string(state['instruction_template_str'])
         renderer = partial(template.render, add_generation_prompt=False)
         renderers.append(renderer)
 
-    if state['mode'] in ['chat', 'onyx-encrypt']:
+    if state['mode'] in ['chat', 'equivariant-encrypt']:
         template = jinja_env.from_string(state['chat_template_str'])
         renderer = partial(template.render, add_generation_prompt=False, name1=state['name1'], name2=state['name2'])
         renderers.append(renderer)
@@ -355,7 +355,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
     for j, reply in enumerate(generate_reply(prompt, state, stopping_strings=stopping_strings, is_chat=True, for_ui=for_ui)):
 
         # Extract the reply
-        if state['mode'] in ['chat', 'onyx-encrypt']:
+        if state['mode'] in ['chat', 'equivariant-encrypt']:
             visible_reply = re.sub("(<USER>|<user>|{{user}})", state['name1'], reply + '❚')
         else:
             visible_reply = reply + '❚'
@@ -415,7 +415,7 @@ def generate_chat_reply(text, state, regenerate=False, _continue=False, loading_
 
 
 def character_is_loaded(state, raise_exception=False):
-    if state['mode'] in ['chat', 'onyx-encrypt'] and state['name2'] == '':
+    if state['mode'] in ['chat', 'equivariant-encrypt'] and state['name2'] == '':
         logger.error('It looks like no character is loaded. Please load one under Parameters > Character.')
         if raise_exception:
             raise ValueError
@@ -632,7 +632,7 @@ def find_all_histories_with_first_prompts(state):
 
 def load_latest_history(state):
     '''
-    Loads the latest history for the given character in chat or onyx-encrypt
+    Loads the latest history for the given character in chat or equivariant-encrypt
     mode, or the latest instruct history for instruct mode.
     '''
 
@@ -651,7 +651,7 @@ def load_latest_history(state):
 
 def load_history_after_deletion(state, idx):
     '''
-    Loads the latest history for the given character in chat or onyx-encrypt
+    Loads the latest history for the given character in chat or equivariant-encrypt
     mode, or the latest instruct history for instruct mode.
     '''
 
@@ -1191,7 +1191,7 @@ def handle_mode_change(state):
         history,
         html,
         gr.update(visible=state['mode'] != 'instruct'),
-        gr.update(visible=state['mode'] == 'onyx-encrypt'),
+        gr.update(visible=state['mode'] == 'equivariant-encrypt'),
         past_chats_update
     ]
 
