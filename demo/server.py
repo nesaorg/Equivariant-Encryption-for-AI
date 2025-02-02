@@ -76,7 +76,7 @@ try:
         pass
     def create_interface():
 
-        title = 'Onyx Encrypted AI'
+        title = 'Nesa Encrypted AI'
 
         # Password authentication
         auth = []
