@@ -43,11 +43,15 @@ custom_css = """
 
 """
 def create_ui():
+
     mu = shared.args.multi_user
     shared.gradio['Chat input'] = gr.State()
     shared.gradio['history'] = gr.JSON({'internal': [], 'visible': []}, visible=False)
-
+    custom_html = """
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        """
     with gr.Row():
+        gr.HTML(value=custom_html)
         gr.HTML(value="""<div id = "output-text" class = "output-text">output</div>""")
         shared.gradio['Output Off'] = gr.Button(value="", elem_id="toggle-off", elem_classes="toggle")
         shared.gradio['Output On'] = gr.Button(value="", elem_id="toggle-on", elem_classes="toggle hideCurOutput")

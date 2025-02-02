@@ -789,10 +789,6 @@ function toggleSidebar(sidebar, toggle, forceClose = false) {
     }
   }
 
-  // Mobile handling
-  if (isMobile()) {
-    sidebar.classList.toggle("sidebar-shown", !shouldClose);
-  }
 }
 
 // Function to check if the device is mobile
@@ -802,6 +798,7 @@ function isMobile() {
 
 // Function to initialize sidebars
 function initializeSidebars() {
+  console.log("in initialize fun");
   // Hide pastChatsRow (chat sidebar) and other sidebars by default
   [pastChatsRow].forEach((sidebar) => {
     sidebar.classList.add("sidebar-hidden");
@@ -857,9 +854,9 @@ chatControlsToggle.addEventListener("click", () => {
 //------------------------------------------------
 
 if (isMobile()) {
+  console.log("in isMobile");
   // Target the textarea
   const textarea = document.querySelector("#chat-input textarea");
-
   if (textarea) {
     // Simulate adding and removing a newline
     textarea.value += "\n";
@@ -867,6 +864,18 @@ if (isMobile()) {
     textarea.value = textarea.value.slice(0, -1);
     textarea.dispatchEvent(new Event("input", { bubbles: true }));
   }
+
+  chatControlsToggle.classList.remove("chat-controls-open");
+  chatControlsToggle.classList.add("chat-controls-closed");
+  chatControlsToggle.innerHTML = leftArrowSVG;
+  chatControlsRow.classList.add("sidebar-hidden");
+  chatControlsRow.classList.remove("sidebar-shown");
+
+  textarea.addEventListener('focus', function() {
+    setTimeout(() => {
+      this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  });
 }
 
 //------------------------------------------------

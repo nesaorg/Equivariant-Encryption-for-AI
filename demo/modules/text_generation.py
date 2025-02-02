@@ -57,7 +57,6 @@ def generate_reply(*args, **kwargs):
             "presence_penalty": shared.gradio['presence_penalty'],
             "custom_stopping_strings": shared.gradio['custom_stopping_strings'],
         }
-        print("model_params = ", model_params)
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
             tokenizer=shared.tokenizer,
