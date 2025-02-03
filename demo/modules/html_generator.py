@@ -221,13 +221,13 @@ def get_image_cache(path):
     return image_cache[path][1]
 
 
-def generate_instruct_html(history):
+def generate_instruct_html(history, tokenize = False):
     output = f'<style>{instruct_css}</style><div class="chat" id="chat"><div class="messages">'
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
         user_input = row[0]
         ai_output = row[1]
-        if shared.outputFormat == "number":
+        if tokenize:
             user_input = tokenizer.encode(row[0])
             ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
@@ -290,7 +290,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
         row[1], file = check_file_availability(row[1])
         user_input = row[0]
         ai_output = row[1]
-        if shared.tokenize:
+        if tokenize:
             user_input = tokenizer.encode(row[0])
             ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
@@ -340,14 +340,14 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
     return output
 
 
-def generate_chat_html(history, name1, name2, reset_cache=False):
+def generate_chat_html(history, name1, name2, reset_cache=False, tokenize=False):
     output = f'<style>{chat_styles["wpp"]}</style><div class="chat" id="chat"><div class="messages">'
 
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
         user_input = row[0]
         ai_output = row[1]
-        if shared.outputFormat == "number":
+        if tokenize:
             user_input = tokenizer.encode(row[0])
             ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
@@ -375,10 +375,10 @@ def generate_chat_html(history, name1, name2, reset_cache=False):
     return output
 
 
-def chat_html_wrapper(history, name1, name2, mode, style, character, reset_cache=False, tokenize=False):
+def chat_html_wrapper(history, name1, name2, mode, style, character, reset_cache=False, tokenize = False):
     if mode == 'instruct':
         return generate_instruct_html(history['visible'])
     elif style == 'wpp':
         return generate_chat_html(history['visible'], name1, name2)
     else:
-        return generate_cai_chat_html(history['visible'], name1, name2, style, character, reset_cache, tokenize=tokenize)
+        return generate_cai_chat_html(history['visible'], name1, name2, style, character, reset_cache, tokenize)

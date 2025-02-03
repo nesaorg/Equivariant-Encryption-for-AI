@@ -189,6 +189,7 @@ def list_interface_input_elements():
         'stream',
         'tfs',
         'top_a',
+        'tokenize'
     ]
     elements += [
         'textbox',
@@ -211,6 +212,10 @@ def list_interface_input_elements():
     elements += list_model_elements()
     return elements
 
+def toggle_tokenize(current_state):
+    new_state = not current_state
+    return gr.update(value=new_state)
+
 
 def gather_interface_values(*args):
     interface_elements = list_interface_input_elements()
@@ -222,8 +227,8 @@ def gather_interface_values(*args):
                 value = value.split("root=")[1]
                 value = value.replace("'",'"')
                 value = json.loads(value)
-                
-                    
+        if element == 'tokenize':
+            print("tokenizing = ", value)
             # output[element] = {'internal': [], 'visible': []}
             # print(output[element])
         # else:

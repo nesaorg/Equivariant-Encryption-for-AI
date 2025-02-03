@@ -482,8 +482,12 @@ div.svelte-362y77>*, div.svelte-362y77>.form>* {
     overflow: auto !important;
     border-radius: 0 !important;
     margin-bottom: var(--input-delta) !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-
+.chat-parent::-webkit-scrollbar {
+    display: none;
+}
 .chat-parent .prose {
     visibility: visible;
 }

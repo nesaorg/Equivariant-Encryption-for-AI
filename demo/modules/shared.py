@@ -23,8 +23,6 @@ lora_names = []
 stop_everything = False
 generation_lock = None
 processing_message = '*Is typing...*'
-outputFormat = "text"
-tokenize = False
 # UI variables
 gradio = {}
 persistent_interface_state = {}

@@ -46,6 +46,7 @@ def create_ui():
 
     mu = shared.args.multi_user
     shared.gradio['Chat input'] = gr.State()
+    shared.gradio['tokenize'] = gr.State(False)
     shared.gradio['history'] = gr.JSON({'internal': [], 'visible': []}, visible=False)
     custom_html = """
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -287,11 +288,6 @@ def create_chat_settings_ui():
             with gr.Column():
                 shared.gradio['chat_template_str'] = gr.Textbox(value=shared.settings['chat_template_str'], label='Chat template', lines=22, elem_classes=['add_scrollbar', 'monospace'])
 
-def set_output_format():
-    if(shared.outputFormat == "text"):
-        shared.outputFormat = "number"
-    else:
-        shared.outputFormat = "text"
 def create_event_handlers():
 
     # Obsolete variables, kept for compatibility with old extensions
@@ -305,13 +301,18 @@ def create_event_handlers():
         None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.remove("_generating")').then(
         None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
 
-    shared.gradio['Output Off'].click(
+
+    shared.gradio['Output Off'].click (
+        ui.toggle_tokenize, shared.gradio['tokenize'], shared.gradio['tokenize']
+    ).then(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')
     ).then(
         chat.toggle_tokenize_text, gradio('interface_state'), gradio('display', 'history'), show_progress=False
     )
 
-    shared.gradio['Output On'].click(
+    shared.gradio['Output On'].click (
+        ui.toggle_tokenize, shared.gradio['tokenize'], shared.gradio['tokenize']
+    ).then(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')
     ).then(
         chat.toggle_detokenize_text, gradio('interface_state'), gradio('display', 'history'), show_progress=False
