@@ -174,6 +174,7 @@ def get_model_metadata(model):
 
 
 def infer_loader(model_name, model_settings):
+    shared.outputFormat = "text"
     path_to_model = Path(f'{shared.args.model_dir}/{model_name}')
     if not path_to_model.exists():
         loader = None
