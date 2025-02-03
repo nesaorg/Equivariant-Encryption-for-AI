@@ -31,6 +31,7 @@ from modules.logging_colors import logger
 from modules.models import clear_torch_cache, load_model
 from pprint import pprint
 from nesa.backend.registry import ModelRegistry
+import copy
 
 def generate_reply(*args, **kwargs):
     
@@ -43,19 +44,26 @@ def generate_reply(*args, **kwargs):
     shared.generation_lock.acquire()
     tokens = ""
     try:
-        history = args[1]['history']['visible']
+        history = copy.deepcopy(args[1]['history']['visible'])
         if not args[1]['history']['visible'][0][0]:
-            history = args[1]['history']['visible'][1:]
+            history = copy.deepcopy(args[1]['history']['visible'][1:])
     except:
         history = []
-            
     try:
+        model_params = {
+            "temperature": shared.gradio['temperature'],
+            "max_new_tokens": shared.gradio['max_new_tokens'],
+            "top_p": shared.gradio['top_p'],
+            "frequency_penalty": shared.gradio['frequency_penalty'],
+            "presence_penalty": shared.gradio['presence_penalty'],
+            "custom_stopping_strings": shared.gradio['custom_stopping_strings'],
+        }
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
             tokenizer=shared.tokenizer,
             model=shared.model,
             model_name=shared.model_name,
-            system_prompt=args[1]["chat-instruct_command"],
+            system_prompt=args[1]["equivariant-encrypt_command"],
             history=history):
             if token:
                 tokens += token

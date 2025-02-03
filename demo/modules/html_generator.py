@@ -2,6 +2,7 @@ import functools
 import html
 import os
 import re
+from transformers import AutoTokenizer
 import time
 from pathlib import Path
 
@@ -19,6 +20,9 @@ with open(Path(__file__).resolve().parent / '../css/html_readable_style.css', 'r
 with open(Path(__file__).resolve().parent / '../css/html_instruct_style.css', 'r') as f:
     instruct_css = f.read()
 
+model_id = "nesaorg/Llama-3.1-8B-Instruct-Encrypted"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+
 # Custom chat styles
 chat_styles = {}
 for k in get_available_chat_styles():
@@ -33,7 +37,6 @@ for k in chat_styles:
     if match:
         style = match.group(1)
         chat_styles[k] = chat_styles.get(style, '') + '\n\n' + '\n'.join(lines[1:])
-
 
 def fix_newlines(string):
     string = string.replace('\n', '\n\n')
@@ -218,17 +221,21 @@ def get_image_cache(path):
     return image_cache[path][1]
 
 
-def generate_instruct_html(history):
+def generate_instruct_html(history, tokenize = False):
     output = f'<style>{instruct_css}</style><div class="chat" id="chat"><div class="messages">'
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
-
+        user_input = row[0]
+        ai_output = row[1]
+        if tokenize:
+            user_input = tokenizer.encode(row[0])
+            ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
             output += f"""
                   <div class="user-message">
                     <div class="text">
                       <div class="message-body">
-                        {row[0]}
+                        {user_input}
                       </div>
                     </div>
                   </div>
@@ -238,7 +245,7 @@ def generate_instruct_html(history):
               <div class="assistant-message">
                 <div class="text">
                   <div class="message-body">
-                    {row[1]}
+                    {ai_output}
                   </div>
                 </div>
               </div>
@@ -270,7 +277,7 @@ def check_file_availability(input_string, substr="[file]"):
 
     return input_string, ""
 
-def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=False):
+def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=False,tokenize=False):
     output = f'<style>{chat_styles[style]}</style><div class="chat" id="chat"><div class="messages">'
 
     # We use ?character and ?time.time() to force the browser to reset caches
@@ -280,7 +287,12 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
     
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
-
+        row[1], file = check_file_availability(row[1])
+        user_input = row[0]
+        ai_output = row[1]
+        if tokenize:
+            user_input = tokenizer.encode(row[0])
+            ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
             output += f"""
                   <div class="message">
@@ -292,12 +304,11 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                         {name1}
                       </div>
                       <div class="message-body">
-                        {row[0]}
+                        {user_input}
                       </div>
                     </div>
                   </div>
                 """
-        row[1], file = check_file_availability(row[1])
         output += f"""
               <div class="message">
                 <div class="circle-bot">
@@ -308,7 +319,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                     {name2}
                   </div>
                   <div class="message-body">
-                    {row[1]}
+                    {ai_output}
         """
         if file:
             output += f"""
@@ -319,7 +330,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
                     </a>
         """
 
-        output += f"""
+        output += """
                   </div>
                 </div>
               </div>
@@ -329,18 +340,22 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
     return output
 
 
-def generate_chat_html(history, name1, name2, reset_cache=False):
+def generate_chat_html(history, name1, name2, reset_cache=False, tokenize=False):
     output = f'<style>{chat_styles["wpp"]}</style><div class="chat" id="chat"><div class="messages">'
 
     for i, _row in enumerate(history):
         row = [convert_to_markdown_wrapped(entry, use_cache=i != len(history) - 1) for entry in _row]
-
+        user_input = row[0]
+        ai_output = row[1]
+        if tokenize:
+            user_input = tokenizer.encode(row[0])
+            ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
             output += f"""
               <div class="message">
                 <div class="text-you">
                   <div class="message-body">
-                    {row[0]}
+                    {user_input}
                   </div>
                 </div>
               </div>
@@ -350,7 +365,7 @@ def generate_chat_html(history, name1, name2, reset_cache=False):
           <div class="message">
             <div class="text-bot">
               <div class="message-body">
-                {row[1]}
+                {ai_output}
               </div>
             </div>
           </div>
@@ -360,10 +375,10 @@ def generate_chat_html(history, name1, name2, reset_cache=False):
     return output
 
 
-def chat_html_wrapper(history, name1, name2, mode, style, character, reset_cache=False):
+def chat_html_wrapper(history, name1, name2, mode, style, character, reset_cache=False, tokenize = False):
     if mode == 'instruct':
         return generate_instruct_html(history['visible'])
     elif style == 'wpp':
         return generate_chat_html(history['visible'], name1, name2)
     else:
-        return generate_cai_chat_html(history['visible'], name1, name2, style, character, reset_cache)
+        return generate_cai_chat_html(history['visible'], name1, name2, style, character, reset_cache, tokenize)

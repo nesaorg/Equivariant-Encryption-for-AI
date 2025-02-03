@@ -189,6 +189,7 @@ def list_interface_input_elements():
         'stream',
         'tfs',
         'top_a',
+        'tokenize'
     ]
     elements += [
         'textbox',
@@ -205,34 +206,43 @@ def list_interface_input_elements():
         'instruction_template_str',
         'chat_template_str',
         'chat_style',
-        'chat-instruct_command',
+        'equivariant-encrypt_command',
     ]
 
     elements += list_model_elements()
     return elements
 
+def toggle_tokenize(state):
+    if "tokenize" not in state:
+        state["tokenize"] = False 
+    new_state = not state["tokenize"]
+    state["tokenize"] = new_state
+    return  state['tokenize']
+
+
+
 
 def gather_interface_values(*args):
     interface_elements = list_interface_input_elements()
-
     output = {}
+
     for element, value in zip(interface_elements, args):
-        if element == 'history':
+        if element == "history":
             if "root" in value:
                 value = value.split("root=")[1]
-                value = value.replace("'",'"')
+                value = value.replace("'", '"')
                 value = json.loads(value)
-                
-                    
-            # output[element] = {'internal': [], 'visible': []}
-            # print(output[element])
-        # else:
-        output[element] = value
-        
-    if not shared.args.multi_user:
-        shared.persistent_interface_state = output
+
+
+        output[element] = value 
+
+    if "tokenize" not in output:
+        output["tokenize"] = False
 
     return output
+
+
+
 
 
 def apply_interface_values(state, use_persistent=False):

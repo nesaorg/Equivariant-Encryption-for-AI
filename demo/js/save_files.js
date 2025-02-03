@@ -20,7 +20,7 @@ function saveFile(contents, filename) {
 function saveHistory(history, character, mode) {
   let path = null;
 
-  if (["chat", "chat-instruct"].includes(mode) && character && character.trim() !== "") {
+  if (["chat", "equivariant-encrypt"].includes(mode) && character && character.trim() !== "") {
     path = `history_${character}_${getCurrentTimestamp()}.json`;
   } else {
     try {
