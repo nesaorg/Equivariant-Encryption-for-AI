@@ -169,7 +169,7 @@ def create_ui():
             with gr.Row():
                 shared.gradio['Regenerate'] = gr.Button('Regenerate (Ctrl + Enter)', elem_id='Regenerate')
                 shared.gradio['Continue'] = gr.Button('Continue (Alt + Enter)', elem_id='Continue', visible=False)
-                shared.gradio['Remove last'] = gr.Button('Remove last reply (Ctrl + Shift + Backspace)', elem_id='Remove-last')
+                # shared.gradio['Remove last'] = gr.Button('Remove last reply (Ctrl + Shift + Backspace)', elem_id='Remove-last')
 
             with gr.Row():
                 shared.gradio['Replace last reply'] = gr.Button('Replace last reply (Ctrl + Shift + L)', elem_id='Replace-last')
@@ -297,8 +297,6 @@ def create_event_handlers():
     # Obsolete variables, kept for compatibility with old extensions
     shared.input_params = gradio(inputs)
     shared.reload_inputs = gradio(reload_arr)
-    shared.gradio['Output Off'].click(set_output_format).then(chat.generate_history_token, gradio(inputs), gradio('display', 'history'), show_progress=False)
-    shared.gradio['Output On'].click(set_output_format).then(chat.generate_history_token, gradio(inputs), gradio('display', 'history'), show_progress=False)
     shared.gradio['Generate'].click(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
@@ -307,6 +305,17 @@ def create_event_handlers():
         None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.remove("_generating")').then(
         None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
 
+    shared.gradio['Output Off'].click(
+        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')
+    ).then(
+        chat.toggle_tokenize_text, gradio('interface_state'), gradio('display', 'history'), show_progress=False
+    )
+
+    shared.gradio['Output On'].click(
+        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')
+    ).then(
+        chat.toggle_detokenize_text, gradio('interface_state'), gradio('display', 'history'), show_progress=False
+    )
     shared.gradio['textbox'].submit(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
@@ -349,9 +358,9 @@ def create_event_handlers():
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         chat.handle_send_dummy_reply_click, gradio('textbox', 'interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
 
-    shared.gradio['Remove last'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_remove_last_click, gradio('interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
+    # shared.gradio['Remove last'].click(
+    #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+    #     chat.handle_remove_last_click, gradio('interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
 
     shared.gradio['Stop'].click(
         stop_everything_event, None, None, queue=False).then(

@@ -31,6 +31,7 @@ from modules.logging_colors import logger
 from modules.models import clear_torch_cache, load_model
 from pprint import pprint
 from nesa.backend.registry import ModelRegistry
+import copy
 
 def generate_reply(*args, **kwargs):
     
@@ -43,9 +44,9 @@ def generate_reply(*args, **kwargs):
     shared.generation_lock.acquire()
     tokens = ""
     try:
-        history = args[1]['history']['visible']
+        history = copy.deepcopy(args[1]['history']['visible'])
         if not args[1]['history']['visible'][0][0]:
-            history = args[1]['history']['visible'][1:]
+            history = copy.deepcopy(args[1]['history']['visible'][1:])
     except:
         history = []
     try:

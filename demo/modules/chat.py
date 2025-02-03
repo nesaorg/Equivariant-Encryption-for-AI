@@ -434,19 +434,20 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
     if not character_is_loaded(state):
         return
     history = state['history']
+
     for i, history in enumerate(generate_chat_reply(text, state, regenerate, _continue, loading_message=True, for_ui=True)):
-        shared.history_Info = history
         yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu']), history
-
-
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
 
-def generate_history_token(text, state, regenerate=False, _continue=False):
-    if(shared.history_Info == {}):
-            shared.history_Info = load_latest_history(state)
-    return chat_html_wrapper(shared.history_Info, state['name1'], state['name2'], state['mode'], state['chat_style'],
-                      state['character_menu']), shared.history_Info
+def toggle_tokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
+    history = state['history']
+    return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
+                             state['character_menu'],tokenize=True), history
 
+def toggle_detokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
+    history = state['history']
+    return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
+                             state['character_menu'],tokenize=False), history
 
 
 
