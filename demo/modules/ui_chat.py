@@ -302,21 +302,24 @@ def create_event_handlers():
         None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
 
 
-    shared.gradio['Output Off'].click (
-        ui.toggle_tokenize, shared.gradio['tokenize'], shared.gradio['tokenize']
-    ).then(
+    shared.gradio['Output Off'].click(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')
+    ).then(
+        ui.toggle_tokenize, gradio('interface_state') , gradio('tokenize')
     ).then(
         chat.toggle_tokenize_text, gradio('interface_state'), gradio('display', 'history'), show_progress=False
     )
 
-    shared.gradio['Output On'].click (
-        ui.toggle_tokenize, shared.gradio['tokenize'], shared.gradio['tokenize']
-    ).then(
+    shared.gradio['Output On'].click(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')
+    ).then(
+        ui.toggle_tokenize, gradio('interface_state') , gradio('tokenize')
     ).then(
         chat.toggle_detokenize_text, gradio('interface_state'), gradio('display', 'history'), show_progress=False
     )
+
+
+
     shared.gradio['textbox'].submit(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
