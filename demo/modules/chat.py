@@ -441,13 +441,15 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
 
 def toggle_tokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
+    shared.tokenize = True
     return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
-                             state['character_menu'],tokenize=True), history
+                             state['character_menu'],tokenize=shared.tokenize), history
 
 def toggle_detokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
+    shared.tokenize = False
     return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
-                             state['character_menu'],tokenize=False), history
+                             state['character_menu'],tokenize=shared.tokenize), history
 
 
 

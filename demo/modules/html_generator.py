@@ -290,7 +290,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
         row[1], file = check_file_availability(row[1])
         user_input = row[0]
         ai_output = row[1]
-        if tokenize:
+        if shared.tokenize:
             user_input = tokenizer.encode(row[0])
             ai_output = tokenizer.encode(row[1])
         if row[0]:  # don't display empty user messages
