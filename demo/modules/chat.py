@@ -390,7 +390,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
 
 
 def impersonate_wrapper(text, state):
-    static_output = chat_html_wrapper(state['history'], state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    static_output = chat_html_wrapper(state['history'], state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], tokenize=state['tokenize'])
 
     prompt = generate_chat_prompt('', state, impersonate=True)
     stopping_strings = get_stopping_strings(state)
@@ -441,13 +441,11 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
 
 def toggle_tokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
-    print("toggle off click tokenize = ", state['tokenize'])
     return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
                              state['character_menu'],tokenize=True), history
 
 def toggle_detokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
-    print("toggle on click tokenize = ", state['tokenize'])
     return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
                              state['character_menu'],tokenize=False), history
 
@@ -500,8 +498,8 @@ def send_dummy_reply(text, state):
     return history
 
 
-def redraw_html(history, name1, name2, mode, style, character, reset_cache=False):
-    return chat_html_wrapper(history, name1, name2, mode, style, character, reset_cache=reset_cache)
+def redraw_html(history, name1, name2, mode, style, character, reset_cache=False, tokenize = False):
+    return chat_html_wrapper(history, name1, name2, mode, style, character, reset_cache=reset_cache, tokenize = tokenize)
 
 
 def start_new_chat(state):
@@ -1032,7 +1030,7 @@ def my_yaml_output(data):
 def handle_replace_last_reply_click(text, state):
     history = replace_last_reply(text, state)
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     return [history, html, ""]
 
@@ -1040,7 +1038,7 @@ def handle_replace_last_reply_click(text, state):
 def handle_send_dummy_message_click(text, state):
     history = send_dummy_message(text, state)
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     return [history, html, ""]
 
@@ -1048,7 +1046,7 @@ def handle_send_dummy_message_click(text, state):
 def handle_send_dummy_reply_click(text, state):
     history = send_dummy_reply(text, state)
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     return [history, html, ""]
 
@@ -1056,7 +1054,7 @@ def handle_send_dummy_reply_click(text, state):
 def handle_remove_last_click(state):
     last_input, history = remove_last_message(state['history'])
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     return [history, html, last_input]
 
@@ -1064,7 +1062,7 @@ def handle_remove_last_click(state):
 def handle_unique_id_select(state):
     state['character_menu'] = state['character_menu'] or 'Assistant'
     history = load_history(state['unique_id'], state['character_menu'], state['mode'])
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     convert_to_markdown.cache_clear()
 
@@ -1074,7 +1072,7 @@ def handle_unique_id_select(state):
 def handle_start_new_chat_click(state):
     history = start_new_chat(state)
     histories = find_all_histories_with_first_prompts(state)
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     convert_to_markdown.cache_clear()
 
@@ -1090,7 +1088,7 @@ def handle_delete_chat_confirm_click(state):
     index = str(find_all_histories(state).index(state['unique_id']))
     delete_history(state['unique_id'], state['character_menu'], state['mode'])
     history, unique_id = load_history_after_deletion(state, index)
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     convert_to_markdown.cache_clear()
 
@@ -1127,7 +1125,7 @@ def handle_upload_chat_history(load_chat_history, state):
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
     histories = find_all_histories_with_first_prompts(state)
 
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     convert_to_markdown.cache_clear()
 
@@ -1156,7 +1154,7 @@ def handle_character_menu_change(state):
 
     history = load_latest_history(state)
     histories = find_all_histories_with_first_prompts(state)
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     convert_to_markdown.cache_clear()
 
@@ -1181,7 +1179,7 @@ def handle_mode_change(state):
 
     history = load_latest_history(state)
     histories = find_all_histories_with_first_prompts(state)
-    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'])
+    html = redraw_html(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], state['tokenize'])
 
     convert_to_markdown.cache_clear()
 
@@ -1234,7 +1232,7 @@ def handle_delete_template_click(template):
 
 def handle_your_picture_change(picture, state):
     upload_your_profile_picture(picture)
-    html = redraw_html(state['history'], state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], reset_cache=True)
+    html = redraw_html(state['history'], state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], tokenize = state['tokenize'], reset_cache=True)
 
     return html
 

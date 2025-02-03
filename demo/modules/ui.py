@@ -233,15 +233,12 @@ def gather_interface_values(*args):
                 value = value.replace("'", '"')
                 value = json.loads(value)
 
-        if element == "tokenize":
-            print(f"gathering tokenize state: {value}") 
 
         output[element] = value 
 
     if "tokenize" not in output:
         output["tokenize"] = False
 
-    print(f"Final gathered tokenize state -> {output['tokenize']}")
     return output
 
 
