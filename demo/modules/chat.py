@@ -438,14 +438,24 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
         yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], tokenize=state['tokenize']), history
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
 
-
+def ensure_history(history, state):
+    if not history or not history.get('visible'):
+        history = {'internal': [], 'visible': []}
+        greeting = replace_character_names(state['greeting'], state['name1'], state['name2'])
+        if greeting != '':
+            history['internal'] += [['<|BEGIN-VISIBLE-CHAT|>', greeting]]
+            history['visible'] += [['', apply_extensions('output', html.escape(greeting), state, is_chat=True)]]
+        print("rewrite history = ", history);
+    return history
 def toggle_tokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
+    history = ensure_history(history, state)
     return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
                              state['character_menu'],tokenize=True), history
 
 def toggle_detokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
+    history = ensure_history(history, state)
     return chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'],
                              state['character_menu'],tokenize=False), history
 
