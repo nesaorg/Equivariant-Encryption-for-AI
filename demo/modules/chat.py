@@ -445,7 +445,6 @@ def ensure_history(history, state):
         if greeting != '':
             history['internal'] += [['<|BEGIN-VISIBLE-CHAT|>', greeting]]
             history['visible'] += [['', apply_extensions('output', html.escape(greeting), state, is_chat=True)]]
-        print("rewrite history = ", history);
     return history
 def toggle_tokenize_text(state, show_tokens=False, regenerate=False, _continue=False):
     history = state['history']
