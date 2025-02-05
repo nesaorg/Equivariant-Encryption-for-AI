@@ -870,6 +870,9 @@ if (isMobile()) {
   chatControlsToggle.innerHTML = leftArrowSVG;
   chatControlsRow.classList.add("sidebar-hidden");
   chatControlsRow.classList.remove("sidebar-shown");
+  outputOffToggle.classList.remove("right-side-move");
+  outputText.classList.remove("output-move");
+
 
   textarea.addEventListener('focus', function() {
     setTimeout(() => {
