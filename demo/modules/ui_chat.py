@@ -294,7 +294,8 @@ def create_event_handlers():
     shared.input_params = gradio(inputs)
     shared.reload_inputs = gradio(reload_arr)
     shared.gradio['Generate'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state'),
+        concurrency_limit=20).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
         lambda: None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.add("_generating")').then(
         chat.generate_chat_reply_wrapper, gradio(inputs), gradio('display', 'history'), show_progress=False).then(

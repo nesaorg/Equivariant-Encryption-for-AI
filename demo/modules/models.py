@@ -408,15 +408,15 @@ def unload_model_if_idle():
     global last_generation_time
 
     logger.info(f"Setting a timeout of {shared.args.idle_timeout} minutes to unload the model in case of inactivity.")
+    pass
+    # while True:
+    #     shared.generation_lock.acquire()
+    #     try:
+    #         if time.time() - last_generation_time > shared.args.idle_timeout * 60:
+    #             if shared.model is not None:
+    #                 logger.info("Unloading the model for inactivity.")
+    #                 unload_model(keep_model_name=True)
+    #     finally:
+    #         shared.generation_lock.release()
 
-    while True:
-        shared.generation_lock.acquire()
-        try:
-            if time.time() - last_generation_time > shared.args.idle_timeout * 60:
-                if shared.model is not None:
-                    logger.info("Unloading the model for inactivity.")
-                    unload_model(keep_model_name=True)
-        finally:
-            shared.generation_lock.release()
-
-        time.sleep(60)
+    #     time.sleep(60)

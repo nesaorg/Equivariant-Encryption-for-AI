@@ -167,7 +167,7 @@ try:
 
         # Launch the interface
 
-        shared.gradio['interface'].queue()
+        shared.gradio['interface'].queue(default_concurrency_limit=24)
 
         with OpenMonkeyPatch():
             shared.gradio['interface'].launch(
