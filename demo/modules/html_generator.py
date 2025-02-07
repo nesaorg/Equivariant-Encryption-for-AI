@@ -293,6 +293,7 @@ def generate_cai_chat_html(history, name1, name2, style, character, reset_cache=
         if tokenize:
             user_input = tokenizer.encode(row[0])
             ai_output = tokenizer.encode(row[1])
+        
         if row[0]:  # don't display empty user messages
             output += f"""
                   <div class="message">

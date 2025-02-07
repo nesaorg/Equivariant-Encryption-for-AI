@@ -5,10 +5,13 @@ import re
 import unicodedata
 import uuid
 import warnings
+import nats
 from typing import Any, Generator, List, Optional
 import ast
 import httpx
 import msgspec
+from nats.js import api as js_api
+from nesa.backend.utils import sanitize_subject_token, desanitize_subject_token
 from nesa.backend.protocol import InferenceResponse, LLMInference, Message, Role, SessionID
 from nesa.backend.registry import ModelRegistry
 from nesa.settings import settings
@@ -17,6 +20,11 @@ from transformers import AutoTokenizer
 response_topic: str = "inference-results"
 request_topic: str = "inference-requests"
 model_mappings = {"nesaorg_Llama-3.1-8B-Instruct-Encrypted": "meta-llama/Llama-3.1-8B-Instruct-ee"}
+
+async def async_yield_text(text):
+    for item in text:
+        yield item
+        await asyncio.sleep(0.1)
 
 
 def clean_string(message):
@@ -31,54 +39,56 @@ def clean_string(message):
     return cleaned_content
 
 
-async def sse_message_handler(inf_request, timeout=60):
+async def sse_message_handler(inf_request: LLMInference, timeout=60):
     headers = {
         "Accept": "text/event-stream",
         "Content-Type": "application/json",
     }
 
-    with httpx.stream(
-        "POST", settings.stream_url, data=msgspec.json.encode(inf_request), headers=headers, timeout=None
-    ) as response:
-        response.raise_for_status()
 
-        buffer = ""
+    async with httpx.AsyncClient() as client:
+        async with client.stream(
+            "POST", settings.stream_url, data=msgspec.json.encode(inf_request), headers=headers, timeout=None
+        ) as response:
+            response.raise_for_status()
 
-        start_time = asyncio.get_event_loop().time()
-        first_message_received = False
+            buffer = ""
+            start_time = asyncio.get_event_loop().time()
+            first_message_received = False
+            async for chunk in response.aiter_text(chunk_size=1024): 
+                buffer += chunk
+                await asyncio.sleep(0.0)
+                while "\n\n" in buffer:
+                    event_block, buffer = buffer.split("\n\n", 1)
 
-        for chunk in response.iter_text(chunk_size=1024):
-            buffer += chunk
+                    lines = event_block.splitlines()
+                    sse_event = {}
+                    for line in lines:
+                        if line.startswith("event:"):
+                            sse_event["event"] = line[len("event:") :].strip()
+                        elif line.startswith("data:"):
+                            sse_event["data"] = line[len("data:") :].strip()
 
-            while "\n\n" in buffer:
-                event_block, buffer = buffer.split("\n\n", 1)
+                    if "data" in sse_event:
+                        try:
+                            inf_response = msgspec.json.decode(
+                                sse_event["data"].encode("utf-8"), type=InferenceResponse
+                            )
 
-                lines = event_block.splitlines()
-                sse_event = {}
-                for line in lines:
-                    if line.startswith("event:"):
-                        sse_event["event"] = line[len("event:") :].strip()
-                    elif line.startswith("data:"):
-                        sse_event["data"] = line[len("data:") :].strip()
+                            first_message_received = True
 
-                if "data" in sse_event:
-                    try:
-                        inf_response = msgspec.json.decode(sse_event["data"].encode("utf-8"), type=InferenceResponse)
+                            if inf_response.choices[0].finish_reason:
+                                yield inf_response.choices[0].delta.content
+                                return
 
-                        first_message_received = True
-
-                        if inf_response.choices[0].finish_reason:
                             yield inf_response.choices[0].delta.content
-                            return
 
-                        yield inf_response.choices[0].delta.content
+                        except msgspec.DecodeError:
+                            print("Could not decode SSE data as InferenceResponse")
 
-                    except msgspec.DecodeError:
-                        print("Could not decode SSE data as InferenceResponse")
-
-            if not first_message_received and (asyncio.get_event_loop().time() - start_time) > timeout:
-                yield None
-                return
+                if not first_message_received and (asyncio.get_event_loop().time() - start_time) > timeout:
+                    yield None
+                    return
 
 
 def generate_prompt_template(
@@ -134,7 +144,6 @@ def process_stream_sync(inf_request, tokenizer):
             return
         finally:
             loop.close()
-
     return sync_generator()
 
 
@@ -165,6 +174,7 @@ class DistributedLLM:
         system_prompt: Optional[str] = "",
         **kwargs,
     ) -> Generator[str, None, None]:
+    
         prompt_template = generate_prompt_template(
             current_msg=current_msg, system_prompt=system_prompt, history=history
         )
@@ -177,6 +187,7 @@ class DistributedLLM:
             session_id=SessionID(ee=True),
             model_params={},
         )
+        
         for token in process_stream_sync(inf_request, tokenizer):
             yield token
 

@@ -37,11 +37,12 @@ def generate_reply(*args, **kwargs):
     
 
     if shared.args.idle_timeout > 0 and shared.model is None and shared.model_name not in [None, 'None']:
+        
         ModelClass = ModelRegistry.get_model(shared.model_name, None)
         shared.handler = ModelClass(shared.model_name)
         shared.tokenizer, shared.model = shared.handler.load_model_tokenizer(model_name=shared.model_name)
 
-    shared.generation_lock.acquire()
+    # shared.generation_lock.acquire()
     tokens = ""
     try:
         history = copy.deepcopy(args[1]['history']['visible'])
@@ -58,6 +59,7 @@ def generate_reply(*args, **kwargs):
             "presence_penalty": shared.gradio['presence_penalty'],
             "custom_stopping_strings": shared.gradio['custom_stopping_strings'],
         }
+        
         for token in shared.handler.perform_inference(
             current_msg=args[1]['textbox'],
             tokenizer=shared.tokenizer,
@@ -70,7 +72,7 @@ def generate_reply(*args, **kwargs):
             yield tokens
     finally:
         models.last_generation_time = time.time()
-        shared.generation_lock.release()
+        # shared.generation_lock.release()
 
 
 def _generate_reply(question, state, stopping_strings=None, is_chat=False, escape_html=False, for_ui=False):
