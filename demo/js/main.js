@@ -860,12 +860,6 @@ chatControlsToggle.addEventListener("click", () => {
 
 
 
-  chatControlsToggle.classList.remove("chat-controls-open");
-  chatControlsToggle.classList.add("chat-controls-closed");
-  chatControlsToggle.innerHTML = leftArrowSVG;
-  chatControlsRow.classList.add("sidebar-hidden");
-  chatControlsRow.classList.remove("sidebar-shown");
-  outputOffToggle.classList.remove("right-side-move");
 
 if (isMobile()) {
   console.log("in isMobile");// Target the textarea
@@ -877,6 +871,13 @@ if (isMobile()) {
     textarea.value = textarea.value.slice(0, -1);
     textarea.dispatchEvent(new Event("input", { bubbles: true }));
   }
+
+  chatControlsToggle.classList.remove("chat-controls-open");
+  chatControlsToggle.classList.add("chat-controls-closed");
+  chatControlsToggle.innerHTML = leftArrowSVG;
+  chatControlsRow.classList.add("sidebar-hidden");
+  chatControlsRow.classList.remove("sidebar-shown");
+
   textarea.addEventListener('focus', function() {
     setTimeout(() => {
       this.scrollIntoView({ behavior: 'smooth', block: 'center' });
