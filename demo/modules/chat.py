@@ -430,7 +430,7 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
     '''
     Same as above but returns HTML for the UI
     '''
-    
+    state['name2'] = 'AI'
     if not character_is_loaded(state):
         return
     history = state['history']
