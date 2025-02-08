@@ -813,8 +813,7 @@ function initializeSidebars() {
     outputText.classList.add("output-back");
     outputOnToggle.classList.remove("right-side-move");
     outputOffToggle.classList.remove("right-side-move");
-  }
-  else {
+  } else {
     outputText.classList.remove("output-back");
     outputOnToggle.classList.add("right-side-move");
     outputOffToggle.classList.add("right-side-move");
