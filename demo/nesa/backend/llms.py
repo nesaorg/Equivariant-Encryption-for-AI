@@ -109,6 +109,7 @@ def generate_prompt_template(
             messages.append(assistant_msg)
 
     history = system_instructions + messages + current_msg
+    
     return history
 
 
@@ -121,14 +122,22 @@ def process_stream_sync(inf_request, tokenizer):
                 tokenizer.convert_tokens_to_ids("<|eot_id|>"),
             ]
     async def async_wrapper():
-        async for content in sse_message_handler(inf_request):
-            
+        print("[Client]")
+        print("Output received from server:")
+        out_tokens = []
+        async for content in sse_message_handler(inf_request):    
             if content:
+                if isinstance(content,int):
+                    out_tokens.append(content)
                 yield content
+
+        print(out_tokens)
+        print()
 
     def sync_generator():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
+        
         try:
             gen = async_wrapper()
             while True:
@@ -138,7 +147,7 @@ def process_stream_sync(inf_request, tokenizer):
                 if isinstance(content,str):
                     yield f"""[file]{content}[file]"""
                 else:
-                    if content not in terminators:
+                    if content not in terminators:         
                         yield tokenizer.decode(content)
         except StopAsyncIteration:
             return
@@ -178,7 +187,11 @@ class DistributedLLM:
         prompt_template = generate_prompt_template(
             current_msg=current_msg, system_prompt=system_prompt, history=history
         )
+        print("[Server]")
+        print("Input received from client:")
+        
         input_ids = tokenizer.apply_chat_template(prompt_template, add_generation_prompt=True)
+        print(input_ids[-20:])
         inf_request = LLMInference(
             stream=True,
             model=model_mappings[model_name],
