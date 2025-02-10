@@ -165,25 +165,6 @@ def create_ui():
                         with gr.Row():
                             shared.gradio['Stop'] = gr.Button('Stop', elem_id='stop', visible=False)
                             shared.gradio['Generate'] = gr.Button('Generate', elem_id='Generate', variant='primary')
-        # Hover menu buttons
-        with gr.Column(elem_id='chat-buttons'):
-            with gr.Row():
-                shared.gradio['Regenerate'] = gr.Button('Regenerate (Ctrl + Enter)', elem_id='Regenerate')
-                shared.gradio['Continue'] = gr.Button('Continue (Alt + Enter)', elem_id='Continue', visible=False)
-                # shared.gradio['Remove last'] = gr.Button('Remove last reply (Ctrl + Shift + Backspace)', elem_id='Remove-last')
-
-            with gr.Row():
-                shared.gradio['Replace last reply'] = gr.Button('Replace last reply (Ctrl + Shift + L)', elem_id='Replace-last')
-                shared.gradio['Copy last reply'] = gr.Button('Copy last reply (Ctrl + Shift + K)', elem_id='Copy-last')
-                shared.gradio['Impersonate'] = gr.Button('Impersonate (Ctrl + Shift + M)', elem_id='Impersonate')
-
-            with gr.Row():
-                shared.gradio['Send dummy message'] = gr.Button('Send dummy message', visible=False)
-                shared.gradio['Send dummy reply'] = gr.Button('Send dummy reply', visible=False)
-
-            with gr.Row():
-                shared.gradio['send-chat-to-default'] = gr.Button('Send to default', visible=False)
-                shared.gradio['send-chat-to-notebook'] = gr.Button('Send to notebook', visible=False)
 
         with gr.Row(elem_id='chat-controls', elem_classes=['pretty_scrollbar']):
             with gr.Column():
@@ -294,7 +275,8 @@ def create_event_handlers():
     shared.input_params = gradio(inputs)
     shared.reload_inputs = gradio(reload_arr)
     shared.gradio['Generate'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state'),
+        concurrency_limit=20).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
         lambda: None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.add("_generating")').then(
         chat.generate_chat_reply_wrapper, gradio(inputs), gradio('display', 'history'), show_progress=False).then(
@@ -327,41 +309,6 @@ def create_event_handlers():
         chat.generate_chat_reply_wrapper, gradio(inputs), gradio('display', 'history'), show_progress=False).then(
         None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.remove("_generating")').then(
         None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
-
-    shared.gradio['Regenerate'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        lambda: None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.add("_generating")').then(
-        partial(chat.generate_chat_reply_wrapper, regenerate=True), gradio(inputs), gradio('display', 'history'), show_progress=False).then(
-        None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.remove("_generating")').then(
-        None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
-
-    shared.gradio['Continue'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        lambda: None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.add("_generating")').then(
-        partial(chat.generate_chat_reply_wrapper, _continue=True), gradio(inputs), gradio('display', 'history'), show_progress=False).then(
-        None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.remove("_generating")').then(
-        None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
-
-    shared.gradio['Impersonate'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        lambda x: x, gradio('textbox'), gradio('Chat input'), show_progress=False).then(
-        lambda: None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.add("_generating")').then(
-        chat.impersonate_wrapper, gradio(inputs), gradio('textbox', 'display'), show_progress=False).then(
-        None, None, None, js='() => document.getElementById("chat").parentNode.parentNode.parentNode.classList.remove("_generating")').then(
-        None, None, None, js=f'() => {{{ui.audio_notification_js}}}')
-
-    shared.gradio['Replace last reply'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_replace_last_reply_click, gradio('textbox', 'interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
-
-    shared.gradio['Send dummy message'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_send_dummy_message_click, gradio('textbox', 'interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
-
-    shared.gradio['Send dummy reply'].click(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_send_dummy_reply_click, gradio('textbox', 'interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
-
     # shared.gradio['Remove last'].click(
     #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
     #     chat.handle_remove_last_click, gradio('interface_state'), gradio('history', 'display', 'textbox'), show_progress=False)
@@ -400,10 +347,10 @@ def create_event_handlers():
         chat.handle_upload_chat_history, gradio('load_chat_history', 'interface_state'), gradio('history', 'display'), show_progress=False).then(
         None, None, None, js=f'() => {{{ui.switch_tabs_js}; switch_to_chat()}}')
 
-    shared.gradio['character_menu'].change(
-        ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
-        chat.handle_character_menu_change, gradio('interface_state'), gradio('history', 'display', 'name1', 'name2', 'character_picture', 'greeting', 'context'), show_progress=False).then(
-        None, None, None, js=f'() => {{{ui.update_big_picture_js}; updateBigPicture()}}')
+    # shared.gradio['character_menu'].change(
+    #     ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
+    #     chat.handle_character_menu_change, gradio('interface_state'), gradio('history', 'display', 'name1', 'name2', 'character_picture', 'greeting', 'context'), show_progress=False).then(
+    #     None, None, None, js=f'() => {{{ui.update_big_picture_js}; updateBigPicture()}}')
 
     shared.gradio['mode'].change(
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
@@ -411,7 +358,6 @@ def create_event_handlers():
         None, gradio('mode'), None, js="(mode) => {mode === 'instruct' ? document.getElementById('character-menu').parentNode.parentNode.style.display = 'none' : document.getElementById('character-menu').parentNode.parentNode.style.display = ''}")
 
     shared.gradio['chat_style'].change(chat.redraw_html, gradio(reload_arr), gradio('display'), show_progress=False)
-    shared.gradio['Copy last reply'].click(chat.send_last_reply_to_input, gradio('history'), gradio('textbox'), show_progress=False)
 
     # Save/delete a character
     # shared.gradio['save_character'].click(chat.handle_save_character_click, gradio('name2'), gradio('save_character_filename', 'character_saver'), show_progress=False)

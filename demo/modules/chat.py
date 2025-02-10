@@ -299,6 +299,7 @@ def get_stopping_strings(state):
 def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_message=True, for_ui=False):
     # if text is None:
     #     return
+    
     history = state['history']
     output = copy.deepcopy(history)
     output = apply_extensions('history', output)
@@ -311,7 +312,7 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
     # Prepare the input
     if not (regenerate or _continue):
         visible_text = html.escape(text) if text is not None else ""
-
+        
         # Apply extensions
         text, visible_text = apply_extensions('chat_input', text, visible_text, state)
         text = apply_extensions('input', text, state, is_chat=True)
@@ -350,7 +351,6 @@ def chatbot_wrapper(text, state, regenerate=False, _continue=False, loading_mess
     if prompt is None:
         prompt = generate_chat_prompt(text, state, **kwargs)
 
-    # Generate
     reply = None
     for j, reply in enumerate(generate_reply(prompt, state, stopping_strings=stopping_strings, is_chat=True, for_ui=for_ui)):
 
@@ -412,7 +412,7 @@ def generate_chat_reply(text, state, regenerate=False, _continue=False, loading_
             return
     for history in chatbot_wrapper(text, state, regenerate=regenerate, _continue=_continue, loading_message=loading_message, for_ui=for_ui):
         yield history
-
+    
 
 def character_is_loaded(state, raise_exception=False):
     if state['mode'] in ['chat', 'equivariant-encrypt'] and state['name2'] == '':
@@ -430,12 +430,13 @@ def generate_chat_reply_wrapper(text, state, regenerate=False, _continue=False):
     '''
     Same as above but returns HTML for the UI
     '''
-
+    state['name2'] = 'AI'
     if not character_is_loaded(state):
         return
     history = state['history']
     for i, history in enumerate(generate_chat_reply(text, state, regenerate, _continue, loading_message=True, for_ui=True)):
         yield chat_html_wrapper(history, state['name1'], state['name2'], state['mode'], state['chat_style'], state['character_menu'], tokenize=state['tokenize']), history
+    
     save_history(history, state['unique_id'], state['character_menu'], state['mode'])
 
 def ensure_history(history, state):
