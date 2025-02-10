@@ -675,8 +675,7 @@ const outputOffSVG = `<svg width="47" height="40" viewBox="0 0 47 40" fill="none
 
 
 `;
-const svgDataOnUrl = `data:image/svg+xml,${encodeURIComponent(outputOnSVG)}`;
-const svgDataOffUrl = `data:image/svg+xml,${encodeURIComponent(outputOffSVG)}`;
+
 const hamburgerMenuSVG = `
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-hamburger-menu">
   <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -695,10 +694,13 @@ const pastChatsRow = document.getElementById("past-chats-row");
 const chatControlsRow = document.getElementById("chat-controls");
 const outputOffToggle = document.getElementById("toggle-off");
 const outputOnToggle = document.getElementById("toggle-on");
+const svgDataOnUrl = 'file/cache/toggle-on.png';
+const svgDataOffUrl = 'file/cache/toggle-off.png';
 outputOffToggle.style.backgroundImage = `url("${svgDataOffUrl}")`;
 outputOnToggle.style.backgroundImage = `url("${svgDataOnUrl}")`;
 if (chatTab) {
   // Create past-chats-toggle div
+  console.log('now inside chattab');
   const pastChatsToggle = document.createElement("div");
   pastChatsToggle.id = "past-chats-toggle";
   pastChatsToggle.innerHTML = leftArrowSVG; // Set initial icon to left arrow
@@ -763,16 +765,16 @@ function toggleSidebar(sidebar, toggle, forceClose = false) {
     toggle.innerHTML = shouldClose ? hamburgerMenuSVG : closeMenuSVG;
   } else if (sidebar === pastChatsRow) {
     // Past chats sidebar
-    toggle.classList.toggle("past-chats-closed", shouldClose);
-    toggle.classList.toggle("past-chats-open", !shouldClose);
+    pastChatsToggle.classList.toggle("past-chats-closed", shouldClose);
+    pastChatsToggle.classList.toggle("past-chats-open", !shouldClose);
+    console.log("in pastChatsRow toggle func");
     if(!shouldClose){
-      leftSideToggle.classList.add("logo-hidden");
       pastChatsToggle.classList.remove("past-chat-move");
+      pastChatsToggle.innerHTML = leftArrowSVG;
     }else{
-      leftSideToggle.classList.remove("logo-hidden");
       pastChatsToggle.classList.add("past-chat-move");
+      pastChatsToggle.innerHTML = rightArrowSVG;
     }
-    toggle.innerHTML = shouldClose ? rightArrowSVG : leftArrowSVG;
   } else if (sidebar === chatControlsRow) {
     // Chat controls sidebar
     toggle.classList.toggle("chat-controls-closed", shouldClose);
