@@ -700,7 +700,6 @@ outputOffToggle.style.backgroundImage = `url("${svgDataOffUrl}")`;
 outputOnToggle.style.backgroundImage = `url("${svgDataOnUrl}")`;
 if (chatTab) {
   // Create past-chats-toggle div
-  console.log('now inside chattab');
   const pastChatsToggle = document.createElement("div");
   pastChatsToggle.id = "past-chats-toggle";
   pastChatsToggle.innerHTML = leftArrowSVG; // Set initial icon to left arrow
@@ -767,7 +766,6 @@ function toggleSidebar(sidebar, toggle, forceClose = false) {
     // Past chats sidebar
     pastChatsToggle.classList.toggle("past-chats-closed", shouldClose);
     pastChatsToggle.classList.toggle("past-chats-open", !shouldClose);
-    console.log("in pastChatsRow toggle func");
     if(!shouldClose){
       pastChatsToggle.classList.remove("past-chat-move");
       pastChatsToggle.innerHTML = leftArrowSVG;
@@ -800,7 +798,6 @@ function isMobile() {
 
 // Function to initialize sidebars
 function initializeSidebars() {
-  console.log("in initialize fun");
   // Hide pastChatsRow (chat sidebar) and other sidebars by default
   [pastChatsRow].forEach((sidebar) => {
     sidebar.classList.add("sidebar-hidden");
@@ -864,7 +861,6 @@ chatControlsToggle.addEventListener("click", () => {
 
 
 if (isMobile()) {
-  console.log("in isMobile");// Target the textarea
   const textarea = document.querySelector("#chat-input textarea");
   if (textarea) {
     // Simulate adding and removing a newline
